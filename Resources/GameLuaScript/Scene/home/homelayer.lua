@@ -1,8 +1,11 @@
+local RadioGroup = require"GameLuaScript/Common/KNRadioGroup"
+local Btn = require"GameLuaScript/Common/KNBtn"
+local PATH = "image/scene/home"
+
 HomeLayer= {
 	strengthItemLayer,   --强化按钮所在层，控制强化的子项是否显示
 	optionBtn = {}
 }
-local RadioGroup = require"GameLuaScript/Common/KNRadioGroup"
 function HomeLayer:create(x,y)
 	local this={}
 	setmetatable(this,self)
@@ -17,31 +20,33 @@ function HomeLayer:create(x,y)
 
 	--[[其他功能按钮，阵容，行囊，融合，强化，英雄，历练]]
 
-	local main_bt = {{"image/buttonUI/home/other/LineUP/lineup.png","lineup",20,400},
-										  {"image/buttonUI/home/other/Luggage/luggage.png","Luggage",20,300},
-										  {"image/buttonUI/home/other/Merge/Merge.png","Merge",20,200},
-										  {"image/buttonUI/home/other/Strengthen/Strengthen.png","Strengthen",255,400},
-										  {"image/buttonUI/home/other/Hero/Hero.png","Hero",255,300},
-										  {"image/buttonUI/home/other/experience/Experience.png","Experience",255,200}}
+	local main_bt = {{COMMONPATH.."lineup.png","lineup",20,400,
+						function()
+							HTTPS:send("Battle" ,  {m="Battle",a="LineUp",Battle = "select_up",sid = DATA_Session:get("sid"),uid = DATA_Session:get("uid"),server_id = DATA_Session:get("server_id")} ,{success_callback = 
+								function()
+									switchScene("lineup")
+								end})
+						end},
+					  {COMMONPATH.."luggage.png","Luggage",20,300},
+					  {COMMONPATH.."merge.png","Merge",20,200},
+					  {COMMONPATH.."strengthen.png","Strengthen",255,400},
+					  {COMMONPATH.."hero.png","Hero",255,300},
+					  {COMMONPATH.."experience.png","Experience",255,200,
+					  	function()
+					  		switchScene("fighting")
+					  	end
+					  }}
 
-	local btn = require"GameLuaScript/Common/KNBtn"
 	--local group = RadioGroup:new()
 	local temp
 	for i ,v in pairs(main_bt) do
-	    temp = btn:new("image/buttonUI/home/button/",{"def.png","pre.png"},v[3],v[4],
+	    temp = Btn:new(COMMONPATH,{"btn_normal.png","btn_press.png"},v[3],v[4],
 	    		{
 	    			front = v[1],
 	    			highLight = true,
 	    			scale = true,
 					--selectable = true,
-	    			callback=
-	    				function()
-	    					if i == 1 then
-								HTTPS:send("Battle" ,  {m="Battle",a="LineUp",Battle = "select_up",sid = DATA_Session:get("sid"),uid = DATA_Session:get("uid"),server_id = DATA_Session:get("server_id")} ,{success_callback = function()
-								switchScene("lineup")
-							end })
-							end
-	    				 end
+	    			callback= v[5]
 	    		 }, group)
 	    if i == 1 then
 	    	--group:chooseBtn(temp)
@@ -49,23 +54,18 @@ function HomeLayer:create(x,y)
 		layer:addChild(temp:getLayer())
 	end
 
-	local main_small = {{"Luggage/","Luggage",20,100},
-										  {"Experience/","Experience",110,100},
-										  {"Travel/","Travel",200,100},
-										  {"Conquer/","Conquer",290,100},
-										  {"Strengthen/","Strengthen",380,100}}
+	local main_small = {{"luggage","Luggage",20,100},
+										  {"exp","Experience",110,100},
+										  {"travel","Travel",200,100},
+										  {"conquer","Conquer",290,100},
+										  {"strengthen","Strengthen",380,100}}
 
-	local btns = require"GameLuaScript/Common/KNBtn"
 	--local group = RadioGroup:new()
 	local temps
 
 	for i ,v in pairs(main_small) do
-	    temps = btns:new("image/buttonUI/home/tow/"..v[1],{"def.png","pre.png"},v[3],v[4],
+	    temps = Btn:new(PATH,{v[1].."_normal.png",v[1].."_press.png"},v[3],v[4],
 	    		{
-	    			--front = v[1],
-	    			highLight = true,
-	    			scale = true,
-					--selectable = true,
 	    			callback=
 	    				function()
 	    					print(i,"---")

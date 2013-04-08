@@ -11,3 +11,5 @@ CONFIG_SOCKET_PORT = 1234
 IMAGEBUTTON = 0--图片按钮
 TEXTBUTTON = 1--文本按钮
 IMAGEPATH = "image"--资源路径
+
+COMMONPATH = "image/common/"
