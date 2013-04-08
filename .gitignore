@@ -1,0 +1,5 @@
+/proj*
+.buildpath
+.project
+.settings/
+*.ttf
