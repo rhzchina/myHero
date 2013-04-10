@@ -1,7 +1,6 @@
 #include "WindowLayer.h"
 WindowLayer* WindowLayer::createWindow(){
 	WindowLayer* layer = new WindowLayer();
-
 	if(layer && layer->init()){
 		layer->scaleX = CCEGLView::sharedOpenGLView()->getScaleX();
 		layer->scaleY = CCEGLView::sharedOpenGLView()->getScaleY();
