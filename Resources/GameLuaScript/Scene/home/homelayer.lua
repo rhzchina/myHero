@@ -22,7 +22,15 @@ function HomeLayer:create(x,y)
 
 	local main_bt = {{COMMONPATH.."lineup.png","lineup",20,400,
 						function()
-							HTTPS:send("Battle" ,  {m="Battle",a="LineUp",Battle = "select_up",sid = DATA_Session:get("sid"),uid = DATA_Session:get("uid"),server_id = DATA_Session:get("server_id")} ,{success_callback = 
+							HTTPS:send("Battle" , 
+							 {
+							 	m="Battle",
+							 	a="LineUp",
+							 	Battle = "select_up",
+							 	sid = DATA_Session:get("sid"),
+							 	uid = DATA_Session:get("uid"),
+							 	server_id = DATA_Session:get("server_id")
+							 } ,{success_callback = 
 								function()
 									switchScene("lineup")
 								end})
@@ -33,9 +41,22 @@ function HomeLayer:create(x,y)
 					  {COMMONPATH.."hero.png","Hero",255,300},
 					  {COMMONPATH.."experience.png","Experience",255,200,
 					  	function()
-					  		switchScene("fighting")
-					  	end
-					  }}
+                           HTTPS:send("Fighting",
+                           	{
+                           		m = "Fighting",
+                           		a = "fight",
+                           		Fighting = "start",
+                           		bHurdle = 530001,
+                           		sHurdle = 540001,
+                           		sid = DATA_Session:get("sid"),
+							 	uid = DATA_Session:get("uid"),
+							 	server_id = DATA_Session:get("server_id")
+                           	},{success_callback = 
+                           	function()
+					  			switchScene("fighting")
+					  			print("战斗开始")
+					  		end})
+					  	end}}
 
 	--local group = RadioGroup:new()
 	local temp

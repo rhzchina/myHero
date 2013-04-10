@@ -14,6 +14,7 @@ require("GameLuaScript/Data/CardInfo")
 require("GameLuaScript/Data/CardAll")
 require("GameLuaScript/Data/MapNum")
 require("GameLuaScript/Data/MapSmall")
+require("GameLuaScript/Data/Fighting")
 
 local M = {}
 
@@ -96,6 +97,13 @@ function M.Task( type , data , callback )
 	return true,data
 end
 
-
+function M.Fighting(type,data,callback)
+	if type == 1 then
+	else
+		DATA_Fighting:set(data["start"]["data"])
+		callback()
+	end
+	return true,data
+end
 
 return M
