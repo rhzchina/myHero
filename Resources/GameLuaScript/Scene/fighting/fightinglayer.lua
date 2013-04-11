@@ -43,6 +43,7 @@ local this = {}
 		this.roleLayer:addChild(this.group[1][i - 1]:getLayer())
 	end
 	
+	--初始化怪兽
 	for i,v in pairs(DATA_Fighting:getMonster()) do
 		this.group[2][i - 1] = FightRole:new(2, v["card_id"], i - 1,this.effect) 
 		this.roleLayer:addChild(this.group[2][i - 1]:getLayer())
@@ -68,8 +69,17 @@ local this = {}
 --		end,0.2,false)
 	this.layer:addChild(this.roleLayer)
 	this.layer:addChild(this.effect:getLayer())
+	
+	--战斗开始
+	this:fightLogic()
 	return this
 end
+
+function FightLayer:fightLogic()
+	local data = DATA_Fighting
+	self.group[data:getAttacker("group")][data:getAttacker("index")]:doAction(self,data:getAttackType())
+end
+ 
 
 function FightLayer:getLayer()
 	return self.layer

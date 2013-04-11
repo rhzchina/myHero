@@ -12,7 +12,6 @@ local FightRole ={
 	id,
 	pos,
 	effect--测试用
-	
 }
 
 function FightRole:new(group,id,pos,effect)
@@ -84,7 +83,8 @@ function FightRole:getLayer()
 	return self.layer
 end
 
-function FightRole:doAction(type)
+--执行战斗动作 ，control控制器,type攻击类型，role：是攻击者还是被攻击者
+function FightRole:doAction(control,type,role)
 	if type == "atk" then
 		local array = CCArray:create()
 		if self.group == 1 then
@@ -93,7 +93,7 @@ function FightRole:doAction(type)
 			self.layer:setAnchorPoint(ccp(1,1))
 		end
 		array:addObject(CCRotateTo:create(0.20,20))
-		array:addObject(CCCallFunc:create(function() self.effect:showByType("slash",self.x,self.y,0.08) end))
+		array:addObject(CCCallFunc:create(function() self.effect:showByType(control,"slash",self.x,self.y,0.08) end))
 		array:addObject(CCRotateTo:create(0.10,-40))
 		array:addObject(CCRotateTo:create(0.05,0))
 		self.layer:runAction(CCSequence:create(array))

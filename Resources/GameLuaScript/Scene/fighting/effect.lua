@@ -17,7 +17,7 @@ function Effect:getLayer()
 end
 
 	
-function Effect:showByType(type,x,y,delay)
+function Effect:showByType(controller,type,x,y,delay)
 	local frames = CCArray:create()
 	if type == "slash" then
 		self.cache:addSpriteFramesWithFile(COMMONPATH.."/effect/slash.plist",COMMONPATH.."/effect/slash.png")
@@ -39,6 +39,13 @@ function Effect:showByType(type,x,y,delay)
 	frames:addObject(CCCallFunc:create(
 		function() 
 			self.layer:removeChild(sprite,true)				
+			local winner = DATA_Fighting:nextStep()
+			if not winner then
+				controller:fightLogic()
+			else
+				print("战斗结束",winner)
+				KNMsg.getInstance():flashShow("赢的人是",winner)
+			end
 		end))
 	sprite:runAction(CCSequence:create(frames))
 	self.layer:addChild(sprite)	
