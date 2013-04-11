@@ -69,6 +69,8 @@ end
 
 function DATA_Fighting:clear()
 	_data = nil
+	step = 1
+	turn = 1
 end
 
 function DATA_Fighting:nextStep()

@@ -1,6 +1,7 @@
 local Effect = {
 	layer,
-	cache = CCSpriteFrameCache:sharedSpriteFrameCache()
+	cache = CCSpriteFrameCache:sharedSpriteFrameCache(),
+	added
 }
 
 function Effect:new()
@@ -9,6 +10,7 @@ function Effect:new()
 	self.__index = self
 	
 	this.layer = display.newLayer()
+	this.added = {}  --保存当前已经添加的特效文 件
 	return this 
 end
 
@@ -17,19 +19,49 @@ function Effect:getLayer()
 end
 
 	
-function Effect:showByType(controller,type,x,y,delay)
+function Effect:showByType(type,x,y,delay,params)
 	local frames = CCArray:create()
-	if type == "slash" then
-		self.cache:addSpriteFramesWithFile(COMMONPATH.."/effect/slash.plist",COMMONPATH.."/effect/slash.png")
-		for i = 1, 7 do
-			frames:addObject(self.cache:spriteFrameByName("slash"..i..".png"))
-		end	
-	else
-	end
-		
+
+		if type == "slash" then
+			if not self.added[type] then 
+				print(type.."已添加")
+				self.added[type] = true			
+				self.cache:addSpriteFramesWithFile(COMMONPATH.."effect/slash.plist",COMMONPATH.."effect/slash.png")
+			end
+			for i = 1, 7 do
+				frames:addObject(self.cache:spriteFrameByName("slash"..i..".png"))
+			end	
+		elseif type == "atk_cut" then
+			if not self.added[type] then 
+				print(type.."已添加")
+				self.added[type] = true			
+				self.cache:addSpriteFramesWithFile(COMMONPATH.."effect/atk_cut.plist",COMMONPATH.."effect/atk_cut.png")
+			end	
+			
+			for i = 1, 7 do 
+				frames:addObject(self.cache:spriteFrameByName("atk_cut"..i..".png"))
+			end
+		end
 	--创建精灵来播放动画
 	local sprite = CCSprite:create()
-	setAnchPos(sprite,x,y)
+	local anchX, anchY = 0
+	if params then
+		if params.flipX then
+			sprite:setFlipX(true)
+		end
+		
+		if params.flipY then
+			sprite:setFlipY(true)
+		end
+		
+		if params.anchX then
+			anchX = params.anchX
+		end
+		
+		if params.anchY then
+			anchY = params.anchY
+		end
+	end
 	
 	--创建动画及动画完成后的回调 
 	local animation = CCAnimation:createWithSpriteFrames(frames,delay)
@@ -39,15 +71,19 @@ function Effect:showByType(controller,type,x,y,delay)
 	frames:addObject(CCCallFunc:create(
 		function() 
 			self.layer:removeChild(sprite,true)				
-			local winner = DATA_Fighting:nextStep()
-			if not winner then
-				controller:fightLogic()
-			else
-				print("战斗结束",winner)
-				KNMsg.getInstance():flashShow("赢的人是",winner)
+			if params and params["callback"] then
+				params.callback()
 			end
+--			local winner = DATA_Fighting:nextStep()
+--			if not winner then
+--				controller:fightLogic()
+--			else
+--				print("战斗结束",winner)
+--				KNMsg.getInstance():flashShow("赢的人是",winner)
+--			end
 		end))
 	sprite:runAction(CCSequence:create(frames))
+	setAnchPos(sprite,x,y,anchX,anchY)
 	self.layer:addChild(sprite)	
 end
 

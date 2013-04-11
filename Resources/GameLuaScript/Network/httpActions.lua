@@ -100,7 +100,7 @@ end
 function M.Fighting(type,data,callback)
 	if type == 1 then
 	else
-		DATA_Fighting:set(data["start"]["data"])
+		DATA_Fighting:set(data["start"])
 		callback()
 	end
 	return true,data

@@ -34,6 +34,8 @@ local this = {}
 		scale = true,
 		callback = 
 		function()
+			DATA_Fighting:clear()
+			switchScene("login")
 		end})
 	this.layer:addChild(exit:getLayer())
 	
@@ -77,7 +79,24 @@ end
 
 function FightLayer:fightLogic()
 	local data = DATA_Fighting
-	self.group[data:getAttacker("group")][data:getAttacker("index")]:doAction(self,data:getAttackType())
+	self.group[data:getAttacker("group")][data:getAttacker("index")]:doAction(
+		data:getAttackType(),  --攻击类型
+		"adt",                  --角色状态，攻击:adt,被攻击beatt
+		function()              --回调,这里当攻击动画开始后，回调 函数为被 攻击者动画，找合适的时间播放 
+			self.group[data:getVictim("group")][data:getVictim("index")]:doAction(
+				data:getAttackType(),
+				"beatt",
+				function()
+					local winner = data:nextStep()
+					if not winner then
+						self:fightLogic()
+					else
+						KNMsg.getInstance():flashShow("玩家",winner,"赢得了胜利")
+					end
+				end
+			)
+		end		
+	)
 end
  
 

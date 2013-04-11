@@ -39,8 +39,8 @@ xpcall(function()
 
 	----------------
 	-- 创建登录场景
---	switchScene("login")
-	switchScene("fighting")
+	switchScene("login")
+--	switchScene("fighting")
 
 	-- local LoginScene = require("GameLuaScript/Scene/login/scene")
 	-- display.replaceScene( LoginScene:create() )

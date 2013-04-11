@@ -4,7 +4,7 @@
 
 ]]
 
-
+local KNBtn = require "GameLuaScript/Common/KNBtn"
 local M = {}
 
 
@@ -65,7 +65,15 @@ function M:create( ... )
 	local login_button , login_button_size = KNButton:new("login" , IMAGEBUTTON , display.cx , display.cy , login_callback)
 	login_button:setPosition( display.cx - login_button_size.width / 2 , display.cy - 100)
 	layer:addChild( login_button )
-
+--跳 过按钮
+	local exit = KNBtn:new("image/scene/fighting/",{"fighting_quit.png"},420,800,{
+		scale = true,
+		priority = -199,
+		callback = 
+		function()
+			switchScene("fighting")
+		end})
+	layer:addChild(exit:getLayer())
 
 	return layer
 end
