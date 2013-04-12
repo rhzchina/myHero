@@ -130,6 +130,7 @@ function FightRole:doAction(type,role,callback)
 						callback = 
 						function()
 							self.layer:runAction(CCMoveTo:create(0.1,ccp(self.x,self.y)))
+							self.layer:runAction(CCScaleTo:create(0.2,1))
 							if callback then
 								callback()
 							end
@@ -143,6 +144,7 @@ function FightRole:doAction(type,role,callback)
 			array:addObject(CCRotateTo:create(0.10,-40))
 			array:addObject(CCRotateTo:create(0.05,0))
 			self.layer:runAction(CCSequence:create(array))
+			self.layer:runAction(CCScaleTo:create(0.1,1.05))
 		else
 			self.layer:setAnchorPoint(ccp(0.5,0.5))
 			array:addObject(CCCallFunc:create(

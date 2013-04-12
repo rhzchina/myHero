@@ -96,7 +96,6 @@ function FightLayer:fightLogic()
 				"beatt",
 				function()
 					local winner = data:nextStep()
-					print("dasfasdf++++++++++++++++++++++++++++",winner)
 					if not winner then
 						self:fightLogic()
 					else
@@ -110,7 +109,7 @@ function FightLayer:fightLogic()
 						function()
 							data:clear()
 							switchScene("fighting")
-						end,cancelFun=function()switchScene("home")end})
+						end,cancelFun=function()data:clear() switchScene("home")end})
 					end
 				end
 			)
