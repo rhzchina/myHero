@@ -1,7 +1,7 @@
 
 local M = {}
 
-local EventProtocol = require("framework/client/api/EventProtocol")
+local EventProtocol = requires(IMG_PATH,"framework/client/api/EventProtocol") --require("framework/client/api/EventProtocol")
 
 local SCROLL_TO_VALID_RANGE_SPEED = 400
 
@@ -195,7 +195,7 @@ function M.new(args)
             validTouchRight  = "number",        -- 可操作的区域 (touch 区域)
             validTouchHeight = "number",        -- 偏移幅度
         }
-        for k, t in pairs(keys) do        	
+        for k, t in pairs(keys) do
             if type(args[k]) == t then view[k] = args[k] end
         end
 

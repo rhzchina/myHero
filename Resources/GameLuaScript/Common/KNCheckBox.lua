@@ -95,12 +95,19 @@ function KNCheckBox:setState(state)
 	self.state = state
 end
 
+function KNCheckBox:check(bool)
+	if bool then
+		self:setState(CHOOSE)
+	else
+		self:setState(NORMAL)
+	end
+end
+
 function KNCheckBox:show(bool)
 	self.layer:setVisible(bool)
 end
 
 function KNCheckBox:isSelect()
-	print("当前状态 ",self.state,CHOOSE,self.state == CHOOSE)
 	return self.state == CHOOSE
 end
 

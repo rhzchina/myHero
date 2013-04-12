@@ -26,14 +26,14 @@ function KNSlider:new(path,x,y,minimum, maximum, initial, backFun)
     container:ignoreAnchorPointForPosition(false)
     
     
-    local imagePath=IMAGEPATH.."/start_bar/"..this.path.."/"
-    this.bg = CCSprite:create(imagePath.."bg.png")
+    local imagePath = IMG_PATH .. "image/start_bar/"..this.path.."/"
+    this.bg = display.newSprite(imagePath.."bg.png")
     container:addChild(this.bg, -2)
     
-    this.progress  = CCSprite:create(imagePath.."fore.png")
+    this.progress  = display.newSprite(imagePath.."fore.png")
     container:addChild(this.progress, -1)
     
-    this.thumb = CCSprite:create(imagePath.."icon.png")
+    this.thumb = display.newSprite(imagePath.."icon.png")
     container:addChild(this.thumb, 0)
     
     container:setContentSize(this.bg:getContentSize())--获取大小
@@ -122,9 +122,9 @@ return KNSlider
 --
 --function CCControlSlider:create(bgFile, progressFile, thumbFile)
 --    local o = {}
---    o.bg = CCSprite:create(bgFile)
---    o.progress  = CCSprite:create(progressFile)
---    o.thumb = CCSprite:create(thumbFile)
+--    o.bg = display.newSprite(bgFile)
+--    o.progress  = display.newSprite(progressFile)
+--    o.thumb = display.newSprite(thumbFile)
 --    setmetatable(o, self)
 --    self.__index = self
 --    o.node = CCLayer:create()

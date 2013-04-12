@@ -11,7 +11,7 @@ function KNTextField:new(str,x,y,width,height,tyep,param)
 	this.height=height or 20
 	
 	if(isset(param,"FontSize")) then this.FontSize=param.Fonsize else this.FontSize=14 end
-	if(isset(param,"FontFace")) then this.FontFace=param.FontFace else this.FontFace="Arial" end
+	if(isset(param,"FontFace")) then this.FontFace=param.FontFace else this.FontFace=FONT end
 	if(isset(param,"FontColor")) then this.FontColor=param.FontColor else this.FontColor=cc3(0,0,255)end
 	
 	local textField=CCLabelTTF:create(this.str,this.FontFace,this.FontSize)

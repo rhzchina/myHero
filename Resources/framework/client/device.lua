@@ -117,6 +117,9 @@ echoInfo("# device.language              = " .. device.language)
 echoInfo("# device.writeablePath         = " .. device.writeablePath)
 echoInfo("#")
 
+if device.platform == "windows" then
+	FONT ="迷你简粗圆" 
+end
 --[[--
 
 Displays a platform-specific activity indicator.

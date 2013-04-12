@@ -1,4 +1,4 @@
-local KNBtn = require "GameLuaScript/Common/KNBtn"
+local KNBtn = requires(IMG_PATH,"GameLuaScript/Common/KNBtn") --require "GameLuaScript/Common/KNBtn"
 
 --列表自动滑动方向
 local NEXT = 1
@@ -23,6 +23,7 @@ KNScrollView={
 	contentLayer, --内容层，在此层中加入精灵等对象
 	itemsWidth,   --添加入元素的宽度，用来计算滑动切换的坐标
 	moving,       --翻页模式正在移动的状态，此状态下禁止操作
+	items         --添加的元素
 }
 
 
@@ -31,7 +32,7 @@ function KNScrollView:new(x,y,width,height,divider,horizontal,mode,params)
 	local this= {}
 	setmetatable(this,self)
 	self.__index = self
-	
+
 	--初始化滚动窗口
 	this.x = x
 	this.y = y
@@ -47,18 +48,22 @@ function KNScrollView:new(x,y,width,height,divider,horizontal,mode,params)
 	this.horizontal = horizontal
 	this.mode = mode or 0
 	this.layer = display.newLayer()
+
+
+
+
+	this.items = {}
 	--滚动窗口位置与大小设置，超出此窗口的部分都将隐藏	
 	this.baseLayer = WindowLayer:createWindow()	
 	this.baseLayer:setAnchorPoint(ccp(0,0))
 	this.baseLayer:setPosition(ccp(x, y))
 	this.baseLayer:setContentSize(CCSizeMake(width,height))
-	
 	--其他参数，如回调 函数等
 	this.params = params or {}
 	this.itemsWidth = {}
 	--内容层
 	this.contentLayer = CCLayer:create()
-	
+
 	--注册触屏监听
 	local tempPos = 0  --保存上一次点击的位置，判断滑动方向
 	local lastTouchPt   --最后点击的点坐标
@@ -68,7 +73,7 @@ function KNScrollView:new(x,y,width,height,divider,horizontal,mode,params)
 		if math.abs(x - lastTouchPt.x) > 20 then  -- 当移动超过十个像素判断滑动
 			if x > lastTouchPt.x then  --上一页
 				if this.index > 1 and this.index <= this.count then
-					this:autoScroll(PREVIOUS,this.params)	
+					this:autoScroll(PREVIOUS,this.params)
 						else
 							this:autoScroll()
 						end
@@ -83,7 +88,7 @@ function KNScrollView:new(x,y,width,height,divider,horizontal,mode,params)
 			this:autoScroll()
 		end
 	end
-	
+
 	local function inertiaScroll(x,y) -- 此函数在列表模式时做惯性滑动的判断
 		local params  --跟据触摸时间判断是否要惯性滑动
 		if os.clock() - lastTime < 0.3 then
@@ -97,7 +102,7 @@ function KNScrollView:new(x,y,width,height,divider,horizontal,mode,params)
 		end
 		this:autoScroll(nil,params)
 	end
-	
+
 	function this.contentLayer:onTouch(event,x,y)
 		if this.validRect:containsPoint(ccp(x,y)) then  --判断点击事件是否在点击区域内
 			if event == CCTOUCHBEGAN then
@@ -110,12 +115,12 @@ function KNScrollView:new(x,y,width,height,divider,horizontal,mode,params)
 				lastTime = os.clock()    --保存点击的时间计算滑动的位置
 				if this.horizontal then
 					this.xOffset = this.contentLayer:getPositionX()
-					tempPos = x 
+					tempPos = x
 				else
 					tempPos = y
 					this.yOffset = this.contentLayer:getPositionY()
 				end
-				return true 
+				return true
 			elseif event == CCTOUCHMOVED then    -- 内容区域以左下角为原点，可以向右向下滑动，
 				if this.active then    --若激活
 					if this.horizontal then
@@ -126,9 +131,9 @@ function KNScrollView:new(x,y,width,height,divider,horizontal,mode,params)
 						this.yOffset = this.yOffset + (y - tempPos)
 						this.contentLayer:setPosition(ccp(this.xOffset,this.yOffset))
 						tempPos = y
-					end	
+					end
 				end
-				return true 
+				return true
 			else
 				if this.active then
 					if this.mode == 0 then   --列表模式，当点击结束后自动调整菜单
@@ -140,19 +145,19 @@ function KNScrollView:new(x,y,width,height,divider,horizontal,mode,params)
 					else                --视图切换模式，当点击结束后换到下一个页面
 						this.moving = true
 						if this.horizontal then
-							scrollX(x,y)	
+							scrollX(x,y)
 						else
 							if y > lastTouchPt.y then
 							else
 							end
-						end					
+						end
 					end
 					this.active = false
 					tempPos = 0
 					lastTouchPt = nil
 					lastTime = nil
 				end
-				return false 
+				return false
 			end
 		else --若移出有效区则检测是否要将位置重置到原点
 			if this.active then
@@ -162,28 +167,29 @@ function KNScrollView:new(x,y,width,height,divider,horizontal,mode,params)
 						selectedItem:setEnabled(true)
 						selectedItem = nil
 					end
-					inertiaScroll(x,y) --移出后做惯性判断		
+					inertiaScroll(x,y) --移出后做惯性判断
 				else     --翻页模式
 					this.moving = true
 					scrollX(x,y)
 				end
 			end
 			lastTime = nil
-			return true 
+			return true
 		end
 	end
-	
+
 	this.contentLayer:setPosition(ccp(0,0));
 	this.contentLayer:setTouchEnabled(true)
-	this.contentLayer:registerScriptTouchHandler(function(event,x,y) return this.contentLayer:onTouch(event,x,y) end, false , -131)
-	this.baseLayer:addChild(this.contentLayer)	
-	
+	this.contentLayer:registerScriptTouchHandler(function(event,x,y) return this.contentLayer:onTouch(event,x,y) end, false , -129)
+	this.baseLayer:addChild(this.contentLayer)
+
 	this.layer:addChild(this.baseLayer)
+	
 	--若有加入翻页按钮选项,则将滑动组件两边添加按钮,按钮需要向前的方向，程序中进行翻转
 	if this.params["turnBtn"] then
 		local str = this.params["turnBtn"]
 		local i, index = 0
-		
+
 		while true do
 			i = string.find(str,"/",i + 1)
 			if i ~= nil then
@@ -197,13 +203,13 @@ function KNScrollView:new(x,y,width,height,divider,horizontal,mode,params)
 						x,y,{callback=
 						function()
 --							if this.xOffset >= 0 then --若已到最左边
---								
+--
 --							else
 --								local total = 0
 --								for i,v in pairs(this.itemsWidth) do
 --									total = total + v
 --									if total + this.xOffset>= 0 then
---										this.xOffset = -(total - v) 
+--										this.xOffset = -(total - v)
 --										this.contentLayer:runAction(CCMoveTo:create(0.2,ccp(this.xOffset,this.yOffset)))
 --										break
 --									end
@@ -223,9 +229,9 @@ function KNScrollView:new(x,y,width,height,divider,horizontal,mode,params)
 --									total = total + v
 --									if total + this.xOffset >= 0 then
 --										if total + this.xOffset > 0 then
---											this.xOffset = -total 
+--											this.xOffset = -total
 --										else
---											this.xOffset = -(total + v) 
+--											this.xOffset = -(total + v)
 --										end
 --										this.contentLayer:runAction(CCMoveTo:create(0.2,ccp(this.xOffset,this.yOffset)))
 --										break
@@ -235,22 +241,25 @@ function KNScrollView:new(x,y,width,height,divider,horizontal,mode,params)
 						end})
 		btn1:setPosition(x - btn1:getWidth(),y + btn1:getHeight() / 2)
 		btn2:setPosition(x + width,y + btn2:getHeight() / 2)
-		btn2:setFlip(true)
+		btn1:setFlip(true)
 		btn1:setEnable(false)
 		btn2:setEnable(false)
-		
+
 		this.layer:addChild(btn1:getLayer())
 		this.layer:addChild(btn2:getLayer())
 	end
-	return this 
+	return this
 end
 
 --向view中添加元素，自行调 整位置,添加按钮时将按钮元素加入表中
-function KNScrollView:addChild(content)
+function KNScrollView:addChild(content,item)
+	if item then
+		table.insert(self.items,item)
+	end
 	content:setAnchorPoint(ccp(0,0))
 	if self.horizontal then
 		content:setPosition(ccp(self.dividerWidth + self.nextPos,0))
-		self.nextPos = content:getPositionX() + content:getContentSize().width 
+		self.nextPos =  content:getPositionX() + content:getContentSize().width
 
 		table.insert(self.itemsWidth,content:getContentSize().width)
 	else
@@ -265,7 +274,7 @@ function KNScrollView:addChild(content)
 		table.insert(self.itemsWidth,content:getContentSize().height)
 	end
 	self.count = self.count + 1
-	self.contentLayer:addChild(content)	
+	self.contentLayer:addChild(content)
 end
 
 function KNScrollView:addBatch(batch)
@@ -276,12 +285,15 @@ end
 function KNScrollView:alignCenter()
 	local group = self.contentLayer:getChildren()
 	local item
-	for i = 0,group:count()-1 do
-		item = group:objectAtIndex(i)		
-		if self.horizontal then
-			item:setPositionY((self.height - item:getContentSize().height) / 2)
-		else
-			item:setPositionX((self.width - item:getContentSize().width) / 2)
+	if group then
+		for i = 0,group:count()-1 do
+			item = group:objectAtIndex(i)		
+			tolua.cast(item,"CCLayer")
+			if self.horizontal then
+				item:setPositionY((self.height - item:getContentSize().height) / 2)
+			else
+				item:setPositionX((self.width - item:getContentSize().width) / 2)
+			end
 		end
 	end
 end
@@ -297,18 +309,18 @@ function KNScrollView:autoScroll(direction,params) --参数在视图切换模式
 				if cha < 0 then
 					cha = 0
 				end
-				self.xOffset = self.width - self.nextPos - cha 
+				self.xOffset = self.width - self.nextPos - cha
 				autoMove = CCMoveTo:create(0.2,ccp(self.xOffset,self.contentLayer:getPositionY()))
 				self.contentLayer:runAction(autoMove)
 			elseif self.xOffset > 0 then           --若已滑动到最左端
 				self.xOffset = 0
 				autoMove = CCMoveTo:create(0.2,ccp(self.xOffset,self.contentLayer:getPositionY()))
 				self.contentLayer:runAction(autoMove)
-			else 
+			else
 				if params and params["inertia"] then    --惯性滑动条件
 					self.xOffset = params["inertia"] + self.xOffset
 					--当滑动的位置大超出边界，则将最终位置设置为能够启用回弹效果的位置
-					if self.xOffset > 0 then 
+					if self.xOffset > 0 then
 						self.xOffset = self.width / 2
 					elseif self.xOffset + self.nextPos < self.width then
 						self.xOffset =  self.width / 2 - self.nextPos
@@ -323,7 +335,7 @@ function KNScrollView:autoScroll(direction,params) --参数在视图切换模式
 						total = total + self.itemsWidth[i]
 					end
 					if total + self.xOffset < self.itemsWidth[params["scrollTo"]] / 2 then
-						self.xOffset = -(total - self.itemsWidth[params["scrollTo"]])  
+						self.xOffset = -(total - self.itemsWidth[params["scrollTo"]])
 					elseif total + self.xOffset > self.width then
 						self.xOffset = self.xOffset - self.itemsWidth[params["scrollTo"]]
 					end
@@ -343,7 +355,7 @@ function KNScrollView:autoScroll(direction,params) --参数在视图切换模式
 			local array = CCArray:create()
 			array:addObject(CCMoveTo:create(0.2,ccp(self.xOffset,self.contentLayer:getPositionY())))
 			array:addObject(CCCallFunc:create(
-				function() 
+				function()
 					self.moving = false
 				end))
 			if params and params["page_callback"] then
@@ -360,7 +372,7 @@ function KNScrollView:autoScroll(direction,params) --参数在视图切换模式
 				else
 					self.yOffset = 0
 				end
-				autoMove = CCMoveTo:create(0.2,ccp(self.contentLayer:getPositionX(),self.yOffset))	
+				autoMove = CCMoveTo:create(0.2,ccp(self.contentLayer:getPositionX(),self.yOffset))
 				self.contentLayer:runAction(autoMove)
 			elseif self.yOffset < 0 then   -- 已到最顶部
 				self.yOffset = 0
@@ -369,10 +381,10 @@ function KNScrollView:autoScroll(direction,params) --参数在视图切换模式
 			else  --惯性滑动位置
 				if params and params["inertia"] then    --惯性滑动条件
 					self.yOffset = params["inertia"] + self.yOffset
-					if self.yOffset < 0 then 
+					if self.yOffset < 0 then
 						self.yOffset = -self.height / 2
 					elseif self.yOffset + self.nextPos > 0  then
-						self.yOffset = math.abs(self.nextPos) + self.height / 2						
+						self.yOffset = math.abs(self.nextPos) + self.height / 2
 					end
 					local array = CCArray:create()
 					array:addObject(CCEaseExponentialOut:create(CCMoveTo:create(1.5,ccp(self.xOffset,self.yOffset))))
@@ -420,8 +432,13 @@ function KNScrollView:getCurIndex()
 	return self.index
 end
 
+--返回所有元素
+function KNScrollView:getItems()
+	return self.items
+end
+
 --点击范围 是否有效
-function KNScrollView:isLegalTouch(x,y) 
+function KNScrollView:isLegalTouch(x,y)
 	return CCRectMake(self.x,self.y,self.width,self.height):containsPoint(ccp(x,y))
 end
 
@@ -429,6 +446,7 @@ end
 --设置当前的选项
 function KNScrollView:setIndex(index)
 	self.index = index
-	self.xOffset = -(self.width + self.dividerWidth) * (self.index - 1)
+	self.xOffset = -(self.itemsWidth[1] + self.dividerWidth) * (self.index - 1)
 	self.contentLayer:setPosition(ccp(self.xOffset,self.contentLayer:getPositionY()))
+	self:autoScroll()
 end

@@ -20,6 +20,8 @@ function M.new(args)
 	local click = args.click or function() end  -- 点击回调函数
 	local item = args.item or nil               -- 额外 addChild 上去的元素
 
+	local cur_scene = display.getRunningScene().name
+
 
 	-- 创建层
 	local view = CCLayerColor:create( ccc4(r , g , b , opacity) )
@@ -44,18 +46,25 @@ function M.new(args)
 
 	if item ~= nil then
 	    view:addChild(item)
+	    print(item)
 	end
 
 	function view:show()
-	    view:setVisible(true)
+		if cur_scene == display.getRunningScene().name then
+	    	view:setVisible(true)
+	    end
 	end
 
 	function view:hide()
-	    view:setVisible(false)
+		if cur_scene == display.getRunningScene().name then
+	    	view:setVisible(false)
+	    end
 	end
 
 	function view:remove()
-	    view:removeFromParentAndCleanup(true)
+		if cur_scene == display.getRunningScene().name then
+			view:removeFromParentAndCleanup(true)
+		end
 	end
 
 	-- 设置点击回调函数

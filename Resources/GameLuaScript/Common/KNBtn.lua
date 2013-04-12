@@ -1,5 +1,5 @@
 local NORMAL, SELECTED, DISABLE  = 1, 2, 3
-local scale = 1.2
+local scale = 1.1
 local KNBtn = {
 	layer,
 	item ,
@@ -241,7 +241,7 @@ function KNBtn:new(path, file, x, y, params, group)
 	if group then
 		group:addItem(this)
 		if not group:getChooseBtn() then
-			group:chooseBtn(this)
+			group:chooseBtn(this,true)
 		end
 	end
 	return this
@@ -260,7 +260,7 @@ function KNBtn:setState(state)
 				done = true
 				self.item[i]:setVisible(true)
 				
-				if self.item["front"] and type(self.item["front"]) == "table" then  --若文字有设置普通与选中状态，则根据当前状态来设置文字状态
+				if self.item["front"] and type(self.item["front"]) == "table" then  --若按钮前景有设置普通与选中状态，则根据当前状态来设置前景状态
 					if i == NORMAL then 
 						self.item["front"][1]:setVisible(true)
 						self.item["front"][2]:setVisible(false)
@@ -378,6 +378,13 @@ function KNBtn:setPosition(x,y)
 	self.layer:setPosition(ccp(x,y))
 end
 
+function KNBtn:getX()
+	return self.layer:getPositionX()
+end
+
+function KNBtn:getY()
+	return self.layer:getPositionY()
+end
 function KNBtn:setFlip(horizontal)
 	if horizontal then
 		for i = 1, #self.item do

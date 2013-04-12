@@ -87,3 +87,34 @@ function setAnchPos(node,x,y,anX,anY)
 	node:setAnchorPoint(ccp(aX,aY))
 	node:setPosition(ccp(posX,posY))
 end
+
+--根据type读取相应的配置文件
+function getConfig(type,cid,key)
+	local config
+	if type == "equip" then
+		config = requires(IMG_PATH,"GameLuaScript/Config/Equip")
+	elseif type == "general" then
+		config = requires(IMG_PATH,"GameLuaScript/Config/Hero")
+	elseif type == "pet"  then
+		config = requires(IMG_PATH,"GameLuaScript/Config/Pet")
+	elseif type == "prop" then
+		config = requires(IMG_PATH,"GameLuaScript/Config/Prop")
+	elseif type == "skill" then
+		config = requires(IMG_PATH,"GameLuaScript/Config/Skill")
+	elseif type == "natural" then
+		config = requires(IMG_PATH,"GameLuaScript/Config/Natural")
+	elseif type == "suit" then
+		config = requires(IMG_PATH,"GameLuaScript/Config/Suit")
+	elseif type == "gn" then
+		config = requires(IMG_PATH,"GameLuaScript/Config/Generalnatrual")
+	end
+	if config[cid..""] then
+		if key then
+			return config[cid..""][key]
+		else
+			return config[cid..""]
+		end
+	else
+		print("cid:"..cid.."在配置文件中不礅在")
+	end
+end

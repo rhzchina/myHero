@@ -12,29 +12,44 @@ function KNButton:new(pathStr,t,x,y,backFun,id,params)
 	this.params=params or {}
 	this.tempItem=nil --临时菜单项
 	this.setEnabledLua=function()end
-	
+
 	local btn=CCMenu:create()
 	btn.type=this.id
 	btn.params=this.params;
-	
+
 	--生成MenuItem
 	function createItem(pathStr,t,x,y,id)
 	   	local menuItem= CCMenuItemImage:create()
 	    --按钮单击回调函数
 		if t==IMAGEBUTTON then--图片按钮
-			local buttonPath =  IMAGEPATH.."/buttonUI/"..pathStr.."/"
-			
+			local buttonPath =  IMG_PATH.."image/buttonUI/"..pathStr.."/"
+
+			if  io.existsr(buttonPath.."def.png") then
+
+			else
+				local array = string.split(buttonPath, "/")
+
+				local str = ""
+				for i = 5 ,table.getn(array) do
+					if i == table.getn(array) then
+						str = str ..array[i]
+					else
+						str = str ..array[i].."/"
+					end
+				end
+				buttonPath = str
+			end
 			--判断按钮的禁用图片是否存在
 			if type(this.params) == "table" and this.params["noDisable"] then
 				menuItem = CCMenuItemImage:create(buttonPath.."def.png",buttonPath.."pre.png")
 			else
 				menuItem = CCMenuItemImage:create(buttonPath.."def.png",buttonPath.."pre.png",buttonPath.."dis.png")
 			end
-			
+
 			menuItem:setAnchorPoint(ccp(0,0))
 			btn:setPosition(ccp(display.width-(display.width-x),display.height-y))
 		elseif type==TEXTBUTTON then--文本按钮
-			local testLabel = CCLabelTTF:create(pathStr,"Arial",24)
+			local testLabel = CCLabelTTF:create(pathStr,FONT,24)
 --			createStroke(testLabel,10,ccc3(0,0,255))
        		menuItem = CCMenuItemLabel:create(testLabel)
        		--set font color
@@ -48,11 +63,11 @@ function KNButton:new(pathStr,t,x,y,backFun,id,params)
 		return menuItem
 	end
 
-	
 
-   	
+
+
    	this.tempItem=createItem(pathStr,type,x,y,id)
-   	
+
     if(this.backFun) then
 		this.tempItem:registerScriptTapHandler(function() backFun(btn.type,btn.params) return true end)
 	end
@@ -68,8 +83,8 @@ function KNButton:new(pathStr,t,x,y,backFun,id,params)
 		btn:addChild(this.textMenuItem)
 	end
 	btn:setContentSize(itemSize)
-	
-	
+
+
 	--按钮(禁用/激活)
 	function btn:setEnabledLua(flag)
 		btn:setEnabled(flag)
@@ -83,9 +98,9 @@ function KNButton:new(pathStr,t,x,y,backFun,id,params)
 		else
 			--文字按钮
 			if(flag) then
-	
+
 			else
-			
+
 			end
 		end
 
@@ -128,27 +143,27 @@ end
 
 
 return KNButton
---label 描边 
+--label 描边
 --function createStroke(label,size,color)
 --
 --	local x=label:getTexture():getContentSize().width+size*2
 --	local y=label:getTexture():getContentSize().height+size*2
---	
---	
+--
+--
 --	local originalPos=label:getPosition()
---	
+--
 --	local originalColor=label:getColor()
---	
+--
 --	local rt=CCRenderTexture:create(x, y)
 --	label:setColor(color)--ccc3数据
---	
+--
 --	local originalBlend=label:getBlendFunc()
 --	local bf1 = ccBlendFunc:new()
 --	bf1.src = 1     -- GL_ONE
 --	bf1.dst = 0     -- GL_ZERO
 --	label:setBlendFunc(bf1)
 --	local center=ccp(x/2+size, y/2+size)
---	
+--
 --	rt:begin()
 --	for i=0,360,15 do
 --		_x=center.x+math.sin(math.rad(i))*size
@@ -157,14 +172,14 @@ return KNButton
 --		label:visit()
 --	end
 --	rt:endToLua()
---	
+--
 --	label:setPosition(originalPos)
 --	label:setColor(originalColor)
 --	label:setBlendFunc(originalBlend)
---	
+--
 --	rtX=originalPos.x-size
 --	rtY=originalPos.y-size
---	
+--
 --	rt:setPosition(ccp(rtX, rtY))
 --end
 
@@ -184,10 +199,10 @@ return KNButton
 --	 {
 --		float_x=center.x+sin(CC_DEGREES_TO_RADIANS(i))*size;
 --		float_y=center.y+cos(CC_DEGREES_TO_RADIANS(i))*size;
---		
+--
 --		label->setPosition(ccp(_x, _y));
 --		label->visit();
---	
+--
 --	}
 --	rt->end();
 --	label->setPosition(originalPos);
@@ -195,8 +210,8 @@ return KNButton
 --	label->setBlendFunc(originalBlend);
 --	floatrtX=originalPos.x-size;
 --	floatrtY=originalPos.y-size;
---	
+--
 --	rt->setPosition(ccp(rtX, rtY));
---	
+--
 --	returnrt;
 --}
