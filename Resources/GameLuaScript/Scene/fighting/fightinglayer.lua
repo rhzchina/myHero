@@ -83,15 +83,34 @@ function FightLayer:fightLogic()
 		data:getAttackType(),  --攻击类型
 		"adt",                  --角色状态，攻击:adt,被攻击beatt
 		function()              --回调,这里当攻击动画开始后，回调 函数为被 攻击者动画，找合适的时间播放 
+			--掉血动画
+			self.effect:hpChange(
+				data:getVictim("change"),
+				self.group[data:getVictim("group")][data:getVictim("index")]:getX(),
+				self.group[data:getVictim("group")][data:getVictim("index")]:getY()
+			)
+			self.group[data:getVictim("group")][data:getVictim("index")]:setHp(data:getVictim("hp"))
+			--被攻击者动画	
 			self.group[data:getVictim("group")][data:getVictim("index")]:doAction(
 				data:getAttackType(),
 				"beatt",
 				function()
 					local winner = data:nextStep()
+					print("dasfasdf++++++++++++++++++++++++++++",winner)
 					if not winner then
 						self:fightLogic()
 					else
-						KNMsg.getInstance():flashShow("玩家",winner,"赢得了胜利")
+						local text
+						if winner == 1 then
+							text = "您赢得了战斗胜利，确定重新开始战斗,取消退出战斗"
+						else
+							text = "很遗憾，战斗失败，确定重新开始战斗,取消退出战斗"
+						end
+						KNMsg.getInstance():boxShow(text,{confirmFun = 
+						function()
+							data:clear()
+							switchScene("fighting")
+						end,cancelFun=function()switchScene("home")end})
 					end
 				end
 			)

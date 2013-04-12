@@ -21,23 +21,22 @@ end
 	
 function Effect:showByType(type,x,y,delay,params)
 	local frames = CCArray:create()
-
 		if type == "slash" then
 			if not self.added[type] then 
-				print(type.."已添加")
-				self.added[type] = true			
+				print("slash添加")
+				self.added[type] = true
 				self.cache:addSpriteFramesWithFile(COMMONPATH.."effect/slash.plist",COMMONPATH.."effect/slash.png")
 			end
+			
 			for i = 1, 7 do
 				frames:addObject(self.cache:spriteFrameByName("slash"..i..".png"))
 			end	
 		elseif type == "atk_cut" then
 			if not self.added[type] then 
-				print(type.."已添加")
-				self.added[type] = true			
+				print("atk_cut添加")
+				self.added[type] = true
 				self.cache:addSpriteFramesWithFile(COMMONPATH.."effect/atk_cut.plist",COMMONPATH.."effect/atk_cut.png")
-			end	
-			
+			end
 			for i = 1, 7 do 
 				frames:addObject(self.cache:spriteFrameByName("atk_cut"..i..".png"))
 			end
@@ -85,6 +84,22 @@ function Effect:showByType(type,x,y,delay,params)
 	sprite:runAction(CCSequence:create(frames))
 	setAnchPos(sprite,x,y,anchX,anchY)
 	self.layer:addChild(sprite)	
+end
+
+function Effect:hpChange(num,x,y)
+		local value ="-"..num
+		local text = CCLabelTTF:create(value,"Aeria",50)	
+		text:setColor(ccc3(55,255,0))
+		setAnchPos(text,x,y + 80)	
+		local array = CCArray:create()
+		array:addObject(CCMoveTo:create(0.8,ccp(x, y + 120)))
+		array:addObject(CCCallFunc:create(
+				function()
+					self.layer:removeChild(text,true)	
+				end))
+		text:runAction(CCSequence:create(array))
+		self.layer:addChild(text)
+	
 end
 
 function Effect:clearCache()

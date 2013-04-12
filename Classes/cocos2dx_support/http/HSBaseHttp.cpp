@@ -78,7 +78,7 @@
          return false;
      }
      //设置超时时间 防止一直等待
-     code = curl_easy_setopt(handle, CURLOPT_TIMEOUT, HSBaseHttp::GetInstance()->GetTimeoutForRead());
+     code = curl_easy_setopt(handle, CURLOPT_CONNECTTIMEOUT/*CURLOPT_TIMEOUT*/, HSBaseHttp::GetInstance()->GetTimeoutForRead());
      if (code != CURLE_OK) {
          return false;
      }

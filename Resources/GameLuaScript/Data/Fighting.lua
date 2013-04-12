@@ -67,8 +67,10 @@ function DATA_Fighting:getStep()
 	return step
 end
 
-function DATA_Fighting:clear()
-	_data = nil
+function DATA_Fighting:clear(clearData)
+	if clearData then
+		_data = nil
+	end
 	step = 1
 	turn = 1
 end
@@ -78,7 +80,19 @@ function DATA_Fighting:nextStep()
 	if step > #_data["data"][turn] then
 		step = 1
 		turn = turn + 1
-		if _data["data"][turn][step]["gameover"] then
+		if _data["data"][turn] then
+			if _data["data"][turn][step]  then
+				if _data["data"][turn][step]["gameover"] then
+					return _data["data"][turn][step]["gameover"]
+				end
+			else
+				turn = turn + 1
+				step = 0
+				return DATA_Fighting:nextStep()
+			end
+		end
+	else
+		if _data["data"][turn][step] and _data["data"][turn][step]["gameover"] then
 			return _data["data"][turn][step]["gameover"]
 		end
 	end
