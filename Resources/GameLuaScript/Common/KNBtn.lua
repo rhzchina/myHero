@@ -124,7 +124,7 @@ function KNBtn:new(path, file, x, y, params, group)
 
 	--可以在按钮上添加其他的图层，暂时用来做宠物主页的宠物状态标签
 	if this.params["other"] then
-		local bg = display.newSprite(IMG_PATH.."image/scene/pet/pet_state_bg.png")
+		local bg = display.newSprite("image/scene/pet/pet_state_bg.png")
 		setAnchPos(bg,60,20)
 		setAnchPos(this.params["other"][1],this.params["other"][2],this.params["other"][3])
 		this.layer:addChild(bg)

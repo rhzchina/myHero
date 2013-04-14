@@ -26,7 +26,7 @@ function KNSlider:new(path,x,y,minimum, maximum, initial, backFun)
     container:ignoreAnchorPointForPosition(false)
     
     
-    local imagePath = IMG_PATH .. "image/start_bar/"..this.path.."/"
+    local imagePath ="image/start_bar/"..this.path.."/"
     this.bg = display.newSprite(imagePath.."bg.png")
     container:addChild(this.bg, -2)
     

@@ -1,7 +1,7 @@
 
 local M = {}
 
-local eventProtocol = requires(IMG_PATH, "framework/client/api/EventProtocol")--require("framework/client/api/EventProtocol")
+local eventProtocol = require("framework/client/api/EventProtocol")
 
 function M.new()
     local context = {}

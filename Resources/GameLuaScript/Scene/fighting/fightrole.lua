@@ -121,9 +121,9 @@ function FightRole:doAction(type,role,callback)
 				anchY = 0.3
 				moveY = -30
 			end
-			array:addObject(CCMoveTo:create(0.1,ccp(self.x,self.y + moveY)))
-			array:addObject(CCRotateTo:create(0.2,10))
-			array:addObject(CCCallFunc:create(
+			array:addObject(CCMoveTo:create(0.05,ccp(self.x,self.y + moveY)))
+			array:addObject(CCRotateTo:create(0.1,5))  --攻击起手后仰
+			array:addObject(CCCallFunc:create(    --起手完成后开始播放特效
 				function() 
 					self.effect:showByType("atk_cut",self.x,self.y,0.04,
 					{
@@ -141,8 +141,8 @@ function FightRole:doAction(type,role,callback)
 						anchY = anchY 
 					})
 				 end))
-			array:addObject(CCRotateTo:create(0.10,-40))
-			array:addObject(CCRotateTo:create(0.05,0))
+			array:addObject(CCRotateTo:create(0.05,-30))  --攻击旋转
+			array:addObject(CCRotateTo:create(0.05,0))    --回位
 			self.layer:runAction(CCSequence:create(array))
 			self.layer:runAction(CCScaleTo:create(0.1,1.05))
 		else

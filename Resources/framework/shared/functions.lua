@@ -557,28 +557,6 @@ end
 
 --[[--
 
-join a string by string.
-
-@param table array
-@param string delimiter
-@return table
-
-]]
-function string.join(array, delimiter)
-    if (delimiter=='') then return false end
-    
-    local str = '';
-    for k , v in pairs(array) do
-    	str = str .. v .. delimiter
-    end
-    
-    str = string.sub(str , 0,string.len(str) - string.len(delimiter) )
-    
-    return str
-end
-
---[[--
-
 Split a string by string.
 
 @param string str

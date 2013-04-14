@@ -55,26 +55,24 @@ Module | Descripton
 
 __FRAMEWORK_ENVIRONMENT__ = "client"
 
-requires(IMG_PATH, "framework/shared/debug")
-requires(IMG_PATH, "framework/shared/functions")
---require("framework/shared/debug")
---require("framework/shared/functions")
+require("framework/shared/debug")
+require("framework/shared/functions")
 
 echoInfo("")
 echoInfo("# DEBUG                        = "..DEBUG)
 echoInfo("#")
 
-device     = requires(IMG_PATH, "framework/client/device")--require("framework/client/device")
-transition = requires(IMG_PATH, "framework/client/transition")--require("framework/client/transition")
-display    = requires(IMG_PATH, "framework/client/display")--require("framework/client/display")
-audio      = requires(IMG_PATH, "framework/client/audio")--require("framework/client/audio")
-ui         = requires(IMG_PATH, "framework/client/ui")--require("framework/client/ui")
-network    = requires(IMG_PATH, "framework/client/network")--require("framework/client/network")
+device     = require("framework/client/device")
+transition = require("framework/client/transition")
+display    = require("framework/client/display")
+audio      = require("framework/client/audio")
+ui         = require("framework/client/ui")
+network    = require("framework/client/network")
 
 if device.platform == "android" then
     -- luaj = require("framework/client/luaj")
 elseif device.platform == "ios" then
-    luaoc = requires(IMG_PATH, "framework/client/luaoc")--require("framework/client/luaoc")
+    luaoc = require("framework/client/luaoc")
 end
 
 local timeCount = 0
@@ -91,9 +89,9 @@ end
 
 local sharedDirector = CCDirector:sharedDirector()
 if DEBUG > 1 then
-    -- sharedDirector:setDisplayStats(true)
+    sharedDirector:setDisplayStats(true)
 else
-	-- sharedDirector:setDisplayStats(false)
+	sharedDirector:setDisplayStats(false)
 end
 
 if DEBUG_MEM_USAGE then

@@ -62,10 +62,13 @@ function M:create( ... )
 		HTTPS:send("Landed" , {m="login",a="develop",open_id = open_id} )    -- 登录
 	end
 
-	local login_button , login_button_size = KNButton:new("login" , IMAGEBUTTON , display.cx , display.cy , login_callback)
-	login_button:setPosition( display.cx - login_button_size.width / 2 , display.cy - 100)
-	layer:addChild( login_button )
+	
 --跳 过按钮
+	local login_button = KNBtn:new(COMMONPATH,{"login.png"},110,400,{
+		scale = true,
+		callback = login_callback})
+	layer:addChild(login_button:getLayer())
+
 	local exit = KNBtn:new("image/scene/fighting/",{"fighting_quit.png"},420,800,{
 		scale = true,
 		priority = -199,

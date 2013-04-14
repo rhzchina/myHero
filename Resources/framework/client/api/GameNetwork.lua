@@ -110,11 +110,11 @@ function GameNetwork.init(providerName, params)
 
     providerName = string.upper(providerName)
     if providerName == "GAMECENTER" then
-        provider = requires(IMG_PATH, "framework/client/api/gamenetwork/GameCenter")--require("framework/client/api/gamenetwork/GameCenter")
+        provider = require("framework/client/api/gamenetwork/GameCenter")
     elseif providerName == "OPENFEINT" then
-        provider = requires(IMG_PATH, "framework/client/api/gamenetwork/OpenFeint")--require("framework/client/api/gamenetwork/OpenFeint")
+        provider = require("framework/client/api/gamenetwork/OpenFeint")
     elseif providerName == "CHINAMOBILE" then
-        provider = requires(IMG_PATH, "framework/client/api/gamenetwork/ChinaMobile")--require("framework/client/api/gamenetwork/ChinaMobile")
+        provider = require("framework/client/api/gamenetwork/ChinaMobile")
     else
         echoError("[framework.client.api.GameNetwork] ERR, init() invalid providerName: %s", providerName)
         return false

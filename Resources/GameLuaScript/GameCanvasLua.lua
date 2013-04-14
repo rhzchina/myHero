@@ -32,8 +32,8 @@ xpcall(function()
 	require("GameLuaScript/SwitchScene")
 
 	-- 常用组件
-	require("GameLuaScript/Common/KNButton")
 	require("GameLuaScript/Common/KNMsg")
+	require("GameLuaScript/Common/KNButton")
 	require("GameLuaScript/Common/KNScrollView")
 
 

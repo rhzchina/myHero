@@ -19,10 +19,10 @@ function KNMsg:new()
 		store = o
 		store.text = ""
 		store.isAction = false    --是否有动画在执行
-
-		local KNMask = requires(IMG_PATH,"GameLuaScript/Common/KNMask")--require("GameLuaScript/Common/KNMask")
+		
+		local KNMask = require("GameLuaScript/Common/KNMask")
 		local mask = nil
-
+		
 		--检查及初始化参数
 		local function checkData(str , param)
 			store.text = str or ""
@@ -39,32 +39,29 @@ function KNMsg:new()
 			if args ~= nil then
 				time = args.time or 1
 			end
-
+			
 			return time , param
 		end
 
 		-- 创建 对应UI布局
 		local function createLayout(type , args)
 			local content = nil
-			local textField = CCLabelTTF:create(store.text , FONT , 15)
-
+			local textField = CCLabelTTF:create(store.text , "Arial" , 15)
+			
 			if type == 0 then --Error
-				content = display.newSprite(IMG_PATH .. "image/common/prompt_bg.png")
+				content = CCSprite:create(IMAGEPATH .. "/common/prompt_bg.png")
 				content:setAnchorPoint( ccp(0 , 1) )
-
+				
 				content:addChild(textField)
 			elseif type == 1 then--带按钮的提示框
---				MGcontent = display.newSprite(IMG_PATH .. "image/common/tip_bg.png")
-				
-				content =  display.newSprite(IMG_PATH .. "image/common/tip_bg.png")
-				
+				content = CCSprite:create(IMAGEPATH .. "/common/tip_bg.png")
 				content:setAnchorPoint( ccp(0 , 1) )
-
+				
 				local cSize = content:getContentSize()
-
+				
 				local isCancel = false--是否存在 取消 回调
 				local isConfirm = false--是否存在 确定 回调
-
+				
 				if args ~= nil then
 					isCancel = isset(args , "cancelFun")
 					isConfirm = isset(args , "confirmFun")
@@ -77,7 +74,7 @@ function KNMsg:new()
 					if type == 2 and isCancel then
 						args.cancelFun()
 					end
-
+					
 					mask:remove()--移除msak
 					content:setVisible(false)
 					content:removeFromParentAndCleanup(true)	-- 清除自己
@@ -89,16 +86,16 @@ function KNMsg:new()
 					confirmBtn:setAnchorPoint( ccp(0 , 1) )
 					content:addChild(confirmBtn)
 				end
-
+							
 				--如果有取消时按钮
 				if isCancel then
 					cancelBtn , cancelBtnSize = KNButton:new("red" , "取消" , 0 , 0 , backFun , 2 , 2)
 					cancelBtn:setAnchorPoint( ccp(0 , 1) )
 					content:addChild(cancelBtn)
 				end
-
+				
 				--按钮位置计算
-				if isConfirm and isCancel then--如果两个按钮同时存在的坐标设置
+				if isConfirm and isCancel then--如果两个按钮同时存在的坐标设置 
 					--重新设置确定按钮坐标
 					confirmBtn:setPosition(ccp((content.x + cSize.width/2 - confirmBtnSize.width) / 2 , content.y + confirmBtnSize.height + 30 ))
 					confirmBtn:setHandlerPriorityLua(-130)
@@ -113,29 +110,29 @@ function KNMsg:new()
 						cancelBtn:setHandlerPriorityLua(-130)
 					end
 				end
-
+				
 
 				content:addChild(textField)
 			end
-
+			
 			local tempX = ( display.width - content:getContentSize().width ) / 2
 			local tempY = ( display.height + content:getContentSize().height / 2 ) / 2
 			content:setPosition( ccp( tempX , tempY ) )
-
+			
 			textField:setAnchorPoint( ccp( 0 , 1 ) )
-			textField:setColor( ccc3(0 , 0 , 0) )
+			textField:setColor( ccc3(0 , 0 , 0) ) 
 			textField:setPosition( ccp( ( content:getContentSize().width - textField:getContentSize().width ) / 2 , content:getContentSize().height / 1.5 ) )
 			return content,textField
-		end
-
+		end 
+		
 		-- 执行动画效果
 		local function createAction(target , time , type , args)
 			local scene = display.getRunningScene()
-
+			
 			local showTime = time  -- 动画效果总时间
 			local startEfTime = showTime / 3  -- 显示前渐变动画效果时间
 			local endEfTime = showTime / 3  -- 消失时渐变动画时间
-
+			
 			store.isAction = true
 			if type == 0 then  -- 无遮罩，展示后消失
 			 	scene:addChild(target)
@@ -166,7 +163,7 @@ function KNMsg:new()
 				--渐变显示
 				mask = KNMask.new({item = target})
 				scene:addChild(mask)
-
+				
 				transition.fadeIn(target , {
 					time = startEfTime,
 				})
@@ -182,8 +179,8 @@ function KNMsg:new()
 		function store:textShow(str , args)
 			local time , args = checkData(str,args)
 			if time == 0 then return end
-
-			local textField = CCLabelTTF:create(store.text , FONT , 15)
+			
+			local textField = CCLabelTTF:create(store.text , "Arial" , 15)
 			textField:setAnchorPoint( ccp(0 , 1) )
 			local tempX = (display.width - textField:getContentSize().width ) / 2
 			local tempY = (display.height + textField:getContentSize().height / 2 ) / 2
@@ -202,8 +199,8 @@ function KNMsg:new()
 			-- 执行动画
 			createAction(tempContent , time , 0)
 		end
-
-
+		
+		
 		--有确认 提示框
 		function store:boxShow(str , args)
 			--[[args={confirmFun=function,和cancelFun=function}
@@ -221,7 +218,7 @@ function KNMsg:new()
 			--执行动画
 			createAction(tempContent , time , 1)
 		end
-
+		
 		-- 设置文字
 		function store:setText(args)
 			store.text = args
@@ -231,8 +228,11 @@ function KNMsg:new()
 		function store:getText()
 			print(store.text)
 		end
+
+
 		return o
 	end
 end
+
 
 KNMsg.getInstance = KNMsg:new()

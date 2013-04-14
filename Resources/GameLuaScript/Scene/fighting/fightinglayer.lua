@@ -83,6 +83,9 @@ function FightLayer:fightLogic()
 		data:getAttackType(),  --攻击类型
 		"adt",                  --角色状态，攻击:adt,被攻击beatt
 		function()              --回调,这里当攻击动画开始后，回调 函数为被 攻击者动画，找合适的时间播放 
+			print("--------攻击方-------------")
+			dump(data:getAttacker())
+			print("------------------------")
 			--掉血动画
 			self.effect:hpChange(
 				data:getVictim("change"),
@@ -95,6 +98,9 @@ function FightLayer:fightLogic()
 				data:getAttackType(),
 				"beatt",
 				function()
+				print("--------------------被攻击方---------")
+					dump(data:getVictim())
+				print("---------------------------")
 					local winner = data:nextStep()
 					if not winner then
 						self:fightLogic()

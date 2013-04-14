@@ -41,7 +41,7 @@ function M:new(pathStr,x,y, param)
 
 
         local container = CCNode:create()--创建对像容器
-        local KNBarPath = IMG_PATH.. "image/start_bar/" .. pathStr .. "/"
+        local KNBarPath ="image/start_bar/" .. pathStr .. "/"
 
 
        	-- 进度条背景

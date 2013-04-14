@@ -1,4 +1,4 @@
-local KNBtn = requires(IMG_PATH,"GameLuaScript/Common/KNBtn") --require "GameLuaScript/Common/KNBtn"
+require "GameLuaScript/Common/KNBtn"
 
 --列表自动滑动方向
 local NEXT = 1

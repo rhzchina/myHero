@@ -251,7 +251,7 @@ ModelBase 并不会为类自动添加 getter 和 setter 方法，所以开发者
 
 ]]
 
-local json = requires(IMG_PATH, "framework/shared/json")--require("framework/shared/json")
+local json = require("framework/shared/json")
 
 local ModelBase = class("ModelBase")
 ModelBase.idkey = "id"

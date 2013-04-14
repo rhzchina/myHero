@@ -17,7 +17,7 @@ local Timer = {}
 ]]
 function Timer.new()
     local timer = {}
-    requires(IMG_PATH, "framework/client/api/EventProtocol").extend(timer)--require("framework/client/api/EventProtocol").extend(timer)
+    require("framework/client/api/EventProtocol").extend(timer)
 
     ----
 
@@ -134,7 +134,7 @@ function Timer.new()
     function timer:removeCountdown(eventName)
         eventName = tostring(eventName)
         countdowns[eventName] = nil
---        self:removeAllEventListenersForEvent(eventName)
+        self:removeAllEventListenersForEvent(eventName)
     end
 
     --[[--

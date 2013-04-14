@@ -80,20 +80,8 @@ function DATA_Fighting:nextStep()
 	if step > #_data["data"][turn] then
 		step = 1
 		turn = turn + 1
-		if _data["data"][turn] then
-			if _data["data"][turn][step]  then
-				if _data["data"][turn][step]["gameover"] then
-					return _data["data"][turn][step]["gameover"]
-				end
-			else
-				turn = turn + 1
-				step = 0
-				return DATA_Fighting:nextStep()
-			end
-		end
-	else
-		if _data["data"][turn][step] and _data["data"][turn][step]["gameover"] then
-			return _data["data"][turn][step]["gameover"]
+		if not _data["data"][turn] then
+			return _data["win"]
 		end
 	end
 	return nil
