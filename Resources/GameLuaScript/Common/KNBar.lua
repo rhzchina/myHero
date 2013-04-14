@@ -62,7 +62,7 @@ function M:new(pathStr,x,y, param)
      	this.KNBar:setPercentage(0)	--设置默认进度值
 
 	   	--进度条文字
-	   	this.text = CCLabelTTF:create("0/" .. this.maxValue , FONT , 15)
+	   	this.text = CCLabelTTF:create("0/" .. this.maxValue , "areia" , 15)
 	   	this.text:setAnchorPoint( ccp(0.5 , 0.5) )
 	   	local textSize = this.text:getContentSize()
 	   	local bgSize = this.bg:getContentSize()

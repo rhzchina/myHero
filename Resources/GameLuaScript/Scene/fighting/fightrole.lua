@@ -1,5 +1,6 @@
 local ICONPATH = "image/myhero/battle/"
 local PATH = "image/scene/fighting/"
+local KNBar = require("GameLuaScript/Common/KNBar")
 
 local HEROSTART, MONSTERSTART, SPACE = ccp(43,200), ccp(43,530), 40
 local FightRole ={
@@ -12,17 +13,18 @@ local FightRole ={
 	id,
 	pos,
 	hpText,
-	effect--测试用
+	hpProgress,
+	params	
 }
 
-function FightRole:new(group,id,pos,effect)
+function FightRole:new(group,id,pos,params)
 	local this = {}
 	setmetatable(this,self)
 	self.__index = self
 	
 	this.layer = display.newLayer()
 	
-	this.effect = effect
+	this.params = params or {}
 	--战斗卡片背景
 	local bg = display.newSprite(PATH.."fight_back"..(pos % 4 + 1)..".png")
 	setAnchPos(bg)
@@ -64,10 +66,27 @@ function FightRole:new(group,id,pos,effect)
 	setAnchPos(border,this.width / 2, this.height / 2, 0.5, 0.5)
 	this.layer:addChild(border)
 	
-	this.hpText = CCLabelTTF:create("100","Aeria",30)
-	this.hpText:setColor(ccc3(189,255,255))
-	setAnchPos(this.hpText)
-	this.layer:addChild(this.hpText,10)
+	this.hpText = CCLabelTTF:create(this.params["hp"].."/"..this.params["hp"],"Aeria",15)
+	this.hpText:setColor(ccc3(255,0,0))
+	setAnchPos(this.hpText,this.width / 2,0,0.5)
+	this.layer:addChild(this.hpText,15)
+
+	--添加血条
+	local bgLayer = display.newLayer()
+	local bg = display.newSprite(PATH.."bg.png")
+	setAnchPos(bg)
+	bgLayer:setContentSize(bg:getContentSize())
+	bgLayer:addChild(bg)
+	
+	this.hpProgress = CCProgressTimer:create(display.newSprite(PATH.."fore.png"))
+	 setAnchPos(this.hpProgress)
+	this.hpProgress:setType(kCCProgressTimerTypeBar)
+	this.hpProgress:setBarChangeRate(CCPointMake(1, 0)) --动画效果值(0或1)
+	 this.hpProgress:setMidpoint(CCPointMake(0 , 1))--设置进度方向 (0-100)
+	this.hpProgress:setPercentage(0)	--设置默认进度值
+	this.hpProgress:runAction(CCProgressTo:create(0.5,100))
+	bgLayer:addChild(this.hpProgress)
+	this.layer:addChild(bgLayer,5)	
 	
 	--点击事件
 	this.layer:setTouchEnabled(true)
@@ -95,7 +114,8 @@ function FightRole:getX()
 end
 
 function FightRole:setHp(curHp)
-	self.hpText:setString(curHp.."")
+	self.hpText:setString(curHp.."/"..self.params["hp"])
+	self.hpProgress:setPercentage(curHp / self.params["hp"] * 100)
 end
 
 function FightRole:getY()
@@ -125,21 +145,23 @@ function FightRole:doAction(type,role,callback)
 			array:addObject(CCRotateTo:create(0.1,5))  --攻击起手后仰
 			array:addObject(CCCallFunc:create(    --起手完成后开始播放特效
 				function() 
-					self.effect:showByType("atk_cut",self.x,self.y,0.04,
-					{
-						callback = 
-						function()
-							self.layer:runAction(CCMoveTo:create(0.1,ccp(self.x,self.y)))
-							self.layer:runAction(CCScaleTo:create(0.2,1))
-							if callback then
-								callback()
-							end
-						end,
-						flipY = flipY,
-						flipX = flipX,
-						anchX = anchX,
-						anchY = anchY 
-					})
+					if self.params["effect"] then
+						self.params["effect"]:showByType("atk_cut",self.x,self.y,0.04,
+						{
+							callback = 
+							function()
+								self.layer:runAction(CCMoveTo:create(0.1,ccp(self.x,self.y)))
+								self.layer:runAction(CCScaleTo:create(0.2,1))
+								if callback then
+									callback()
+								end
+							end,
+							flipY = flipY,
+							flipX = flipX,
+							anchX = anchX,
+							anchY = anchY 
+						})
+					end
 				 end))
 			array:addObject(CCRotateTo:create(0.05,-30))  --攻击旋转
 			array:addObject(CCRotateTo:create(0.05,0))    --回位
@@ -149,11 +171,13 @@ function FightRole:doAction(type,role,callback)
 			self.layer:setAnchorPoint(ccp(0.5,0.5))
 			array:addObject(CCCallFunc:create(
 				function()
-					self.effect:showByType("slash",self.x,self.y,0.05,{
-						callback = callback,
-						anchX = 0.3,
-						anchY = 0.2
-					})
+					if self.params["effect"] then
+						self.params["effect"]:showByType("slash",self.x,self.y,0.05,{
+							callback = callback,
+							anchX = 0.3,
+							anchY = 0.2
+						})
+					end
 				end
 			))
 			array:addObject(CCScaleTo:create(0.1,0.8))			

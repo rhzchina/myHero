@@ -12,25 +12,19 @@ function DATA_Fighting:set(data)
 	_data = data
 end
 
-function DATA_Fighting:getMonster(key)
-	if key then
-		return _data["mon"][key]
-	else
+function DATA_Fighting:getMonster()
+
 		return _data["mon"]
-	end
 end
 
-function DATA_Fighting:getHero(key)
-	if key then
-		return _data["me"][key]
-	else
+function DATA_Fighting:getHero()
+
 		return _data["me"]
-	end
 end
 --获取攻击类型
 function DATA_Fighting:getAttackType()
 	if not _data then
-		local file = io.open("c:\\fight.txt","r")
+		local file = io.open("/mnt/sdcard/fight.txt","r")
 		local str = file:read("*a")
 		_data = json.decode(str)["start"]	
 		file:close()

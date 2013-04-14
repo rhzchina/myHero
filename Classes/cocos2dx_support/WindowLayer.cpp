@@ -5,7 +5,6 @@ WindowLayer* WindowLayer::createWindow(){
 		layer->scaleX = CCEGLView::sharedOpenGLView()->getScaleX();
 		layer->scaleY = CCEGLView::sharedOpenGLView()->getScaleY();
 		layer->autorelease();
-		
 		return layer;
 	}
 	CC_SAFE_DELETE(layer);

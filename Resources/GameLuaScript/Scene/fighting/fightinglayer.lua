@@ -2,6 +2,7 @@ local PATH = "image/scene/fighting/"
 local KNBtn = require "GameLuaScript/Common/KNBtn"
 local FightRole = require "GameLuaScript/Scene/fighting/fightrole"
 local Effect = require "GameLuaScript/Scene/fighting/effect"
+local data = DATA_Fighting
 local FightLayer = {
 	layer,
 	group,
@@ -34,20 +35,20 @@ local this = {}
 		scale = true,
 		callback = 
 		function()
-			DATA_Fighting:clear()
+			data:clear()
 			switchScene("login")
 		end})
 	this.layer:addChild(exit:getLayer())
 	
 	--初始化英雄
-	for i, v in pairs(DATA_Fighting:getHero()) do
-		this.group[1][i - 1] = FightRole:new(1, v["card_id"], i - 1,this.effect) 
+	for i, v in pairs(data:getHero()) do
+		this.group[1][i - 1] = FightRole:new(1, v["card_id"], i - 1,{hp = v["hp"],star = v["star"] ,effect = this.effect}) 
 		this.roleLayer:addChild(this.group[1][i - 1]:getLayer())
 	end
 	
 	--初始化怪兽
-	for i,v in pairs(DATA_Fighting:getMonster()) do
-		this.group[2][i - 1] = FightRole:new(2, v["card_id"], i - 1,this.effect) 
+	for i,v in pairs(data:getMonster()) do
+		this.group[2][i - 1] = FightRole:new(2, v["card_id"], i - 1,{hp = v["hp"],star = v["star"],effect = this.effect}) 
 		this.roleLayer:addChild(this.group[2][i - 1]:getLayer())
 	end
 --	print("战斗开始")
@@ -78,14 +79,13 @@ local this = {}
 end
 
 function FightLayer:fightLogic()
-	local data = DATA_Fighting
 	self.group[data:getAttacker("group")][data:getAttacker("index")]:doAction(
 		data:getAttackType(),  --攻击类型
 		"adt",                  --角色状态，攻击:adt,被攻击beatt
 		function()              --回调,这里当攻击动画开始后，回调 函数为被 攻击者动画，找合适的时间播放 
-			print("--------攻击方-------------")
-			dump(data:getAttacker())
-			print("------------------------")
+--			print("--------攻击方-------------")
+--			dump(data:getAttacker())
+--			print("------------------------")
 			--掉血动画
 			self.effect:hpChange(
 				data:getVictim("change"),
@@ -98,9 +98,9 @@ function FightLayer:fightLogic()
 				data:getAttackType(),
 				"beatt",
 				function()
-				print("--------------------被攻击方---------")
-					dump(data:getVictim())
-				print("---------------------------")
+--				print("--------------------被攻击方---------")
+--					dump(data:getVictim())
+--				print("---------------------------")
 					local winner = data:nextStep()
 					if not winner then
 						self:fightLogic()
