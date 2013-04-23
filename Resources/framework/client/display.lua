@@ -35,7 +35,6 @@ The display module provides access to cocos2d-x core features.
 ]]
 
 local display = {}
-
 require("framework/client/cocos2dx/CCNodeExtend")
 require("framework/client/cocos2dx/CCSpriteExtend")
 require("framework/client/cocos2dx/CCLayerExtend")
@@ -443,7 +442,7 @@ function display.newSprite(filename, x, y)
 
     if sprite then
         CCSpriteExtend.extend(sprite)
-        sprite:setTag(102)    -- Sprite tag 统一为102
+        sprite:setTag(102)    -- Sprite tag 缁熶竴涓?02
         if x and y then sprite:setPosition(x, y) end
         if autoCleanupFilename then
             sprite.IMAGE_FILENAME = autoCleanupFilename
@@ -454,6 +453,7 @@ function display.newSprite(filename, x, y)
 
     return sprite
 end
+
 
 --[[--
 
@@ -863,7 +863,7 @@ function display.newFrames(pattern, begin, length, isReversed , fromFile)
         else
             frame = sharedSpriteFrameCache:spriteFrameByName(frameName)     -- 从cache中读取
         end
-         
+
         if not frame then
             echoError("display.newFrames() - invalid frame, name %s", tostring(frameName))
             return
@@ -897,6 +897,21 @@ Creates multiple frames by one image.
 
 ]]
 function display.newFramesWithImage(image , num)
+    if  io.existsr(image) then
+
+	else
+		local array = string.split(image, "/")
+		local str = ""
+		for i = 5 ,table.getn(array) do
+			if i == table.getn(array) then
+				str = str ..array[i]
+			else
+				str = str ..array[i].."/"
+			end
+		end
+		image = str
+	end
+
     local frames = {}
 
     local texture = CCTextureCache:sharedTextureCache():addImage( image )
@@ -905,13 +920,13 @@ function display.newFramesWithImage(image , num)
     --每张图的宽度和高度
     local frameWidth = size.width / num
     local frameHeight = size.height
-    
+
     for i = 1 , num do
         local rect = CCRectMake(frameWidth * ( i - 1 ) , 0 , frameWidth , frameHeight)
         local frame = CCSpriteFrame:createWithTexture(texture , rect)
         frames[#frames + 1] = frame
     end
-    
+
     return frames
 end
 
@@ -989,6 +1004,105 @@ function display.playFrames(x , y , frames , time , param)
     end
 
     return sprite
+end
+
+
+--[[ 描边文字 strokeSize 则为不描边]]
+function display.strokeLabel(str , x , y , fontSize , fontColor , strokeSize , strokeColor , param)
+    param = param or {}
+
+    local node = display.newNode()
+
+    if fontSize == nil then fontSize = 0 end
+
+    local label = CCLabelTTF:create(str , "arial" ,  fontSize);
+    label:setAnchorPoint(ccp(0 , 0))
+    label:setPosition( ccp(x , y) )
+
+    if fontColor then
+        label:setColor( fontColor )
+    end
+
+    -- 设置文本的宽度和高度
+    if param.dimensions_width and param.dimensions_height then
+        label:setDimensions( CCSize:new(param.dimensions_width , param.dimensions_height) )
+    end
+
+    -- 文字对齐方式
+    if param.align then
+        label:setHorizontalAlignment(param.align)
+    end
+
+
+    -- 描边
+    local stroke = nil
+    if strokeSize ~= nil and strokeSize > 0 then
+        -- if strokeSize == nil then strokeSize = 2 end
+        if strokeColor == nil then strokeColor = ccc3(0 , 0 , 0) end
+        stroke = display.createStroke(label , strokeSize , strokeColor)
+
+        node:addChild(stroke)
+    end
+
+    node:addChild(label)
+    node:setContentSize(label:getContentSize())
+
+
+    function node:getLabel()
+        return label
+    end
+
+    function node:getStroke()
+        return stroke
+    end
+
+    return node
+end
+
+--[[描边]]
+function display.createStroke(label , size , color)
+    local label_size = label:getTexture():getContentSize()
+
+    local x = label_size.width * 2 + size * 2
+    local y = label_size.height * 2 + size * 2
+
+
+    local originalPosX , originalPosY = label:getPosition()
+    local originalColor = label:getColor()
+
+    local rt = CCRenderTexture:create(x, y)
+    label:setColor(color)       -- ccc3数据
+
+    local originalBlend = label:getBlendFunc()
+    local bf = ccBlendFunc:new()
+
+    bf.src = 768
+    bf.dst = 1
+
+    label:setBlendFunc(bf)
+    local center = ccp(label_size.width / 1 + size , label_size.height / 1 + size)
+
+    rt:begin()
+    for i = 0 , 360 , 15 do
+        local _x = center.x + math.sin(math.rad(i)) * size
+        local _y = center.y + math.cos(math.rad(i)) * size
+        label:setPosition(ccp(_x , _y))
+        label:visit()
+    end
+    rt:endToLua()
+
+    label:setPosition(originalPosX , originalPosY)
+    label:setColor(originalColor)
+    label:setBlendFunc(originalBlend)
+
+    --[[
+    local rtX = originalPosX - size
+    local rtY = originalPosY - size
+    ]]
+
+    rt:setPosition(originalPosX , originalPosY)
+
+    return rt
 end
 
 

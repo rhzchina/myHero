@@ -11,6 +11,7 @@
  #pragma once
  #include "cocos2d.h"
 #include "cocos-ext.h"
+#include <zlib.h>
  using namespace std;
  USING_NS_CC;
  USING_NS_CC_EXT;
@@ -64,6 +65,8 @@
 	 void creadFuancuan(int handler);
 	 //std::vector<char>* getHttp();//取得数据
 	 //void setData(std::vector<char> *str_buf);//存放数据
+
+	 bool gzip_decompress(const void* pInDate, size_t nSize, std::string& raw_data);
  };
  
  

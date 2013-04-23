@@ -77,7 +77,8 @@ function M:create( ... )
 			switchScene("fighting")
 		end})
 	layer:addChild(exit:getLayer())
-
+local stone_name = display.strokeLabel("更新游戏",50,300,20,ccc3(100,100,100),3,ccc3(100,100,200))
+layer:addChild(stone_name)
 	return layer
 end
 
