@@ -28,7 +28,6 @@ bool AppDelegate::applicationDidFinishLaunching()
 	CCEGLView::sharedOpenGLView()->setDesignResolutionSize(480, 854, kResolutionExactFit);
 //	char *Set_Generals = "{\"m\":\"mission\",\"a\":\"excute\",\"command\":\"excute\",\"sid\":\"e2dcf10f38617ab3\",\"uid\":10001,\"server_id\":1,\"data\":{\"map_id\":1,\"mission_id\":1}}";
 	
-	
 	/*ODSocket cSocket;
 	cSocket.Init();
 	cSocket.Create(AF_INET,SOCK_STREAM,0);
@@ -49,7 +48,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 	//print("get data",socket->getSocket());
     CCLuaEngine* pEngine = CCLuaEngine::defaultEngine();
     CCScriptEngineManager::sharedManager()->setScriptEngine(pEngine);
-	std::string dirPath = "GameLuaScript";
+	std::string dirPath = "GameScript";
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
     CCString* pstrFileContent = CCString::createWithContentsOfFile((dirPath + "/GameCanvasLua.lua").c_str());
     if (pstrFileContent)
