@@ -49,12 +49,12 @@ function KNMsg:new()
 			local textField = CCLabelTTF:create(store.text , "Arial" , 15)
 			
 			if type == 0 then --Error
-				content = CCSprite:create(IMAGEPATH .. "/common/prompt_bg.png")
+				content = CCSprite:create(IMG_COMMON .. "prompt_bg.png")
 				content:setAnchorPoint( ccp(0 , 1) )
 				
 				content:addChild(textField)
 			elseif type == 1 then--带按钮的提示框
-				content = CCSprite:create(IMAGEPATH .. "/common/tip_bg.png")
+				content = CCSprite:create(IMG_COMMON .. "tip_bg.png")
 				content:setAnchorPoint( ccp(0 , 1) )
 				
 				local cSize = content:getContentSize()

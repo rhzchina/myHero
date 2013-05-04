@@ -50,50 +50,50 @@ function lineuinfoplayer:new(index,sv,data,x,y,params)
 
 
 	 --------[[英雄信息]]
-	local hero_bg = CCSprite:create("image/card/card_box.png")
+	local hero_bg = newSprite("image/card/card_box.png")
 	setAnchPos(hero_bg,110,284-this.point_y)
 	this.layer:addChild(hero_bg)
 
 	--------[[英雄描述]]
-	local desc_cald = CCSprite:create("image/scene/lineup/line.png")----英雄
+	local desc_cald = newSprite("image/scene/lineup/line.png")----英雄
 	setAnchPos(desc_cald,25,160-this.point_y)
 	this.layer:addChild(desc_cald)
 
 if _G.next (data)  ~= nil then
 		this.is_click = false
 		this.gid = data["card_id"]
-		local hero_cald = CCSprite:create(IMG_ICON.."role/L_"..data["card_id"]..".png")----英雄
+		local hero_cald = newSprite(IMG_ICON.."hero/L_"..data["card_id"]..".png")----英雄
 		setAnchPos(hero_cald,123,340-this.point_y)
 		this.layer:addChild(hero_cald)
 
-		local blood = CCSprite:create("image/card/blood.png")----英雄
+		local blood = newSprite("image/card/blood.png")----英雄
 		setAnchPos(blood,129,342-this.point_y)
 		this.layer:addChild(blood)
 
 
-		local text_blood = CCLabelTTF:create(data["hp"]..index, "Arial" , 15)
+		local text_blood = newLabel(data["hp"]..index,  15)
 		setAnchPos(text_blood,170,352-this.point_y)
 		this.layer:addChild(text_blood )
 
-		local anti = CCSprite:create("image/card/anti.png")----英雄
+		local anti = newSprite("image/card/anti.png")----英雄
 	setAnchPos(anti,200,342-this.point_y)
 	this.layer:addChild(anti)
 
 
-		local text_anti = CCLabelTTF:create(data["defe"] , "Arial" , 15)
+		local text_anti = newLabel(data["defe"] , 15)
 		setAnchPos(text_anti,240,352-this.point_y)
 		this.layer:addChild(text_anti )
 
-		local Attack = CCSprite:create("image/card/Attack.png")----英雄
+		local Attack = newSprite("image/card/Attack.png")----英雄
 		setAnchPos(Attack,270,342-this.point_y)
 		this.layer:addChild(Attack)
 
 
-		local text_att = CCLabelTTF:create(data["att"] , "Arial" , 15)
+		local text_att = newLabel(data["att"] , 15)
 		setAnchPos(text_att,310,352-this.point_y)
 		this.layer:addChild(text_att )
 
-		local lev_box = CCSprite:create("image/card/lever_box.png")----英雄
+		local lev_box = newSprite("image/card/lever_box.png")----英雄
 		setAnchPos(lev_box,125,298-this.point_y)
 		this.layer:addChild(lev_box)
 
@@ -110,7 +110,7 @@ if _G.next (data)  ~= nil then
 												{"事实上事实上",30,162-this.point_y}}
 
 		for i,v in pairs(desc_test) do
-			local text_desc = CCLabelTTF:create(v[1] , "Arial" , 20)
+			local text_desc = newLabel(v[1] , 20)
 			setAnchPos(text_desc,v[2],v[3])
 			this.layer:addChild(text_desc )
 		end

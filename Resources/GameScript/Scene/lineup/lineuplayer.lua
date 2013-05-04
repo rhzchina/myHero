@@ -15,15 +15,15 @@ function lineuplayer:new(x,y)
 
 	this.layer = CCLayer:create()
 
-	local bg = CCSprite:create("image/scene/lineup/bg.png")
+	local bg = newSprite("image/scene/lineup/bg.png")
 	setAnchPos(bg,10,100)
 	this.layer:addChild(bg)
 
-	local title = CCSprite:create("image/scene/lineup/title.png")
+	local title = newSprite("image/scene/lineup/title.png")
 	setAnchPos(title,40,788)
 	this.layer:addChild(title)
 
-	local font = CCSprite:create("image/scene/lineup/font.png")
+	local font = newSprite("image/scene/lineup/font.png")
 	setAnchPos(font,170,790)
 	this.layer:addChild(font)
 
@@ -60,15 +60,15 @@ function lineuplayer:new(x,y)
 	this.layer:addChild(sv:getLayer())
 
 
-	local lef = CCSprite:create("image/UserAvatar/left_1.png")
+	local lef = newSprite("image/UserAvatar/left_1.png")
 	setAnchPos(lef,20,680)
 	this.layer:addChild(lef)
 
-	local rig = CCSprite:create("image/UserAvatar/right_1.png")
+	local rig = newSprite("image/UserAvatar/right_1.png")
 	setAnchPos(rig,350,680)
 	this.layer:addChild(rig)
 
-	local info = CCSprite:create("image/scene/lineup/box.png")
+	local info = newSprite("image/scene/lineup/box.png")
 	setAnchPos(info,15,130)
 	this.layer:addChild(info)
 
@@ -84,14 +84,15 @@ function lineuplayer:new(x,y)
 																callback = function(card_this,card_x,card_y)
 																					if card_this:get_click() == true then
 																						LineUp_Index = i
-																						print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-																						HTTPS:send("AddHero" ,  {m="Heros",a="Heros",heros = "Info",card_id = card_this:get_gid(),sid = DATA_Session:get("sid"),uid = DATA_Session:get("uid"),server_id = DATA_Session:get("server_id")} ,{success_callback = function()
+																						print("~~~~~~~~~~~~~~~~~~~~~~~fadfadfsadf~~~~~~~~~~~~~~~")
+																						HTTPS:send("AddHero" ,  {m="Heros",a="Heros",heros = "Info",
+																						card_id = card_this:get_gid()} ,{success_callback = function()
 																									switchScene("lineupCardInfo")
 																								end
 																						})
 																					elseif card_this:get_select() == true then
 																						LineUp_Index = i
-																						HTTPS:send("AddHero" ,  {m="Heros",a="Heros",heros = "all",sid = DATA_Session:get("sid"),uid = DATA_Session:get("uid"),server_id = DATA_Session:get("server_id")} ,{success_callback = function()
+																						HTTPS:send("AddHero" ,  {m="Heros",a="Heros",heros = "all"} ,{success_callback = function()
 																									switchScene("herolup")
 																								end
 																							})
@@ -117,7 +118,7 @@ function lineuplayer:new(x,y)
 	    			callback=
 	    				function()
 
-							HTTPS:send("Battle" ,  {m="Battle",a="LineUp",Battle = "select",sid = DATA_Session:get("sid"),uid = DATA_Session:get("uid"),server_id = DATA_Session:get("server_id")} ,{success_callback = function()
+							HTTPS:send("Battle" ,  {m="Battle",a="Battle",Battle = "select"} ,{success_callback = function()
 								switchScene("battlere")
 							end })
 	    				 end

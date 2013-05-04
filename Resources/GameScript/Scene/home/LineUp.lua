@@ -12,7 +12,7 @@ function LULayer:create(x,y)
 	local layer = CCLayer:create()
 	--layer:setPosition(ccp(x,y))
 
-	local bg = CCSprite:create("image/scene/home/LineUp.png")
+	local bg = newSprite("image/scene/home/LineUp.png")
 	setAnchPos(bg,x,y)
 	layer:addChild(bg)
 
@@ -56,11 +56,11 @@ function LULayer:create(x,y)
 	layer:addChild(sv:getLayer())
 
 
-	local lef = CCSprite:create("image/UserAvatar/left_1.png")
+	local lef = newSprite("image/UserAvatar/left_1.png")
 	setAnchPos(lef,20,529)
 	layer:addChild(lef)
 
-	local rig = CCSprite:create("image/UserAvatar/right_1.png")
+	local rig = newSprite("image/UserAvatar/right_1.png")
 	setAnchPos(rig,420,529)
 	layer:addChild(rig)
 

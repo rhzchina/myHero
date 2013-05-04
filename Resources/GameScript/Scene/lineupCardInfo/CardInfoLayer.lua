@@ -7,55 +7,55 @@ function cardInfolayer:new(data,x,y)
 	self.__index  = self
 	this.layer = CCLayer:create()
 
-	local bg = CCSprite:create("image/scene/lineup/bg.png")
+	local bg = newSprite("image/scene/lineup/bg.png")
 	setAnchPos(bg,10,100)
 	this.layer:addChild(bg)
 
-	local title = CCSprite:create("image/cardInfo/font_bg.png")
+	local title = newSprite("image/cardInfo/font_bg.png")
 	setAnchPos(title,40,788)
 	this.layer:addChild(title)
 
-	local font = CCSprite:create("image/cardInfo/font.png")
+	local font = newSprite("image/cardInfo/font.png")
 	setAnchPos(font,170,790)
 	this.layer:addChild(font)
 
 	  --------[[英雄信息]]
-	local hero_bg = CCSprite:create("image/card/card_box.png")
+	local hero_bg = newSprite("image/card/card_box.png")
 	setAnchPos(hero_bg,20,435)
 	this.layer:addChild(hero_bg)
 
-		local hero_cald = CCSprite:create(IMG_ICON.."role/L_"..DATA_CardInfo:get("card_id")..".png")----英雄
+		local hero_cald = newSprite(IMG_ICON.."hero/L_"..DATA_CardInfo:get("card_id")..".png")----英雄
 		setAnchPos(hero_cald,33,491)
 		this.layer:addChild(hero_cald)
 
-		local blood = CCSprite:create("image/card/blood.png")----英雄
+		local blood = newSprite("image/card/blood.png")----英雄
 		setAnchPos(blood,39,493)
 		this.layer:addChild(blood)
 
 
-		local text_blood = CCLabelTTF:create(DATA_CardInfo:get("hp"), "Arial" , 15)
+		local text_blood = newLabel(DATA_CardInfo:get("hp"),  15)
 		setAnchPos(text_blood,80,503)
 		this.layer:addChild(text_blood )
 
-		local anti = CCSprite:create("image/card/anti.png")----英雄
+		local anti = newSprite("image/card/anti.png")----英雄
 		setAnchPos(anti,110,493)
 		this.layer:addChild(anti)
 
 
-		local text_anti = CCLabelTTF:create(DATA_CardInfo:get("defe"), "Arial" , 15)
+		local text_anti = newLabel(DATA_CardInfo:get("defe"), 15)
 		setAnchPos(text_anti,150,503)
 		this.layer:addChild(text_anti )
 
-		local Attack = CCSprite:create("image/card/Attack.png")----英雄
+		local Attack = newSprite("image/card/Attack.png")----英雄
 		setAnchPos(Attack,180,493)
 		this.layer:addChild(Attack)
 
 
-		local text_att = CCLabelTTF:create(DATA_CardInfo:get("att") , "Arial" , 15)
+		local text_att = newLabel(DATA_CardInfo:get("att") ,15)
 		setAnchPos(text_att,220,503)
 		this.layer:addChild(text_att )
 
-		local lev_box = CCSprite:create("image/card/lever_box.png")----英雄
+		local lev_box = newSprite("image/card/lever_box.png")----英雄
 		setAnchPos(lev_box,35,449)
 		this.layer:addChild(lev_box)
 
@@ -68,14 +68,14 @@ function cardInfolayer:new(data,x,y)
 
 
 	--[[简介]]
-	local intro_bg = CCSprite:create("image/cardInfo/introduction.png")
+	local intro_bg = newSprite("image/cardInfo/introduction.png")
 	setAnchPos(intro_bg,288,435)
 	this.layer:addChild(intro_bg)
 
 
 
 	--[[组合信息]]
-	local zuhe_bg = CCSprite:create("image/cardInfo/line.png")
+	local zuhe_bg = newSprite("image/cardInfo/line.png")
 	setAnchPos(zuhe_bg,25,220)
 	this.layer:addChild(zuhe_bg)
 

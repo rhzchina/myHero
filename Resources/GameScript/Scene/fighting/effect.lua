@@ -42,7 +42,7 @@ function Effect:showByType(type,x,y,delay,params)
 			end
 		end
 	--创建精灵来播放动画
-	local sprite = CCSprite:create()
+	local sprite = newSprite()
 	local anchX, anchY = 0
 	if params then
 		if params.flipX then
@@ -88,7 +88,7 @@ end
 
 function Effect:hpChange(num,x,y)
 		local value ="-"..num
-		local text = CCLabelTTF:create(value,"Aeria",50)	
+		local text = newLabel(value,50)	
 		text:setColor(ccc3(55,255,0))
 		setAnchPos(text,x,y + 80)	
 		local array = CCArray:create()

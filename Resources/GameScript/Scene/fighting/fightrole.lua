@@ -57,7 +57,7 @@ function FightRole:new(group,id,pos,params)
 	setAnchPos(this.layer, this.x,this.y)
 	
 	--英雄图标
-	local icon = display.newSprite(IMG_ICON.."role/M_"..id..".png")
+	local icon = display.newSprite(IMG_ICON.."hero/M_"..id..".png")
 	setAnchPos(icon,this.width / 2, this.height / 2, 0.5, 0.5)
 	this.layer:addChild(icon)
 	
@@ -66,7 +66,7 @@ function FightRole:new(group,id,pos,params)
 	setAnchPos(border,this.width / 2, this.height / 2, 0.5, 0.5)
 	this.layer:addChild(border)
 	
-	this.hpText = CCLabelTTF:create(this.params["hp"].."/"..this.params["hp"],"Aeria",15)
+	this.hpText = newLabel(this.params["hp"].."/"..this.params["hp"],15)
 	this.hpText:setColor(ccc3(255,0,0))
 	setAnchPos(this.hpText,this.width / 2,0,0.5)
 	this.layer:addChild(this.hpText,15)

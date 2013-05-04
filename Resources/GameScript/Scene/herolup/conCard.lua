@@ -20,17 +20,17 @@ function HLPLayer:new(data,point_x,point_y,params)
 	this.is_true = false
 	this.is_select = false
 	this.id = data["card_id"]
-	local intro_bg = CCSprite:create("image/scene/herolup/intro_bg.png")
+	local intro_bg = newSprite("image/scene/herolup/intro_bg.png")
 	setAnchPos(intro_bg,10,0)
 	this.layer:addChild(intro_bg)
 
 	this.layer:setContentSize(intro_bg:getContentSize())
 
-	local header_bg = CCSprite:create("image/UserAvatar/UserAvatarbg.png")
+	local header_bg = newSprite("image/UserAvatar/UserAvatarbg.png")
 	setAnchPos(header_bg,22,17)
 	this.layer:addChild(header_bg)
-	local header_box = CCSprite:create("image/UserAvatar/UserAvatarbox.png")
-	local header = CCSprite:create("image/myhero/small/"..data["card_id"]..".png")
+	local header_box = newSprite("image/UserAvatar/UserAvatarbox.png")
+	local header = newSprite("image/myhero/small/"..data["card_id"]..".png")
 
 	setAnchPos(header_box,22,17)
 	setAnchPos(header,22,17)
@@ -38,23 +38,23 @@ function HLPLayer:new(data,point_x,point_y,params)
 	this.layer:addChild(header)
 	this.layer:addChild(header_box)
 
-	local text_name = CCLabelTTF:create(data["name"], "Arial" , 25)
+	local text_name = newLabel(data["name"], 25)
 	setAnchPos(text_name,120,70)
 	this.layer:addChild(text_name)
 
-	local text_lev = CCLabelTTF:create("Lv "..data["lev"], "Arial" , 25)
+	local text_lev = newLabel("Lv "..data["lev"],  25)
 	setAnchPos(text_lev,240,70)
 	this.layer:addChild(text_lev)
 
-	local text_other = CCLabelTTF:create("血："..data["hp"].." 防："..data["defe"].." 攻："..data["att"], "Arial" , 25)
+	local text_other = newLabel("血："..data["hp"].." 防："..data["defe"].." 攻："..data["att"],  25)
 	setAnchPos(text_other,120,20)
 	this.layer:addChild(text_other)
 
-	local intro_box= CCSprite:create("image/scene/herolup/box.png")
+	local intro_box= newSprite("image/scene/herolup/box.png")
 	setAnchPos(intro_box,420,60)
 	this.layer:addChild(intro_box)
 
-	this.intro_selct = CCSprite:create("image/scene/herolup/true.png")
+	this.intro_selct = newSprite("image/scene/herolup/true.png")
 	setAnchPos(this.intro_selct,420,60)
 	this.intro_selct:setVisible(false)
 	this.layer:addChild(this.intro_selct)

@@ -19,7 +19,7 @@ function M:create( ... )
 	
 	this.layer = CCLayer:create()
 	
-	local bg = CCSprite:create(IMG_SCENE.."login/login_bg.jpg")
+	local bg = newSprite(IMG_SCENE.."login/login_bg.jpg")
 	setAnchPos(bg, 0, 0)
 	this.layer:addChild(bg)
 
@@ -83,7 +83,7 @@ function M:createOptBox(state)
 	if state then	
 		self.optLayer = CCLayer:create()
 		
-		local bg = CCSprite:create(IMG_SCENE..PATH.."login_opt_bg.png")
+		local bg = newSprite(IMG_SCENE..PATH.."login_opt_bg.png")
 		setAnchPos(bg, 240, 425, 0.5, 0.5)
 		self.optLayer:addChild(bg)
 		
@@ -136,20 +136,20 @@ function M:accountInput()
 	
 	
 	
-	local accountText = CCSprite:create(IMG_TEXT.."account_text.png")
+	local accountText = newSprite(IMG_TEXT.."account_text.png")
 	setAnchPos(accountText,10,500)
 	self.optLayer:addChild(accountText)
 	
-	accountText = CCSprite:create(IMG_COMMON.."input_bg.png")
+	accountText = newSprite(IMG_COMMON.."input_bg.png")
 	setAnchPos(accountText,120,480)
 	self.optLayer:addChild(accountText)
 	
 	
-	local pwdText = CCSprite:create(IMG_TEXT.."password_text.png")
+	local pwdText = newSprite(IMG_TEXT.."password_text.png")
 	setAnchPos(pwdText,10,420)
 	self.optLayer:addChild(pwdText)
 	
-	pwdText = CCSprite:create(IMG_COMMON.."input_bg.png")
+	pwdText = newSprite(IMG_COMMON.."input_bg.png")
 	setAnchPos(pwdText,120,400)
 	self.optLayer:addChild(pwdText)
 --	

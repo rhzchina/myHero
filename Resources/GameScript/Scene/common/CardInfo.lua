@@ -12,30 +12,24 @@ function CILayer:create(type,id,point_x,point_y,params)
 	--this.layer:setPosition(ccp(point_x,point_y))
 
 	if type == 1 then
-		local header_bg = CCSprite:create("image/UserAvatar/UserAvatarbg.png")
-		header_bg:setAnchorPoint(ccp(0,0))
+		local header_bg = newSprite("image/UserAvatar/UserAvatarbg.png")
 		this.layer:addChild(header_bg)
-		local header_box = CCSprite:create("image/UserAvatar/UserAvatarbox.png")
-		local header = CCSprite:create(IMG_ICON.."role/S_"..id..".png")
+		local header_box = newSprite("image/UserAvatar/UserAvatarbox.png")
+		local header = newSprite(IMG_ICON.."role/S_"..id..".png")
 
-		header_box:setAnchorPoint(ccp(0,0))
-		header:setAnchorPoint(ccp(0,0))
 
 		this.layer:addChild(header)
 		this.layer:addChild(header_box)
 		this.layer:setContentSize(CCSize:new(header_box:getContentSize().width+20,header_box:getContentSize().height))
 	elseif type == 2 then
-		local header_bg = CCSprite:create("image/UserAvatar/nouserbg.png")
-		header_bg:setAnchorPoint(ccp(0,0))
+		local header_bg = newSprite("image/UserAvatar/nouserbg.png")
 		this.layer:addChild(header_bg)
 
-		local header_box = CCSprite:create("image/UserAvatar/nouser.png")
-		header_box:setAnchorPoint(ccp(0,0))
+		local header_box = newSprite("image/UserAvatar/nouser.png")
 		this.layer:addChild(header_box)
 		this.layer:setContentSize(CCSize:new(header_box:getContentSize().width+20,header_box:getContentSize().height))
 	else
-		local header_box = CCSprite:create("image/UserAvatar/suo.png")
-		header_box:setAnchorPoint(ccp(0,0))
+		local header_box = newSprite("image/UserAvatar/suo.png")
 		this.layer:addChild(header_box)
 		this.layer:setContentSize(CCSize:new(header_box:getContentSize().width+20,header_box:getContentSize().height))
 	end

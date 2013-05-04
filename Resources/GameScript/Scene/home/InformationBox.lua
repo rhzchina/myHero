@@ -8,7 +8,7 @@ function msgLayer:create(x,y)
 	self.__index = self
 
 	local layer = CCLayer:create()
-	local bg = CCSprite:create("image/scene/home/msg_bg.png")
+	local bg = newSprite("image/scene/home/msg_bg.png")
 	bg:setAnchorPoint(ccp(0,0))
 	layer:addChild(bg)
 	layer:setPosition(ccp(x,y))

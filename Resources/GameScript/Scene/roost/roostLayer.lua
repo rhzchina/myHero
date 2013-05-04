@@ -5,22 +5,22 @@ function roostLayer:new(x,y)
 	self.__index  = self
 
 	this.layer = CCLayer:create()
-	local bg = CCSprite:create("image/scene/battle/bg.png")
+	local bg = newSprite("image/scene/battle/bg.png")
 	setAnchPos(bg,0,85)
 	this.layer:addChild(bg)
 
-	local fontbg = CCSprite:create("image/scene/task/fontbg.png")
+	local fontbg = newSprite("image/scene/task/fontbg.png")
 	setAnchPos(fontbg,0,625)
 	this.layer:addChild(fontbg)
 
-	local line = CCSprite:create("image/scene/task/line.png")
+	local line = newSprite("image/scene/task/line.png")
 	setAnchPos(line,10,513)
 	this.layer:addChild(line)
 
 	---- [[大关卡]]
 	local bsv = ScrollView:new(54,640,440,50,0,true,1)
 	for i = 1,1  do --DATA_MapNum:size()
-			local text_font = CCLabelTTF:create("关卡名字", "Arial" , 25)
+			local text_font = newLabel("关卡名字", 25)
 			--text_font:setContentSize(CCSize(100,100))
 			bsv:addChild(text_font,text_font)
 	end

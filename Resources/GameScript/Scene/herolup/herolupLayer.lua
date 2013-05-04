@@ -10,11 +10,11 @@ function HLPLayer:new(point_x,point_y)
 
 	this.layer = CCLayer:create()
 
-	local header_bg = CCSprite:create("image/scene/herolup/bg.png")
+	local header_bg = newSprite("image/scene/herolup/bg.png")
 	setAnchPos(header_bg,point_x,point_y)
 	this.layer:addChild(header_bg)
 
-	local font = CCSprite:create("image/scene/herolup/font.png")
+	local font = newSprite("image/scene/herolup/font.png")
 	setAnchPos(font,point_x+160,point_y+545)
 	this.layer:addChild(font)
 
@@ -97,7 +97,7 @@ function HLPLayer:new(point_x,point_y)
 	    			callback=
 	    				function()
 							if selec_card ~= nil then
-									HTTPS:send("Battle" ,  {m="Battle",a="LineUp",Battle = "up",card_id = selec_card:get_id(),index = LineUp_Index,data = send_data,sid = DATA_Session:get("sid"),uid = DATA_Session:get("uid"),server_id = DATA_Session:get("server_id")} ,{success_callback = function()
+									HTTPS:send("Battle" ,  {m="Battle",a="LineUp",Battle = "up",card_id = selec_card:get_id(),index = LineUp_Index,data = send_data} ,{success_callback = function()
 										switchScene("lineup")
 									end })
 							end

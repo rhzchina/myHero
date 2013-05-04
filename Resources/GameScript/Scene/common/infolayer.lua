@@ -11,8 +11,7 @@ function InfoLayer:create(layerName)
 	--首页的元素拆分开
 	this.layer = CCLayer:create()
 
-	local bg = CCSprite:create("image/scene/home/Navigation_bg.png")
-	bg:setAnchorPoint(ccp(0,0))
+	local bg = newSprite("image/scene/home/Navigation_bg.png")
 	this.layer:addChild(bg)
 
 	local group = RadioGroup:new()
@@ -24,14 +23,14 @@ function InfoLayer:create(layerName)
 		},
 	    {"embattle",
 	    	function()
-	    		HTTPS:send("Battle" ,  {m="Battle",a="LineUp",Battle = "select_up",sid = DATA_Session:get("sid"),uid = DATA_Session:get("uid"),server_id = DATA_Session:get("server_id")} ,{success_callback = function()
+	    		HTTPS:send("Battle" ,  {m="Battle",a="Battle",Battle = "select_up"} ,{success_callback = function()
 								switchScene("LineUp")
 							end })
 	    	end
 	    },
 		{"practice",
 			function()
-				HTTPS:send("Task" ,  {m="Task",a="map",task = "map",sid = DATA_Session:get("sid"),uid = DATA_Session:get("uid"),server_id = DATA_Session:get("server_id")} ,{success_callback = function()
+				HTTPS:send("Task" ,  {m="Task",a="map",task = "map"} ,{success_callback = function()
 								switchScene("roost")
 							end })
 			end

@@ -15,6 +15,7 @@ require("GameScript/Data/CardAll")
 require("GameScript/Data/MapNum")
 require("GameScript/Data/MapSmall")
 require("GameScript/Data/Fighting")
+require("GameScript/DATA/Bag")
 
 local M = {}
 
@@ -26,15 +27,11 @@ function M.Landed( type , data , callback )
 		-- 回调处理
 		--print(data["code"])
 		local result = data
-
 		-- 存储数据
+		DATA_Bag:set(result["bag"])
 		DATA_Session:set({ uid = result["userinfo"]["uid"] , sid = result["userinfo"]["sid"] , server_id = result["userinfo"]["server_id"] })
 		DATA_User:set(result["Userdata"])
 		DATA_Battle:set(result["battle"])
-		--DATA_Account:set( result["_G_account"] )
-		--DATA_Power:set(result["_G_power"])
-		--DATA_Energy:set(result["_G_energy"])
-		-- 登录成功后，跳转到首页
 		switchScene("home")
 	end
 

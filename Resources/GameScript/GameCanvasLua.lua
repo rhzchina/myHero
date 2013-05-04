@@ -19,7 +19,7 @@ SRC = "GameScript/"
 
 xpcall(function()
 	-- 设置图片质量
-	CCDirector:sharedDirector():setProjection(kCCDirectorProjection2D);
+	CCDirector:sharedDirector():setProjection(kCCDirectorProjection2D)
 
 	require(SRC.."Config/base")	-- 配置文件
 	require(SRC.."Common/CommonFunction")
@@ -29,7 +29,7 @@ xpcall(function()
 
 	-- 游戏入口 - 后续可以去掉很多
 	require(SRC.."Data/Session")
-	require(SRC.."Network/Myhttp")
+	require(SRC.."Network/https")
 	--require(SRC.."Network/socket")
 
 	require(SRC.."SwitchScene")

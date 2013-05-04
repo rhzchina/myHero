@@ -12,7 +12,7 @@ function HomeLayer:create(x,y)
 	self.__index = self
 
 	local layer = CCLayer:create()
-	local bg = CCSprite:create("image/scene/home/main.png")
+	local bg = newSprite("image/scene/home/main.png")
 	bg:setAnchorPoint(ccp(0,0))
 	layer:addChild(bg)
 	layer:setPosition(ccp(x,y))
@@ -25,17 +25,17 @@ function HomeLayer:create(x,y)
 							HTTPS:send("Battle" , 
 							 {
 							 	m="Battle",
-							 	a="LineUp",
+							 	a="Battle",
 							 	Battle = "select_up",
-							 	sid = DATA_Session:get("sid"),
-							 	uid = DATA_Session:get("uid"),
-							 	server_id = DATA_Session:get("server_id")
 							 } ,{success_callback = 
 								function()
 									switchScene("lineup")
 								end})
 						end},
-					  {IMG_TEXT.."luggage.png","Luggage",20,300},
+					  {IMG_TEXT.."luggage.png","Luggage",20,300,
+					  function()
+						  switchScene("bag")
+					  end},
 					  {IMG_TEXT.."merge.png","Merge",20,200},
 					  {IMG_TEXT.."strengthen.png","Strengthen",255,400},
 					  {IMG_TEXT.."hero.png","Hero",255,300},
@@ -48,9 +48,6 @@ function HomeLayer:create(x,y)
                            		Fighting = "start",
                            		bHurdle = 530001,
                            		sHurdle = 540001,
-                           		sid = DATA_Session:get("sid"),
-							 	uid = DATA_Session:get("uid"),
-							 	server_id = DATA_Session:get("server_id")
                            	},{success_callback = 
                            	function()
 					  			switchScene("fighting")

@@ -11,7 +11,7 @@ function battleLayer:new(point_x,point_y,params)
 	this.is_select_star = false
 	this.layer = CCLayer:create()
 
-	local bg = CCSprite:create("image/scene/battle/bg.png")
+	local bg = newSprite("image/scene/battle/bg.png")
 	setAnchPos(bg,0,80)
 	this.layer:addChild(bg)
 
