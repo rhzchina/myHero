@@ -88,15 +88,24 @@ function setAnchPos(node,x,y,anX,anY)
 	node:setPosition(ccp(posX,posY))
 end
 
+function newLayer()
+	return CCLayer:create()
+end
+
 function newSprite(path, x, y, anchX, anchY)
-	local sp = CCSprite:create(path)
+	local sp 
+	if path then
+		sp = CCSprite:create(path)
+	else
+		sp = CCSprite:create()
+	end
 	setAnchPos(sp, x, y, anchX, anchY)
 	return sp
 end
 
 function newLabel(str, size, params)
 	local p = params or {}
-	local label = CCLabelTTF:create(str,"Aria",size)
+	local label = CCLabelTTF:create(str,FONT,size)
 	setAnchPos(label, p.x, p.y, p.ax, p.ay)
 	label:setColor(p.color or ccc3(255, 255, 255))
 	return label

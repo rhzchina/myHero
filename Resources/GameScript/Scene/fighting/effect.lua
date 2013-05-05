@@ -25,7 +25,7 @@ function Effect:showByType(type,x,y,delay,params)
 			if not self.added[type] then 
 				print("slash添加")
 				self.added[type] = true
-				self.cache:addSpriteFramesWithFile(COMMONPATH.."effect/slash.plist",COMMONPATH.."effect/slash.png")
+				self.cache:addSpriteFramesWithFile(IMG_EFFECT.."slash.plist",IMG_EFFECT.."slash.png")
 			end
 			
 			for i = 1, 7 do
@@ -35,7 +35,7 @@ function Effect:showByType(type,x,y,delay,params)
 			if not self.added[type] then 
 				print("atk_cut添加")
 				self.added[type] = true
-				self.cache:addSpriteFramesWithFile(COMMONPATH.."effect/atk_cut.plist",COMMONPATH.."effect/atk_cut.png")
+				self.cache:addSpriteFramesWithFile(IMG_EFFECT.."atk_cut.plist",IMG_EFFECT.."atk_cut.png")
 			end
 			for i = 1, 7 do 
 				frames:addObject(self.cache:spriteFrameByName("atk_cut"..i..".png"))

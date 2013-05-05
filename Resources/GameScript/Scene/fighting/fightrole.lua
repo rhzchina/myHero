@@ -1,5 +1,4 @@
-local ICONPATH = "image/myhero/battle/"
-local PATH = "image/scene/fighting/"
+local PATH = IMG_SCENE.."fighting/"
 local KNBar = require("GameScript/Common/KNBar")
 
 local HEROSTART, MONSTERSTART, SPACE = ccp(43,200), ccp(43,530), 40
@@ -12,7 +11,7 @@ local FightRole ={
 	group,
 	id,
 	pos,
-	hpText,
+--	hpText,
 	hpProgress,
 	params	
 }
@@ -66,10 +65,10 @@ function FightRole:new(group,id,pos,params)
 	setAnchPos(border,this.width / 2, this.height / 2, 0.5, 0.5)
 	this.layer:addChild(border)
 	
-	this.hpText = newLabel(this.params["hp"].."/"..this.params["hp"],15)
-	this.hpText:setColor(ccc3(255,0,0))
-	setAnchPos(this.hpText,this.width / 2,0,0.5)
-	this.layer:addChild(this.hpText,15)
+--	this.hpText = newLabel(this.params["hp"].."/"..this.params["hp"],15)
+--	this.hpText:setColor(ccc3(255,0,0))
+--	setAnchPos(this.hpText,this.width / 2,0,0.5)
+--	this.layer:addChild(this.hpText,15)
 
 	--添加血条
 	local bgLayer = CCLayer:create()
@@ -79,10 +78,10 @@ function FightRole:new(group,id,pos,params)
 	bgLayer:addChild(bg)
 	
 	this.hpProgress = CCProgressTimer:create(display.newSprite(PATH.."fore.png"))
-	 setAnchPos(this.hpProgress)
+	setAnchPos(this.hpProgress)
 	this.hpProgress:setType(kCCProgressTimerTypeBar)
 	this.hpProgress:setBarChangeRate(CCPointMake(1, 0)) --动画效果值(0或1)
-	 this.hpProgress:setMidpoint(CCPointMake(0 , 1))--设置进度方向 (0-100)
+	this.hpProgress:setMidpoint(CCPointMake(0 , 1))--设置进度方向 (0-100)
 	this.hpProgress:setPercentage(0)	--设置默认进度值
 	this.hpProgress:runAction(CCProgressTo:create(0.5,100))
 	bgLayer:addChild(this.hpProgress)
@@ -114,7 +113,7 @@ function FightRole:getX()
 end
 
 function FightRole:setHp(curHp)
-	self.hpText:setString(curHp.."/"..self.params["hp"])
+--	self.hpText:setString(curHp.."/"..self.params["hp"])
 	self.hpProgress:setPercentage(curHp / self.params["hp"] * 100)
 end
 

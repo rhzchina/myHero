@@ -133,6 +133,8 @@ void HSHttpRequest::onHttpRequestCompleted(cocos2d::CCNode *sender, void *data)
 	{
 		CCLog("response failed");
 		CCLog("error buffer: %s", response->getErrorBuffer());
+
+		CCScriptEngineManager::sharedManager()->getScriptEngine()->executeFunction(mhandler , statusCode , "");
 		return;
 	}
 

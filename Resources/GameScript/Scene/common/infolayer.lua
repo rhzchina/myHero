@@ -2,6 +2,7 @@ InfoLayer= {
 	layer,     --功能层
 }
 
+local PATH = IMG_SCENE.."navigation/"
 
 function InfoLayer:create(layerName)
 	local this={}
@@ -11,7 +12,7 @@ function InfoLayer:create(layerName)
 	--首页的元素拆分开
 	this.layer = CCLayer:create()
 
-	local bg = newSprite("image/scene/home/Navigation_bg.png")
+	local bg = newSprite(PATH.."navigation_bottom.png")
 	this.layer:addChild(bg)
 
 	local group = RadioGroup:new()
@@ -23,16 +24,20 @@ function InfoLayer:create(layerName)
 		},
 	    {"embattle",
 	    	function()
-	    		HTTPS:send("Battle" ,  {m="Battle",a="Battle",Battle = "select_up"} ,{success_callback = function()
-								switchScene("LineUp")
-							end })
+	    		HTTPS:send("Battle" , 
+		    		{m="Battle",a="Battle",Battle = "select_up"} ,
+		    		{success_callback = function()
+						switchScene("lineup")
+					end })
 	    	end
 	    },
 		{"practice",
 			function()
-				HTTPS:send("Task" ,  {m="Task",a="map",task = "map"} ,{success_callback = function()
-								switchScene("roost")
-							end })
+				HTTPS:send("Task" ,  
+					{m="Task",a="map",task = "map"} ,
+					{success_callback = function()
+						switchScene("roost")
+					end })
 			end
 		},
 		{"plunder",
@@ -60,7 +65,6 @@ function InfoLayer:create(layerName)
 		this.layer:addChild(temp:getLayer())
 		x = x + 78
 	end
-	
     return this
 end
 

@@ -42081,6 +42081,19 @@ static int tolua_Cocos2d_CCLabelTTF_create02(lua_State* tolua_S)
   const char* fontName = ((const char*)  tolua_tostring(tolua_S,3,0));
   float fontSize = ((float)  tolua_tonumber(tolua_S,4,0));
   {
+//这里是在win32平台将使用的字体替换为对应字体
+	#ifdef WIN32
+	 int len = MultiByteToWideChar(CP_UTF8, 0, fontName, -1, NULL, 0);
+	  wchar_t* wstr = new wchar_t[len+1];
+	  memset(wstr, 0, len+1);
+	  MultiByteToWideChar(CP_UTF8, 0, fontName, -1, wstr, len);
+	  len = WideCharToMultiByte(CP_ACP, 0, wstr, -1, NULL, 0, NULL, NULL);
+	  char* temp = new char[len+1];
+	  memset(temp, 0, len+1);
+	  WideCharToMultiByte(CP_ACP, 0, wstr, -1, temp, len, NULL, NULL);
+	  if(wstr) delete[] wstr;
+	  fontName = temp;	
+	#endif 
    CCLabelTTF* tolua_ret = (CCLabelTTF*)  CCLabelTTF::create(str,fontName,fontSize);
     int nID = (tolua_ret) ? (int)tolua_ret->m_uID : -1;
     int* pLuaID = (tolua_ret) ? &tolua_ret->m_nLuaID : NULL;

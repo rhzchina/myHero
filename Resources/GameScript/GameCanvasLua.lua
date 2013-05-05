@@ -44,6 +44,8 @@ xpcall(function()
 
 	----------------
 	-- 创建登录场景
+--	switchScene("login")
+	
 	switchScene("login")
 
 end, __G__TRACKBACK__)

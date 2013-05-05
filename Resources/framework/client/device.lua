@@ -117,6 +117,10 @@ echoInfo("# device.language              = " .. device.language)
 echoInfo("# device.writeablePath         = " .. device.writeablePath)
 echoInfo("#")
 
+if device.platform == "android" then
+	FONT = "font/font.ttf"
+end
+
 --[[--
 
 Displays a platform-specific activity indicator.

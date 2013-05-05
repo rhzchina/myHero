@@ -1,5 +1,4 @@
-local PATH = "image/scene/fighting/"
-local LuaBtn = require "GameScript/Common/LuaBtn"
+local PATH = IMG_SCENE.."fighting/"
 local FightRole = require "GameScript/Scene/fighting/fightrole"
 local Effect = require "GameScript/Scene/fighting/effect"
 local data = DATA_Fighting
@@ -31,7 +30,7 @@ local this = {}
 	this.layer:addChild(bg)
 	
 	--跳 过按钮
-	local exit = LuaBtn:new(PATH,{"fighting_quit.png"},420,800,{
+	local exit = Btn:new(PATH,{"fighting_quit.png"},420,800,{
 		scale = true,
 		callback = 
 		function()

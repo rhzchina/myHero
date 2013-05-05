@@ -4,7 +4,7 @@
 
 ]]
 local START, REGISTER, MANAGER = 1, 2, 3 
-local PATH = "login/"
+local PATH = IMG_SCENE.."login/"
 local M = {
 	layer,
 	optLayer,
@@ -61,7 +61,7 @@ function M:create( ... )
 --跳 过按钮
 
 
-	local exit = Btn:new("image/scene/fighting/",{"fighting_quit.png"},420,800,{
+	local exit = Btn:new(IMG_SCENE.."fighting/",{"fighting_quit.png"},420,800,{
 		scale = true,
 		priority = -199,
 		callback = 
@@ -83,7 +83,7 @@ function M:createOptBox(state)
 	if state then	
 		self.optLayer = CCLayer:create()
 		
-		local bg = newSprite(IMG_SCENE..PATH.."login_opt_bg.png")
+		local bg = newSprite(PATH.."login_opt_bg.png")
 		setAnchPos(bg, 240, 425, 0.5, 0.5)
 		self.optLayer:addChild(bg)
 		
@@ -140,7 +140,7 @@ function M:accountInput()
 	setAnchPos(accountText,10,500)
 	self.optLayer:addChild(accountText)
 	
-	accountText = newSprite(IMG_COMMON.."input_bg.png")
+	accountText = newSprite(PATH.."input_bg.png")
 	setAnchPos(accountText,120,480)
 	self.optLayer:addChild(accountText)
 	
@@ -149,7 +149,7 @@ function M:accountInput()
 	setAnchPos(pwdText,10,420)
 	self.optLayer:addChild(pwdText)
 	
-	pwdText = newSprite(IMG_COMMON.."input_bg.png")
+	pwdText = newSprite(PATH.."input_bg.png")
 	setAnchPos(pwdText,120,400)
 	self.optLayer:addChild(pwdText)
 --	

@@ -15,7 +15,7 @@ require("GameScript/Data/CardAll")
 require("GameScript/Data/MapNum")
 require("GameScript/Data/MapSmall")
 require("GameScript/Data/Fighting")
-require("GameScript/DATA/Bag")
+require("GameScript/Data/Bag")
 
 local M = {}
 

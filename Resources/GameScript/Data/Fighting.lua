@@ -24,7 +24,8 @@ end
 --获取攻击类型
 function DATA_Fighting:getAttackType()
 	if not _data then
-		local file = io.open("/mnt/sdcard/fight.txt","r")
+--		local file = io.open("/mnt/sdcard/fight.txt","r")
+		local file = io.open("c:\\fight.txt","r")
 		local str = file:read("*a")
 		_data = json.decode(str)["start"]	
 		file:close()

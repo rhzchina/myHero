@@ -4,17 +4,19 @@ MHLayer= {
 
 require "GameScript/Scene/common/CardInfo"
 
+local PATH = IMG_SCENE.."navigation/"
+
 function MHLayer:create(x,y)
 	local this={}
 	setmetatable(this,self)
 	self.__index = self
 
 	local layer = CCLayer:create()
-	local bg = newSprite("image/scene/home/MHbg.png")
+	local bg = newSprite(PATH.."navigation_top.png")
 	layer:addChild(bg)
 
 	--等级
-	local leve  = newSprite("image/scene/home/Level.png")
+	local leve  = newSprite(PATH.."level_bg.png")
 	leve:setPosition(ccp(22,20))
 	layer:addChild(leve)
 
@@ -27,10 +29,10 @@ function MHLayer:create(x,y)
 	label_user:setPosition(ccp(100,63));
 	layer:addChild(label_user)
 
-	local Gas  = newSprite("image/scene/home/Gas_bg.png")--体力值
-	local Silver  = newSprite("image/scene/home/Silver_bg.png")--银两
-	local GoldLeaf  = newSprite("image/scene/home/GoldLeaf.png")--金叶子
-	local PhysicalValue  = newSprite("image/scene/home/PhysicalValue.png")--气
+	local Gas  = newSprite(PATH.."gas_bg.png")
+	local Silver  = newSprite(PATH.."silver_bg.png")--银两
+	local GoldLeaf  = newSprite(PATH.."gold_bg.png")--金叶子
+	local PhysicalValue  = newSprite(PATH.."power_bg.png")
 
 	Gas:setPosition(ccp(345,20))
 	Silver:setPosition(ccp(230,60))

@@ -13,7 +13,6 @@ local _data = {}
 
 function DATA_Session:set(data)
 	_data = data
-	dump(_data)
 end
 
 

@@ -17,21 +17,22 @@ function M:create( ... )
 	setAnchPos(bg, 0, 80)
 	this.layer:addChild(bg)
 	
-
-	
 	this.tabGroup = RadioGroup:new()
 	
 	local tabs = {
-		{"arms"},
+		{"equip"},
 		{"hero"},
 		{"skill"},
-		{"pet"},
 		{"prop"}
 	}
 	
 	local x = 12
 	for k, v in pairs(tabs) do
-		local btn = Btn:new(IMG_COMMON.."tabs/", {"tab_"..v[1]..".png", "tab_"..v[1].."_select.png"}, x, 628, { },this.tabGroup)
+		local btn = Btn:new(IMG_COMMON.."tabs/", {"tab_"..v[1]..".png", "tab_"..v[1].."_select.png"}, x, 628, { 
+			callback = function()
+				this:createList(v[1])
+			end
+		},this.tabGroup)
 		this.layer:addChild(btn:getLayer())		
 		x = x + btn:getWidth() + 5 
 	end
@@ -51,8 +52,8 @@ function M:createList(kind)
 	self.listLayer = CCLayer:create()
 	
 	local scroll = ScrollView:new(5,175,480,450,5)
-	for k, v in pairs(DATA_Bag:get("hero")) do
-		local item = ITEM:new(kind,v["card_id"])
+	for k, v in pairs(DATA_Bag:get(kind)) do
+		local item = ITEM:new(kind,v["id"])
 		scroll:addChild(item:getLayer(),item)
 	end
 	scroll:alignCenter()

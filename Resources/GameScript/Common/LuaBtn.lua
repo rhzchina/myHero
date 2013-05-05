@@ -169,10 +169,10 @@ function LuaBtn:new(path, file, x, y, params, group)
 
 	--可以在按钮上添加其他的图层，暂时用来做宠物主页的宠物状态标签
 	if this.params["other"] then
-		local state = display.newSprite(this.params["other"][1])
+		this.item["other"] = newSprite(this.params["other"][1])
 --		setAnchPos(bg,60,20)
-		setAnchPos(state,this.params["other"][2] ,this.params["other"][3])
-		this.layer:addChild(state,11)
+		setAnchPos(this.item["other"],this.params["other"][2] ,this.params["other"][3],0.5,0.5)
+		this.layer:addChild(this.item["other"],11)
 --		this.layer:addChild(this.params["other"][1])
 --		this.layer:setContentSize(CCSize:new(this.item[1]:getContentSize().width + bg:getContentSize().width / 2,this.item[1]:getContentSize().height))
 	end
@@ -339,6 +339,10 @@ function LuaBtn:setState(state)
 						 	end
 							setAnchPos(front,x,y)
 						end
+						
+						if self.item["other"] then
+							self.item["other"]:setScale(1)
+						end
 					end
 					if self.params["highLight"] then
 						transition.tintTo(self.item[1])
@@ -368,6 +372,7 @@ function LuaBtn:setState(state)
 				cur:setScale(scale)
 				setAnchPos(cur,-(cur:getContentSize().width * scale - cur:getContentSize().width ) / 2,
 				 -(cur:getContentSize().height * scale - cur:getContentSize().height ) / 2)
+				 
 				 if self.item["front"] then
 				 	local front = self.item["front"]
 				 	front:setScale(scale)
@@ -382,6 +387,10 @@ function LuaBtn:setState(state)
 					 	end
 				 	end
 				 	setAnchPos(front,x,y)
+				 end
+				 
+				 if self.item["other"] then
+					 self.item["other"]:setScale(scale)
 				 end
 			end
 			if self.params["highLight"] then
