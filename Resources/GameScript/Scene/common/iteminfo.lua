@@ -18,13 +18,11 @@ function ItemInfo:new(kind,id,params)
 	this.layer:addChild(bg)
 	this.layer:setContentSize(bg:getContentSize())
 	
-	local icon = Btn:new(IMG_COMMON,{"icon_bg"..DATA_Bag:get(kind,id,"start")..".png"}, 25, 30, {
-		front = IMG_ICON..kind.."/S_"..id..".png",
-		other = {IMG_COMMON.."icon_border"..DATA_Bag:get(kind,id,"start")..".png",45,45},
+	local icon = Btn:new(IMG_COMMON,{"icon_bg"..DATA_Bag:get(kind,id,"star")..".png"}, 25, 30, {
+		front = IMG_ICON..kind.."/S_"..DATA_Bag:get(kind,id,"look")..".png",
+		other = {IMG_COMMON.."icon_border"..DATA_Bag:get(kind,id,"star")..".png",45,45},
 		scale = true,
-		callback = function()
-			print(id)
-		end
+		callback = this.params.iconCallback
 	})
 	this.layer:addChild(icon:getLayer())
 	
@@ -34,7 +32,7 @@ function ItemInfo:new(kind,id,params)
 	text = newLabel("等级:"..DATA_Bag:get(kind,id,"lev"),20,{x = 150, y = 60, color = ccc3(0,0,0)})
 	this.layer:addChild(text)
 	
-	for i = 1, DATA_Bag:get(kind,id,"start") do
+	for i = 1, DATA_Bag:get(kind,id,"star") do
 		icon = newSprite(IMG_COMMON.."star.png")
 		setAnchPos(icon, 150 + (i - 1) * 25, 30)
 		this.layer:addChild(icon)

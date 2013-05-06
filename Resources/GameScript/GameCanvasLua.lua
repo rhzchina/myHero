@@ -39,6 +39,7 @@ xpcall(function()
 	ScrollView = require(SRC.."Common/LuaScrollView")
 	RadioGroup = require(SRC.."Common/LuaRadioGroup")
 	CheckBox = require(SRC.."Common/LuaCheckBox")
+	Mask = require(SRC.."Common/LuaMask")
 	
 	require(SRC.."Common/KNMsg")
 

@@ -12,7 +12,7 @@ function LULayer:create(x,y)
 	local layer = CCLayer:create()
 	--layer:setPosition(ccp(x,y))
 
-	local bg = newSprite("image/scene/home/LineUp.png")
+	local bg = newSprite(IMG_COMMON.."formation_bg.png")
 	setAnchPos(bg,x,y)
 	layer:addChild(bg)
 

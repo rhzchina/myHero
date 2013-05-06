@@ -1,5 +1,7 @@
 local PATH = "bag/"
 local ITEM = require(SRC.."Scene/common/iteminfo")
+local Detail = require(SRC.."Scene/common/carddetail")
+
 local M = {
 	layer,
 	listLayer,
@@ -40,8 +42,10 @@ function M:create( ... )
 	local separator = newSprite(IMG_COMMON.."tabs/tab_separator.png")
 	setAnchPos(separator,0,627)
 	this.layer:addChild(separator)
+	
+	this.tabGroup:chooseByIndex(1,true)
 
-	this:createList("hero")
+	this.layer:addChild(InfoLayer:create():getLayer())
 	return this.layer
 end
 
@@ -51,9 +55,13 @@ function M:createList(kind)
 	end
 	self.listLayer = CCLayer:create()
 	
-	local scroll = ScrollView:new(5,175,480,450,5)
+	local scroll = ScrollView:new(0,90,480,535,5)
 	for k, v in pairs(DATA_Bag:get(kind)) do
-		local item = ITEM:new(kind,v["id"])
+		local item = ITEM:new(kind,v["cid"],{
+			iconCallback = function()
+				self.layer:addChild(Detail:new():getLayer(),1)
+			end
+		})
 		scroll:addChild(item:getLayer(),item)
 	end
 	scroll:alignCenter()

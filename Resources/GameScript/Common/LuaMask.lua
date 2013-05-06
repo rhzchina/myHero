@@ -9,7 +9,7 @@
 
 local M = {}
 
-function M.new(args)
+function M:new(args)
 	local args = args or {}
 
 	local r = args.r or 0
@@ -46,7 +46,6 @@ function M.new(args)
 
 	if item ~= nil then
 	    view:addChild(item)
-	    print(item)
 	end
 
 	function view:show()

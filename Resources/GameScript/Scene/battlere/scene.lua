@@ -29,7 +29,7 @@ function M:create()
 	scene:addChild(msgLayer:create(0,804))
 	scene:addChild(MHLayer:create(0,686))
 
-	scene:addChild(InfoLayer:create("lineup"):getMainView())
+	scene:addChild(InfoLayer:create("lineup"):getLayer())
 --	scene:addChild(BTLuaLayer())
 	---------------------------------------------
 

@@ -89,7 +89,7 @@ function LuaScrollView:new(x,y,width,height,divider,horizontal,mode,params)
 
 	local function inertiaScroll(x,y) -- 此函数在列表模式时做惯性滑动的判断
 		local params  --跟据触摸时间判断是否要惯性滑动
-		if os.clock() - lastTime < 0.3 then
+		if os.clock() - lastTime < 0.2 then
 			local value
 			if this.horizontal then
 				value = (x - lastTouchPt.x) / (os.clock() - lastTime)

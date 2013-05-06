@@ -20,7 +20,6 @@ function KNMsg:new()
 		store.text = ""
 		store.isAction = false    --是否有动画在执行
 		
-		local KNMask = require("GameScript/Common/KNMask")
 		local mask = nil
 		
 		--检查及初始化参数
@@ -161,7 +160,7 @@ function KNMsg:new()
 				})
 			elseif type == 1 then  -- 有遮罩，显示后存在于屏幕上，等待操作
 				--渐变显示
-				mask = KNMask.new({item = target})
+				mask = Mask.new({item = target})
 				scene:addChild(mask)
 				
 				transition.fadeIn(target , {

@@ -27,7 +27,7 @@ function M:create()
 	scene:addChild(MHLayer:create(0,686))
 	local herolineupLayer = hlplayer:new(0,88)
 	scene:addChild(herolineupLayer:getLayer())
-	scene:addChild(InfoLayer:create("lineup"):getMainView())
+	scene:addChild(InfoLayer:create("lineup"):getLayer())
 --	scene:addChild(BTLuaLayer())
 	---------------------------------------------
 

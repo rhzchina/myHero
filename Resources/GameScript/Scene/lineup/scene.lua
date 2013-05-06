@@ -22,7 +22,7 @@ function M:create()
 
 	---------------插入layer---------------------
 	scene:addChild(lineup:new(15,60):getLayer())
-	scene:addChild(InfoLayer:create("lineup"):getMainView())
+	scene:addChild(InfoLayer:create("lineup"):getLayer())
 --	scene:addChild(BTLuaLayer())
 	---------------------------------------------
 

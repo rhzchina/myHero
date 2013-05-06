@@ -9,7 +9,6 @@ loading
 
 local M = {}
 
-local KNMask = require(SRC.."Common/KNMask")--require("GameLuaScript/Common/KNMask")
 
 function M.new(args)
 	local args = args or {}
@@ -23,7 +22,7 @@ function M.new(args)
 	local action = CCRepeatForever:create( CCRotateBy:create(0.5 , 180) )
 	sprite:runAction(action)
 
-	local view = KNMask.new({item = sprite , click = click})
+	local view = Mask:new({item = sprite , click = click})
 
 	return view
 end

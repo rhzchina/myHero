@@ -21,9 +21,6 @@ function M:create()
 
 	---------------插入layer---------------------
 	scene:addChild( bagLayer:create() )
-	scene:addChild(InfoLayer:create("lineup"):getMainView())
-	scene:addChild(msgLayer:create(0,804))
-	scene:addChild(MHLayer:create(0,686))
 	---------------------------------------------
 
 	return scene

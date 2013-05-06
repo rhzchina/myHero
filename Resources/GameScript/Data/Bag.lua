@@ -4,7 +4,6 @@ local _data
 
 function DATA_Bag:set(data)
 	_data = data
-	dump(_data)
 end
 
 function DATA_Bag:get(...)
@@ -15,7 +14,7 @@ function DATA_Bag:get(...)
 		if not result then
 			dump(_data[arg[1]])
 			dump(arg)		
-			print("取到resut为空")
+			print(arg[i],"取到resut为空")
 			break
 		end
 	end
