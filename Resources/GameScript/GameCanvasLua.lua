@@ -27,11 +27,10 @@ xpcall(function()
 	require("framework/init")
 	require("framework/client/init")
 
-	-- 游戏入口 - 后续可以去掉很多
 	require(SRC.."Data/Session")
 	require(SRC.."Network/https")
-	--require(SRC.."Network/socket")
 
+	-- 游戏入口 - 后续可以去掉很多
 	require(SRC.."SwitchScene")
 
 	-- 常用组件
@@ -43,10 +42,7 @@ xpcall(function()
 	
 	require(SRC.."Common/KNMsg")
 
-	----------------
-	-- 创建登录场景
---	switchScene("login")
-	
+
 	switchScene("login")
 
 end, __G__TRACKBACK__)

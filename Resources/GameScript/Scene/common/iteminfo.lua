@@ -22,6 +22,7 @@ function ItemInfo:new(kind,id,params)
 		front = IMG_ICON..kind.."/S_"..DATA_Bag:get(kind,id,"look")..".png",
 		other = {IMG_COMMON.."icon_border"..DATA_Bag:get(kind,id,"star")..".png",45,45},
 		scale = true,
+		parent = this.params.parent,
 		callback = this.params.iconCallback
 	})
 	this.layer:addChild(icon:getLayer())

@@ -5,7 +5,7 @@ function roostLayer:new(x,y)
 	self.__index  = self
 
 	this.layer = CCLayer:create()
-	local bg = newSprite("image/scene/battle/bg.png")
+	local bg = newSprite(IMG_COMMON.."bg.png")
 	setAnchPos(bg,0,85)
 	this.layer:addChild(bg)
 

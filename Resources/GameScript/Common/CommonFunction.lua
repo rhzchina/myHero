@@ -106,7 +106,12 @@ end
 function newLabel(str, size, params)
 	local p = params or {}
 	local label = CCLabelTTF:create(str,FONT,size)
+	if p.dimensions then
+		label:setDimensions(p.dimensions)
+	end
 	setAnchPos(label, p.x, p.y, p.ax, p.ay)
 	label:setColor(p.color or ccc3(255, 255, 255))
+	
+
 	return label
 end

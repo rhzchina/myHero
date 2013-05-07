@@ -12,7 +12,7 @@ function switchScene( name , temp_data , callback )
 	-- 去掉所有未完成的动作
 	CCDirector:sharedDirector():getActionManager():removeAllActions()
 
-	local scene_file = "GameScript/Scene/" .. name .. "/scene"
+	local scene_file = SRC.."Scene/" .. name .. "/scene"
 	local scene = require(scene_file)
 
 	-- echoLog("Scene" , "Load Scene [" .. name .. "]")

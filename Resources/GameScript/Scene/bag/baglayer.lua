@@ -58,8 +58,9 @@ function M:createList(kind)
 	local scroll = ScrollView:new(0,90,480,535,5)
 	for k, v in pairs(DATA_Bag:get(kind)) do
 		local item = ITEM:new(kind,v["cid"],{
+			parent = scroll,	
 			iconCallback = function()
-				self.layer:addChild(Detail:new():getLayer(),1)
+				self.layer:addChild(Detail:new(kind,v["cid"]):getLayer(),1)
 			end
 		})
 		scroll:addChild(item:getLayer(),item)
