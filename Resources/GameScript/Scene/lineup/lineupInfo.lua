@@ -1,5 +1,8 @@
+local PATH = IMG_SCENE.."embattle/"
+	local CardInfo = require(SRC.."Scene/common/CardInfo")
 
 local lineuinfoplayer = {layer,point_x,point_y,is_clickon,is_select,datas,gid}
+
 function lineuinfoplayer:new(index,sv,data,x,y,params)
 	local this = {}
 	setmetatable(this,self)
@@ -12,20 +15,19 @@ function lineuinfoplayer:new(index,sv,data,x,y,params)
 	this.datas = data
 	this.layer = CCLayer:create()
 	setAnchPos(this.layer,this.point_x,this.point_y)
-	this.layer:setContentSize(CCSize(480,624))
-	local btn = require"GameScript/Common/LuaBtn"
+	this.layer:setContentSize(CCSize(450,624))
 
-	local main_bt = {{"Weapon/",20,540-this.point_y},
-								{"Armor/",20,415-this.point_y},
-								{"Decoration/",20,290-this.point_y},
-								{"Cheats/",380,540-this.point_y},
-								{"Cheats/",380,415-this.point_y},
-								{"Cheats/",380,290-this.point_y}
+	local main_bt = {{"Weapon/",5,540-this.point_y},
+								{"Armor/",5,415-this.point_y},
+								{"Decoration/",5,290-this.point_y},
+								{"Cheats/",365,540-this.point_y},
+								{"Cheats/",365,415-this.point_y},
+								{"Cheats/",365,290-this.point_y}
 							   }
 
 	local temp
 	for i ,v in pairs(main_bt) do
-	    temp = btn:new("image/buttonUI/Lineup/"..v[1],{"def.png","def.png"},v[2],v[3],
+	    temp = Btn:new("image/buttonUI/Lineup/"..v[1],{"def.png","def.png"},v[2],v[3],
 	    		{
 					parent = sv,
 	    			--front = v[3],
@@ -49,59 +51,55 @@ function lineuinfoplayer:new(index,sv,data,x,y,params)
 	end
 
 
-	 --------[[英雄信息]]
-	local hero_bg = newSprite("image/card/card_box.png")
-	setAnchPos(hero_bg,110,284-this.point_y)
-	this.layer:addChild(hero_bg)
-
+	local card = CardInfo:new(95,190,{type = "hero",cid = data["cid"]})
+	this.layer:addChild(card:getLayer())
+	
 	--------[[英雄描述]]
-	local desc_cald = newSprite("image/scene/lineup/line.png")----英雄
-	setAnchPos(desc_cald,25,160-this.point_y)
+	local desc_cald = newSprite(PATH.."line.png")----英雄
+	setAnchPos(desc_cald,10,160-this.point_y)
 	this.layer:addChild(desc_cald)
 
 if _G.next (data)  ~= nil then
 		this.is_click = false
-		this.gid = data["card_id"]
-		local hero_cald = newSprite(IMG_ICON.."hero/L_"..data["card_id"]..".png")----英雄
-		setAnchPos(hero_cald,123,340-this.point_y)
-		this.layer:addChild(hero_cald)
+		this.gid = data["cid"]
+		
 
-		local blood = newSprite("image/card/blood.png")----英雄
-		setAnchPos(blood,129,342-this.point_y)
-		this.layer:addChild(blood)
-
-
-		local text_blood = newLabel(data["hp"]..index,  15)
-		setAnchPos(text_blood,170,352-this.point_y)
-		this.layer:addChild(text_blood )
-
-		local anti = newSprite("image/card/anti.png")----英雄
-	setAnchPos(anti,200,342-this.point_y)
-	this.layer:addChild(anti)
-
-
-		local text_anti = newLabel(data["defe"] , 15)
-		setAnchPos(text_anti,240,352-this.point_y)
-		this.layer:addChild(text_anti )
-
-		local Attack = newSprite("image/card/Attack.png")----英雄
-		setAnchPos(Attack,270,342-this.point_y)
-		this.layer:addChild(Attack)
-
-
-		local text_att = newLabel(data["att"] , 15)
-		setAnchPos(text_att,310,352-this.point_y)
-		this.layer:addChild(text_att )
-
-		local lev_box = newSprite("image/card/lever_box.png")----英雄
-		setAnchPos(lev_box,125,298-this.point_y)
-		this.layer:addChild(lev_box)
-
-
-		local KNBar = require("GameScript/Common/KNBar")
-		local card_bar = KNBar:new("cardinfo" , 122 , 512 +this.point_y, {maxValue=data["quick"], curValue=data["scalequ"]})
-		card_bar:setIsShowText(false)
-		this.layer:addChild(card_bar)
+--		local blood = newSprite("image/card/blood.png")----英雄
+--		setAnchPos(blood,129,342-this.point_y)
+--		this.layer:addChild(blood)
+--
+--
+--		local text_blood = newLabel(getBag("hero",this.gid,"hp")..index,  15)
+--		setAnchPos(text_blood,170,352-this.point_y)
+--		this.layer:addChild(text_blood )
+--
+--		local anti = newSprite("image/card/anti.png")----英雄
+--	setAnchPos(anti,200,342-this.point_y)
+--	this.layer:addChild(anti)
+--
+--
+--		local text_anti = newLabel(getBag("hero",this.gid,"defe") , 15)
+--		setAnchPos(text_anti,240,352-this.point_y)
+--		this.layer:addChild(text_anti )
+--
+--		local Attack = newSprite("image/card/Attack.png")----英雄
+--		setAnchPos(Attack,270,342-this.point_y)
+--		this.layer:addChild(Attack)
+--
+--
+--		local text_att = newLabel(getBag("hero",this.gid,"att") , 15)
+--		setAnchPos(text_att,310,352-this.point_y)
+--		this.layer:addChild(text_att )
+--
+--		local lev_box = newSprite("image/card/lever_box.png")----英雄
+--		setAnchPos(lev_box,125,298-this.point_y)
+--		this.layer:addChild(lev_box)
+--
+--
+--		local KNBar = require("GameScript/Common/KNBar")
+--		local card_bar = KNBar:new("cardinfo" , 122 , 512 +this.point_y, {maxValue=getBag("hero",this.gid,"quick"), curValue=getBag("hero",this.gid,"scalequ")})
+--		card_bar:setIsShowText(false)
+--		this.layer:addChild(card_bar)
 
 		--------[[英雄描述]]
 		local desc_test = {
@@ -131,6 +129,7 @@ if _G.next (data)  ~= nil then
 					--放开后执行回调
 					if this:getRange():containsPoint(ccp(x,y)) then
 								print("~~~~~~~~~~~~~~")
+								
 								if  x > 108 and x < 371 and y > 284 and y < 626 then
 									if _G.next (data)  ~= nil then
 										this:set_click(true)

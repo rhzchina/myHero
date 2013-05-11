@@ -15,7 +15,7 @@ function M:create( ... )
 	
 	this.layer = CCLayer:create()
 	
-	local bg = newSprite(IMG_COMMON.."bg.png")
+	local bg = newSprite(IMG_COMMON.."common_bg1.png")
 	setAnchPos(bg, 0, 80)
 	this.layer:addChild(bg)
 	

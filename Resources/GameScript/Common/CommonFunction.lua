@@ -88,6 +88,18 @@ function setAnchPos(node,x,y,anX,anY)
 	node:setPosition(ccp(posX,posY))
 end
 
+function getData(type, ...)
+	local DATA
+	if type == "bag" then
+		DATA = DATA_Bag
+	end
+	return DATA:get(...)
+end
+
+function getBag(...)
+	return getData("bag",...)
+end
+
 function newLayer()
 	return CCLayer:create()
 end

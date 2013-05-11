@@ -32,13 +32,13 @@ function LULayer:create(x,y)
 	for i = 1,num do
 		if i <= size then
 			if _G.next (DATA_Battle:get(i) )  ~= nil then
-				card = CILayer:create(1,DATA_Battle:get(1)["card_id"],56,530,{parent = sv,
+				card = CILayer:create(1,DATA_Battle:get(1)["cid"],56,530,{parent = sv,
 																callback = function(card_this,card_x,card_y)
 																					print(i)
 																end})
 				sv:addChild(card:getLayer(),card)
 			elseif _G.next (DATA_Battle:get(i) )  == nil  then
-				card = CILayer:create(2,DATA_Battle:get(1)["card_id"],56,530,{parent = sv,
+				card = CILayer:create(2,DATA_Battle:get(1)["cid"],56,530,{parent = sv,
 																callback = function(card_this,card_x,card_y)
 																					print(i)
 																end})

@@ -9,7 +9,7 @@ end
 function DATA_Bag:get(...)
 	local result = _data
 	for i = 1, arg["n"] do
-		result = result[arg[i]]
+		result = result[arg[i]..""]
 		
 		if not result then
 			dump(_data[arg[1]])

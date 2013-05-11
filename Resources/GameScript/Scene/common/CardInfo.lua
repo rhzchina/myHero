@@ -1,64 +1,82 @@
+local PATH = IMG_SCENE.."detail/"
 --卡牌信息
-CILayer= {
+local CardInfo= {
 	layer,  --信息头
 }
 
-function CILayer:create(type,id,point_x,point_y,params)
+	function CardInfo:new(x,y,params)
 	local this={}
 	setmetatable(this,self)
 	self.__index = self
 	this.params = params or {}
-	this.layer = CCLayer:create()
-	--this.layer:setPosition(ccp(point_x,point_y))
-
-	if type == 1 then
-		local header_bg = newSprite("image/UserAvatar/UserAvatarbg.png")
-		this.layer:addChild(header_bg)
-		local header_box = newSprite("image/UserAvatar/UserAvatarbox.png")
-		local header = newSprite(IMG_ICON.."role/S_"..id..".png")
-
-
-		this.layer:addChild(header)
-		this.layer:addChild(header_box)
-		this.layer:setContentSize(CCSize:new(header_box:getContentSize().width+20,header_box:getContentSize().height))
-	elseif type == 2 then
-		local header_bg = newSprite("image/UserAvatar/nouserbg.png")
-		this.layer:addChild(header_bg)
-
-		local header_box = newSprite("image/UserAvatar/nouser.png")
-		this.layer:addChild(header_box)
-		this.layer:setContentSize(CCSize:new(header_box:getContentSize().width+20,header_box:getContentSize().height))
+	this.layer = newLayer()
+	
+	local bg
+	if this.params.type == "hero" then
+		bg = newSprite(PATH..params.type.."_card_bg.png")
 	else
-		local header_box = newSprite("image/UserAvatar/suo.png")
-		this.layer:addChild(header_box)
-		this.layer:setContentSize(CCSize:new(header_box:getContentSize().width+20,header_box:getContentSize().height))
+		bg = newSprite(PATH.."other_card_bg.png")
 	end
-
-	this.layer:setTouchEnabled(true)
-
-	function this.layer:onTouch(type, x, y)
-
-		if type == CCTOUCHBEGAN then
-
-		elseif type == CCTOUCHMOVED then
-
-		elseif type == CCTOUCHENDED then
-				if this:getRange():containsPoint(ccp(x,y)) then
-									if params["callback"] then
-										params["callback"]()
-									end
-					end
+	setAnchPos(bg)
+	this.layer:addChild(bg)
+	
+	this.layer:setContentSize(bg:getContentSize())
+	setAnchPos(this.layer, x, y)
+	
+	if this.params.cid then --若阵容位置有武将
+		--头像
+		local icon = newSprite(IMG_ICON..this.params.type.."/L_"..getBag(this.params.type,this.params.cid,"look")..".png")
+		setAnchPos(icon, bg:getContentSize().width / 2, bg:getContentSize().height/ 2, 0.5, 0.5)
+		this.layer:addChild(icon)
+		
+		--星级
+		local star, y = nil, 300
+		for i = 1, getBag(this.params.type, this.params.cid, "star") do
+			star = newSprite(IMG_COMMON.."star.png")
+			setAnchPos(star, 220, y)
+			
+			y = y - star:getContentSize().height
+			this.layer:addChild(star)
 		end
-		return true
+		
+		local exp = Progress:new(IMG_COMMON, {"progress_bg.png", "progress_blue.png"}, 50, 55, {
+			cur = 50,
+			leftIcon = {"circle_box.png", 10, 12}
+		})
+		this.layer:addChild(exp:getLayer())
+		
+		local proBg = newSprite(PATH.."pro_bg_red.png")
+		setAnchPos(proBg, 20, 20)
+		this.layer:addChild(proBg)
+		
+		proBg = newSprite(PATH.."name_bg.png")
+		setAnchPos(proBg, 20, 190)
+		this.layer:addChild(proBg)
+		
+		local proText = newLabel("血 9999", 20, {x = 30, y = 20})
+		this.layer:addChild(proText)
+		
+		proText = newLabel("攻 9999", 20, {x = 105, y = 20})
+		this.layer:addChild(proText)
+		
+		proText = newLabel("防 9999", 20, {x = 175, y = 20})
+		this.layer:addChild(proText)
+		
+		proText = newLabel("99", 20, {x = 30, y = 55})	
+		this.layer:addChild(proText)
+		
+		local str = getBag(this.params.type, this.params.cid, "name")
+		local height = string.len(str) / 3 * 30 
+		proText = newLabel(str, 25, {x = 25, y = 190 + (proBg:getContentSize().height - height ) / 2, dimensions = CCSizeMake(30,height)})
+		this.layer:addChild(proText)
 	end
-
-	this.layer:registerScriptTouchHandler(function(type,x,y) return this.layer:onTouch(type,x,y) end,false,-128,false)
+	
 
 	return this
 end
 
 
-function CILayer:getRange()
+function CardInfo:getRange()
 	local x = self.layer:getPositionX()
 	local y = self.layer:getPositionY()
 --	if self.params["parent"] then
@@ -76,6 +94,12 @@ function CILayer:getRange()
 	return CCRectMake(x,y,self.layer:getContentSize().width,self.layer:getContentSize().height)
 end
 
-function CILayer:getLayer()
+function CardInfo:getLayer()
 	return self.layer
 end
+
+function CardInfo:getWidth()
+	return self.layer:getContentSize().width
+end
+
+return CardInfo

@@ -11,7 +11,6 @@ collectgarbage("setstepmul" , 5000)
 
 -- [[ 包含各种 Layer ]]
 local lineup = require "GameScript/Scene/lineup/lineuplayer"
-require "GameScript/Scene/common/infolayer"
 
 
 
@@ -22,7 +21,7 @@ function M:create()
 
 	---------------插入layer---------------------
 	scene:addChild(lineup:new(15,60):getLayer())
-	scene:addChild(InfoLayer:create("lineup"):getLayer())
+	scene:addChild(InfoLayer:create(true):getLayer())
 --	scene:addChild(BTLuaLayer())
 	---------------------------------------------
 

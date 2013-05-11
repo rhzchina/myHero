@@ -39,7 +39,7 @@ xpcall(function()
 	RadioGroup = require(SRC.."Common/LuaRadioGroup")
 	CheckBox = require(SRC.."Common/LuaCheckBox")
 	Mask = require(SRC.."Common/LuaMask")
-	
+	Progress = require(SRC.."Common/LuaProgress")
 	require(SRC.."Common/KNMsg")
 
 

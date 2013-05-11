@@ -26,7 +26,7 @@ function M:create()
 	---------------插入layer---------------------
 	scene:addChild(HomeLayer:create(0,0))
 
-	scene:addChild(LULayer:create(0,493))
+--	scene:addChild(LULayer:create(0,493))
 
 	scene:addChild(InfoLayer:create("home"):getLayer())
 --	scene:addChild(BTLuaLayer())

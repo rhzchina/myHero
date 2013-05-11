@@ -41,6 +41,8 @@ end
 function M.Battle( type , data , callback )
 	if type == 1 then
 	else
+	
+	dump(data)
 		local result = data
 		if result["type"] == 1 then
 

@@ -5,7 +5,7 @@ function roostLayer:new(x,y)
 	self.__index  = self
 
 	this.layer = CCLayer:create()
-	local bg = newSprite(IMG_COMMON.."bg.png")
+	local bg = newSprite(IMG_COMMON.."common_bg1.png")
 	setAnchPos(bg,0,85)
 	this.layer:addChild(bg)
 
@@ -29,10 +29,8 @@ function roostLayer:new(x,y)
 
 
 	--左按钮
-	local btns = require"GameScript/Common/LuaBtn"
-	--local group = RadioGroup:new()
 	local left_bt
-	    left_bt = btns:new("image/buttonUI/task/left/",{"def.png","pre.png"},5,625,
+	    left_bt = Btn:new("image/buttonUI/task/left/",{"def.png","pre.png"},5,625,
 	    		{
 	    			--front = v[1],
 	    			highLight = true,
@@ -50,7 +48,7 @@ function roostLayer:new(x,y)
 	--左按钮
 	--local group = RadioGroup:new()
 	local right_bt
-	    right_bt = btns:new("image/buttonUI/task/right/",{"def.png","pre.png"},430,625,
+	    right_bt = Btn:new("image/buttonUI/task/right/",{"def.png","pre.png"},430,625,
 	    		{
 	    			--front = v[1],
 	    			highLight = true,
@@ -68,7 +66,7 @@ function roostLayer:new(x,y)
 	local task
 	local task_x = 0
 	local task_y = 100
-	local ksv = ScrollView:new(0,90,480,420,0,false)
+	local ksv = ScrollView:new(0,90,480,420,10,false)
 	for i = 1,DATA_MapSmall:size()  do
 			task = taskinfo:new(ksv,DATA_MapSmall:get(i),task_x,task_y)
 			ksv:addChild(task:getLayer(),task)

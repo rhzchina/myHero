@@ -5,7 +5,7 @@ InfoLayer= {
 
 local PATH = IMG_SCENE.."navigation/"
 
-function InfoLayer:create(layerName)
+function InfoLayer:create(hideTop)
 	local this={}
 	setmetatable(this,self)
 	self.__index = self
@@ -16,7 +16,9 @@ function InfoLayer:create(layerName)
 	local msgBg = newSprite(PATH.."msg_bg.png", 0, 854, 0, 1)
 	this.layer:addChild(msgBg)
 	
-	this:createtop()
+	if hideTop ~= true then
+		this:createtop()
+	end
 	--底部的元素
 	local bg = newSprite(PATH.."navigation_bottom.png")
 	this.layer:addChild(bg)
@@ -31,7 +33,7 @@ function InfoLayer:create(layerName)
 	    {"embattle",
 	    	function()
 	    		HTTPS:send("Battle" , 
-		    		{m="Battle",a="Battle",Battle = "select_up"} ,
+		    		{m="battle",a="battle",battle = "select_up"} ,
 		    		{success_callback = function()
 						switchScene("lineup")
 					end })
@@ -40,7 +42,7 @@ function InfoLayer:create(layerName)
 		{"practice",
 			function()
 				HTTPS:send("Task" ,  
-					{m="Task",a="map",task = "map"} ,
+					{m="task",a="task",task = "map"} ,
 					{success_callback = function()
 						switchScene("roost")
 					end })

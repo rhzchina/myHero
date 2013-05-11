@@ -15,12 +15,12 @@ function roostLayer:new(ksv,data,p_x,p_y)
 	this.layer:addChild(header_bg)
 
 	local header_box = newSprite("image/UserAvatar/UserAvatarbox.png")
-	local header = newSprite("image/myhero/small/1001.png")
+--	local header = newSprite("image/myhero/small/1001.png")
 
 	setAnchPos(header_box,22,70)
-	setAnchPos(header,22,70)
+--	setAnchPos(header,22,70)
 
-	this.layer:addChild(header)
+--	this.layer:addChild(header)
 	this.layer:addChild(header_box)
 
 	dump(data)
@@ -48,7 +48,7 @@ function roostLayer:new(ksv,data,p_x,p_y)
 	this.layer:addChild(text_yinbi)
 
 	----体力
-	local evn = newSprite("image/scene/home/env.png")
+	local evn = newSprite(IMG_COMMON.."power.png")
 	setAnchPos(evn,140,75)
 	this.layer:addChild(evn)
 
@@ -57,7 +57,7 @@ function roostLayer:new(ksv,data,p_x,p_y)
 	this.layer:addChild(text_evn)
 
 	----气
-	local img_qi = newSprite("image/scene/home/qi.png")
+	local img_qi = newSprite(IMG_COMMON.."gas.png")
 	setAnchPos(img_qi,240,70)
 	this.layer:addChild(img_qi)
 
@@ -77,10 +77,9 @@ function roostLayer:new(ksv,data,p_x,p_y)
 ]]
 
 	--[[战斗]]
-	local btns = require"GameScript/Common/LuaBtn"
 	--local group = RadioGroup:new()
 	local fight
-	    fight = btns:new("image/buttonUI/task/firt/",{"def.png","pre.png"},377,10,
+	    fight = Btn:new("image/buttonUI/task/firt/",{"def.png","pre.png"},377,10,
 	    		{
 					--parent = ksv,
 	    			--front = v[1],
