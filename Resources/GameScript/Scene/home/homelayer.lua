@@ -1,7 +1,7 @@
-
+local PATH = IMG_SCENE.."home/"
 HomeLayer= {
 }
-function HomeLayer:create(x,y)
+function HomeLayer:create()
 	local this={}
 	setmetatable(this,self)
 	self.__index = self
@@ -9,26 +9,48 @@ function HomeLayer:create(x,y)
 	local layer = newLayer()
 	local bg = newSprite(IMG_COMMON.."main.png")
 	layer:addChild(bg)
-	layer:setPosition(ccp(x,y))
+	
+	bg = newSprite(PATH.."function_bg.png")
+	setAnchPos(bg, 240, 350, 0.5, 0.5)
+	layer:addChild(bg)
+	
+	bg = newSprite(PATH.."embattle_bg.png")
+	setAnchPos(bg, 0, 505)
+	layer:addChild(bg)
 
+	--底部按钮
 	local main_small = {
-	 	{"luggage",20,
-		 	function()
-			 	switchScene("bag")
-		 	end
+	 	{"chat",20,
 	 	},
-    	{"exp",110},
-	    {"travel",200},
-	    {"conquer",290},
-	    {"strengthen",380}
+    	{"update",110},
+	    {"athletics",200},
+	    {"friend",290},
+	    {"menu",380}
 	}
 
-	--local group = RadioGroup:new()
-
 	for i ,v in pairs(main_small) do
-	    local temps = Btn:new(IMG_BTN,{v[1].."_normal.png", v[1].."_press.png"}, v[2], 100, 
+	    local temps = Btn:new(IMG_BTN,{v[1]..".png", v[1].."_press.png"}, v[2], 95, 
 		    {
 			   	callback = v[3]
+		   	})
+    	layer:addChild(temps:getLayer())
+	end
+	
+	--中间按钮
+	local mid_btn = {
+	 	{"activity",185, 295
+	 	},
+    	{"king",185,400},
+	    {"athletics",325,295},
+	    {"fb",50,295},
+	    {"explore",185,180}
+	}
+
+
+	for i ,v in pairs(mid_btn) do
+	    local temps = Btn:new(PATH,{v[1]..".png", v[1].."_press.png"}, v[2], v[3], 
+		    {
+			   	callback = v[4]
 		   	})
     	layer:addChild(temps:getLayer())
 	end

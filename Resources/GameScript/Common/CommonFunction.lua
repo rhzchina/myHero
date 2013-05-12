@@ -117,7 +117,12 @@ end
 
 function newLabel(str, size, params)
 	local p = params or {}
-	local label = CCLabelTTF:create(str,FONT,size)
+	local font = FONT
+	if p.noFont then
+		font = "A"
+	end
+
+	local label = CCLabelTTF:create(str, font,size)
 	if p.dimensions then
 		label:setDimensions(p.dimensions)
 	end

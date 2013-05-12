@@ -11,7 +11,6 @@ collectgarbage("setstepmul" , 5000)
 
 -- [[ 包含各种 Layer ]]
 require "GameScript/Scene/home/homelayer"
-require "GameScript/Scene/home/LineUp"
 
 require "GameScript/Scene/common/infolayer"
 --require "GameScript/UI/BTLayerLua"

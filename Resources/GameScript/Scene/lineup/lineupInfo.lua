@@ -17,33 +17,22 @@ function lineuinfoplayer:new(index,sv,data,x,y,params)
 	setAnchPos(this.layer,this.point_x,this.point_y)
 	this.layer:setContentSize(CCSize(450,624))
 
-	local main_bt = {{"Weapon/",5,540-this.point_y},
-								{"Armor/",5,415-this.point_y},
-								{"Decoration/",5,290-this.point_y},
-								{"Cheats/",365,540-this.point_y},
-								{"Cheats/",365,415-this.point_y},
-								{"Cheats/",365,290-this.point_y}
+	local main_bt = {{"weapon",5,540-this.point_y},
+								{"armor",5,415-this.point_y},
+								{"jewellery",5,290-this.point_y},
+								{"skill",365,540-this.point_y},
+								{"skill",365,415-this.point_y},
+								{"skill",365,290-this.point_y}
 							   }
 
 	local temp
 	for i ,v in pairs(main_bt) do
-	    temp = Btn:new("image/buttonUI/Lineup/"..v[1],{"def.png","def.png"},v[2],v[3],
+	    temp = Btn:new(PATH,{v[1]..".png"},v[2],v[3],
 	    		{
 					parent = sv,
-	    			--front = v[3],
-	    			highLight = true,
 	    			scale = true,
-					--selectable = true,
-	    			callback=
-	    				function()
-						print(i)
-	    					if i == 1 then
-								--HTTP:call("instance" , "get",{},{success_callback = function()
-								--switchScene("lineup")
-							--end })
-							end
-	    				 end
-	    		 }, group)
+	    			callback= this.params.equipCallback 
+	    		 })
 	    if i == 1 then
 	    	--group:chooseBtn(temp)
 	    end
@@ -115,7 +104,7 @@ if _G.next (data)  ~= nil then
 
 	end
 
-	this.layer:setTouchEnabled(true)
+--	this.layer:setTouchEnabled(true)
 	function this.layer:onTouch(type, x, y)
 
 		if this.params["parent"] and not this.params["parent"]:isLegalTouch(x,y) then

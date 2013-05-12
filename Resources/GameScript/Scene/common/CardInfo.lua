@@ -53,16 +53,16 @@ local CardInfo= {
 		setAnchPos(proBg, 20, 190)
 		this.layer:addChild(proBg)
 		
-		local proText = newLabel("血 9999", 20, {x = 30, y = 20})
+		local proText = newLabel("血9999", 17, {x = 20, y = 22})
 		this.layer:addChild(proText)
 		
-		proText = newLabel("攻 9999", 20, {x = 105, y = 20})
+		proText = newLabel("攻9999", 17, {x = 95, y = 22})
 		this.layer:addChild(proText)
 		
-		proText = newLabel("防 9999", 20, {x = 175, y = 20})
+		proText = newLabel("防9999", 17, {x = 170, y = 22})
 		this.layer:addChild(proText)
 		
-		proText = newLabel("99", 20, {x = 30, y = 55})	
+		proText = newLabel("99", 20, {x = 25, y = 55})	
 		this.layer:addChild(proText)
 		
 		local str = getBag(this.params.type, this.params.cid, "name")

@@ -10,20 +10,7 @@ function roostLayer:new(ksv,data,p_x,p_y)
 	setAnchPos(bg,5,0)
 	this.layer:addChild(bg)
 	this.layer:setContentSize(bg:getContentSize())
-	local header_bg = newSprite("image/UserAvatar/UserAvatarbg.png")
-	setAnchPos(header_bg,22,70)
-	this.layer:addChild(header_bg)
-
-	local header_box = newSprite("image/UserAvatar/UserAvatarbox.png")
---	local header = newSprite("image/myhero/small/1001.png")
-
-	setAnchPos(header_box,22,70)
---	setAnchPos(header,22,70)
-
---	this.layer:addChild(header)
-	this.layer:addChild(header_box)
-
-	dump(data)
+	
 
 	local text_name = newLabel(data["name"].."     执行 "..data["in_num"].."/"..data["num"], 22)
 	setAnchPos(text_name,125,135)
@@ -79,7 +66,7 @@ function roostLayer:new(ksv,data,p_x,p_y)
 	--[[战斗]]
 	--local group = RadioGroup:new()
 	local fight
-	    fight = Btn:new("image/buttonUI/task/firt/",{"def.png","pre.png"},377,10,
+	    fight = Btn:new(IMG_BTN,{"fight_normal.png","fight_press.png"},377,10,
 	    		{
 					--parent = ksv,
 	    			--front = v[1],

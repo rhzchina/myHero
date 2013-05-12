@@ -60,6 +60,7 @@ function LuaCheckBox:new(x,y,params)
 					elseif this.state == CHOOSE then
 						this:setState(NORMAL)
 					end
+					
 					if this.params["checkBoxOpt"] then
 						this.params["checkBoxOpt"]()
 					end

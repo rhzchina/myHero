@@ -4,6 +4,7 @@ local _data
 
 function DATA_Bag:set(data)
 	_data = data
+	dump(_data)
 end
 
 function DATA_Bag:get(...)
@@ -18,7 +19,5 @@ function DATA_Bag:get(...)
 			break
 		end
 	end
-	
-	
 	return result
 end

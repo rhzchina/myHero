@@ -1,4 +1,6 @@
 local PATH = IMG_SCENE.."embattle/"
+local ItemList = require(SRC.."Scene/common/ItemList")
+
 local lineuplayer = {layer}
 
 function lineuplayer:new(x,y)
@@ -33,46 +35,6 @@ function lineuplayer:new(x,y)
 	local group = RadioGroup:new()
 
 	local sv = ScrollView:new(56,680,300,200,0,true)
-	local card
-
---	for i = 1,num do
---		if i <= size then
---			if _G.next (DATA_Battle:get(i) )  ~= nil then
---				card = CILayer:create(1,DATA_Battle:get(1)["cid"],56,680,{parent = sv,
---																callback = function(card_this,card_x,card_y)
---																					print(i)
---																end})
---				sv:addChild(card:getLayer(),card)
---			elseif _G.next (DATA_Battle:get(i) )  == nil  then
---				card = CILayer:create(2,DATA_Battle:get(1)["cid"],56,680,{parent = sv,
---																callback = function(card_this,card_x,card_y)
---																					print(i)
---																end})
---				sv:addChild(card:getLayer(),card)
---			end
---		else
---				card = CILayer:create(3,nil,56,680,{parent = sv,
---																callback = function(card_this,card_x,card_y)
---																					print(i)
---																end})
---				sv:addChild(card:getLayer(),card)
---		end
---
---	end
---	this.layer:addChild(sv:getLayer())
-
-
-	local lef = newSprite("image/UserAvatar/left_1.png")
-	setAnchPos(lef,20,680)
-	this.layer:addChild(lef)
-
-	local rig = newSprite("image/UserAvatar/right_1.png")
-	setAnchPos(rig,350,680)
-	this.layer:addChild(rig)
-
-	local info = newSprite(PATH.."box.png")
-	setAnchPos(info,15,130)
-	this.layer:addChild(info)
 
 
 	---[[英雄信息滑块]]
@@ -82,26 +44,27 @@ function lineuplayer:new(x,y)
 	local card_x = 56
 	local card_y = 680
 	for i = 1,DATA_LineUp:size() do
-		infos = infolayer:new(i,ksv,DATA_LineUp:get(i),0,100,{parent = ksv,
-																callback = function(card_this,card_x,card_y)
---																					if card_this:get_click() == true then
---																						LineUp_Index = i
---																						print("~~~~~~~~~~~~~~~~~~~~~~~fadfadfsadf~~~~~~~~~~~~~~~")
---																						HTTPS:send("AddHero" ,  {m="Heros",a="Heros",heros = "Info",
---																						card_id = card_this:get_gid()} ,{success_callback = function()
---																									switchScene("lineupCardInfo")
---																								end
---																						})
---																					elseif card_this:get_select() == true then
---																						LineUp_Index = i
---																						HTTPS:send("AddHero" ,  {m="Heros",a="Heros",heros = "all"} ,{success_callback = function()
---																									switchScene("herolup")
---																								end
---																							})
---																					end
-HTTPS:send("Battle",{m = "battle",a = "battle",battle = "up",index = 1,id = 2317,cid =77 })
-																end}
-													 )
+		infos = infolayer:new(i,ksv,DATA_LineUp:get(i),0,100,
+			{
+				parent = ksv,
+				equipCallback = function()
+					local list
+					list = ItemList:new({
+						okCallback = function()
+							print("确定了")
+						end
+					})
+					this.layer:addChild(list:getLayer())
+				end,
+				callback = function(card_this,card_x,card_y)
+					HTTPS:send("Battle",{
+						m = "battle",
+						a = "battle",
+						battle = "up",
+						index = 1,id = 2317,cid =77
+					})
+				end
+			})
 
 		ksv:addChild(infos:getLayer(),infos)
 		card_x = card_x + 480
@@ -110,24 +73,25 @@ HTTPS:send("Battle",{m = "battle",a = "battle",battle = "up",index = 1,id = 2317
 
 
 	--阵容
-	local temps
-
-	    temps = Btn:new("image/buttonUI/Lineup/lineup/",{"def.png","pre.png"},390,675,
+	local temps = Btn:new(PATH,{"embattle.png","embattle_press.png"},390,675,
 	    		{
-	    			--front = v[1],
 	    			highLight = true,
 	    			scale = true,
-					--selectable = true,
-	    			callback=
-	    				function()
-
-							HTTPS:send("Battle" ,  {m="battle",a="battle",battle = "select_up"} ,{success_callback = function()
-								switchScene("battlere")
-							end })
-	    				 end
+	    			callback= function()
+							HTTPS:send("Battle" , 
+							 {
+								m="battle",
+								a="battle",
+								battle = "select_up"
+							} ,
+							{
+								success_callback = function()
+									switchScene("battlere")
+								end 
+							})
+		    		end
 	    		 })
-
-		this.layer:addChild(temps:getLayer())
+	this.layer:addChild(temps:getLayer())
 
 
 

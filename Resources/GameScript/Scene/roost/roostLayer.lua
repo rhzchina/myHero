@@ -29,36 +29,32 @@ function roostLayer:new(x,y)
 
 
 	--左按钮
-	local left_bt
-	    left_bt = Btn:new("image/buttonUI/task/left/",{"def.png","pre.png"},5,625,
-	    		{
-	    			--front = v[1],
-	    			highLight = true,
-	    			scale = true,
-					--selectable = true,
-	    			callback=
-	    				function()
-	    					--switchScene("battlere")
-	    				 end
-	    		 })
+	local left_bt = Btn:new(IMG_BTN,{"left_normal.png","left_press.png"},5,625,
+    		{
+    			--front = v[1],
+    			highLight = true,
+    			scale = true,
+				--selectable = true,
+    			callback=
+    				function()
+    					--switchScene("battlere")
+    				 end
+    		 })
 
 	this.layer:addChild(left_bt:getLayer())
 
 
-	--左按钮
-	--local group = RadioGroup:new()
-	local right_bt
-	    right_bt = Btn:new("image/buttonUI/task/right/",{"def.png","pre.png"},430,625,
-	    		{
-	    			--front = v[1],
-	    			highLight = true,
-	    			scale = true,
-					--selectable = true,
-	    			callback=
-	    				function()
-	    					--switchScene("battlere")
-	    				 end
-	    		 })
+	local right_bt = Btn:new(IMG_BTN,{"right_normal.png","right_press.png"},430,625,
+    		{
+    			--front = v[1],
+    			highLight = true,
+    			scale = true,
+				--selectable = true,
+    			callback=
+    				function()
+    					--switchScene("battlere")
+    				 end
+    		 })
 
 	this.layer:addChild(right_bt:getLayer())
 

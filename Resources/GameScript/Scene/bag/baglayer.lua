@@ -1,6 +1,6 @@
 local PATH = "bag/"
-local ITEM = require(SRC.."Scene/common/iteminfo")
-local Detail = require(SRC.."Scene/common/carddetail")
+local ITEM = require(SRC.."Scene/common/ItemInfo")
+local Detail = require(SRC.."Scene/common/CardDetail")
 
 local M = {
 	layer,
@@ -15,7 +15,7 @@ function M:create( ... )
 	
 	this.layer = CCLayer:create()
 	
-	local bg = newSprite(IMG_COMMON.."common_bg1.png")
+	local bg = newSprite(IMG_COMMON.."main.png")
 	setAnchPos(bg, 0, 80)
 	this.layer:addChild(bg)
 	
@@ -30,7 +30,7 @@ function M:create( ... )
 	
 	local x = 12
 	for k, v in pairs(tabs) do
-		local btn = Btn:new(IMG_COMMON.."tabs/", {"tab_"..v[1]..".png", "tab_"..v[1].."_select.png"}, x, 628, { 
+		local btn = Btn:new(IMG_COMMON.."tabs/", {"tab_"..v[1]..".png", "tab_"..v[1].."_select.png"}, x, 668, { 
 			callback = function()
 				this:createList(v[1])
 			end
@@ -40,7 +40,7 @@ function M:create( ... )
 	end
 	
 	local separator = newSprite(IMG_COMMON.."tabs/tab_separator.png")
-	setAnchPos(separator,0,627)
+	setAnchPos(separator,0,667)
 	this.layer:addChild(separator)
 	
 	this.tabGroup:chooseByIndex(1,true)
@@ -55,10 +55,13 @@ function M:createList(kind)
 	end
 	self.listLayer = CCLayer:create()
 	
-	local scroll = ScrollView:new(0,90,480,535,5)
+	local scroll = ScrollView:new(0,90,480,575,5)
+	local temp
 	for k, v in pairs(DATA_Bag:get(kind)) do
-		local item = ITEM:new(kind,v["cid"],{
+		local item 
+		item = ITEM:new(kind,v["cid"],{
 			parent = scroll,	
+			type = "bag",
 			iconCallback = function()
 				self.layer:addChild(Detail:new(kind,v["cid"]):getLayer(),1)
 			end
