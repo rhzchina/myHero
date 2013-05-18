@@ -84,7 +84,7 @@ local timeCount = 0
 ]]
 local function showMemoryUsage(dt)
     timeCount = timeCount + dt
-    echoInfo(string.format("MEMORY USED: %0.2f KB, UPTIME: %04.2fs", collectgarbage("count"), timeCount))
+--    echoInfo(string.format("MEMORY USED: %0.2f KB, UPTIME: %04.2fs", collectgarbage("count"), timeCount))
 end
 
 local sharedDirector = CCDirector:sharedDirector()

@@ -1,7 +1,16 @@
 local PATH = IMG_SCENE.."embattle/"
-	local CardInfo = require(SRC.."Scene/common/CardInfo")
+local CardInfo = require(SRC.."Scene/common/CardInfo")
+local ItemList = require(SRC.."Scene/common/ItemList")
 
-local lineuinfoplayer = {layer,point_x,point_y,is_clickon,is_select,datas,gid}
+local lineuinfoplayer = {
+	layer,
+	point_x,
+	point_y,
+	is_clickon,
+	is_select,
+	datas,
+	gid
+}
 
 function lineuinfoplayer:new(index,sv,data,x,y,params)
 	local this = {}
@@ -12,35 +21,79 @@ function lineuinfoplayer:new(index,sv,data,x,y,params)
 	this.point_y = y
 	this.is_clickon = false
 	this.is_select = false
-	this.datas = data
 	this.layer = CCLayer:create()
 	setAnchPos(this.layer,this.point_x,this.point_y)
 	this.layer:setContentSize(CCSize(450,624))
 
-	local main_bt = {{"weapon",5,540-this.point_y},
-								{"armor",5,415-this.point_y},
-								{"jewellery",5,290-this.point_y},
-								{"skill",365,540-this.point_y},
-								{"skill",365,415-this.point_y},
-								{"skill",365,290-this.point_y}
+	local data = data or {}
+	
+	local main_bt = {{"arm",5,540-this.point_y,1},
+								{"armour",5,415-this.point_y,2},
+								{"ornament",5,290-this.point_y,3},
+								{"skill",360,540-this.point_y, 0}, --天赋技能
+								{"skill",360,415-this.point_y,4},
+								{"skill",360,290-this.point_y,5}
 							   }
 
-	local temp
+	local temp,bg,other
 	for i ,v in pairs(main_bt) do
-	    temp = Btn:new(PATH,{v[1]..".png"},v[2],v[3],
+		local front, kind
+		
+		if v[4] == 0 or v[4] >3 then
+			kind = "skill"
+		else
+			kind = "equip"
+		end
+		
+		bg = v[1]..".png"
+		other = nil
+		if data["cid"] and DATA_Dress:get(data["cid"],v[4]) then --若阵容 有武将，且已有装备
+			local equipId = DATA_Dress:get(data["cid"], v[4], "cid")
+			
+			for dk, dv in pairs(DATA_Dress:get(data["cid"])) do
+				if dk == v[4].."" then
+					front = IMG_ICON..kind.."/S_" .. getBag(kind,equipId,"look") ..".png"
+					bg = "icon_bg"..getBag(kind,equipId,"star")..".png"
+					other = {IMG_COMMON.."icon_border"..DATA_Bag:get(kind,equipId,"star")..".png",45,45}
+					break
+				end					
+			end
+		end
+		
+		local scale
+		if v[4] == 0 then --天赋技能不可更换
+			scale = false
+		else
+			scale = 1.05 
+		end
+	    temp = Btn:new(IMG_COMMON,{bg},v[2],v[3],
 	    		{
 					parent = sv,
-	    			scale = true,
-	    			callback= this.params.equipCallback 
+	    			scale = scale,
+	    			front = front,
+	    			other = other,
+	    			callback= function()
+	    				if scale then
+	    					if data["cid"] then
+	    						this.params.equipCallback(kind,v[1],v[4])
+	    					else
+	    						KNMsg.getInstance():flashShow("请选 择要上阵列的武将")
+	    					end
+	    				else
+	    				end
+	    			end
 	    		 })
-	    if i == 1 then
-	    	--group:chooseBtn(temp)
-	    end
 		this.layer:addChild(temp:getLayer())
 	end
 
 
-	local card = CardInfo:new(95,190,{type = "hero",cid = data["cid"]})
+	local card = CardInfo:new(95,190,{
+		type = "hero",
+		cid = data["cid"],
+		callback= function()
+			this.params.cardCallback(index)
+		end
+	})
 	this.layer:addChild(card:getLayer())
 	
 	--------[[英雄描述]]

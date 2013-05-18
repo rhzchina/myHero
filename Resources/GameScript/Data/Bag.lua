@@ -4,7 +4,6 @@ local _data
 
 function DATA_Bag:set(data)
 	_data = data
-	dump(_data)
 end
 
 function DATA_Bag:get(...)
@@ -19,5 +18,20 @@ function DATA_Bag:get(...)
 			break
 		end
 	end
+	return result
+end
+
+function DATA_Bag:getByFilter(type,filter)
+	local result = {}
+	print(type,filter)
+	for k, v in pairs(_data[type]) do
+		if v["type"] then
+			if v["type"] == filter or not filter then
+				result[k] = v
+			end
+		else
+			result[k] = v
+		end
+	end	
 	return result
 end

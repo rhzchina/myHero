@@ -2,7 +2,8 @@ local Item = require(SRC.."Scene/common/ItemInfo")
 local ItemList = {
 	layer,
 	scroll,
-	params
+	params,
+	selectItem
 }
 
 function ItemList:new(params)
@@ -19,12 +20,25 @@ function ItemList:new(params)
 	
 	this.scroll = ScrollView:new(0,160,480,555,5)
 	local temp
-	for k, v in pairs(DATA_Bag:get("equip")) do
+	for k, v in pairs(DATA_Bag:getByFilter(this.params.type, this.params.filter)) do
 		local item 
-		item = Item:new("equip",v["cid"],{
+		item = Item:new(this.params.type,v["cid"],{
 			parent = this.scroll,	
 			iconCallback = function()
-				self.layer:addChild(Detail:new(kind,v["cid"]):getLayer(),1)
+				self.layer:addChild(Detail:new(this.params.type,v["cid"]):getLayer(),1)
+			end,
+			checkBoxOpt = function()
+				--这里的复选框暂时默认是单选
+				if item:isSelect() then	
+					if this.selectItem then
+						this.selectItem:choose(false)
+					end
+					this.selectItem = item
+					this.selectItem:choose(true)
+				else
+					this.selectItem = nil
+				end
+				this.params.checkBoxOpt()
 			end
 		})
 		this.scroll:addChild(item:getLayer(),item)
@@ -71,6 +85,14 @@ end
 
 function ItemList:getLayer()
 	return self.layer
+end
+
+function ItemList:getSelectItem()
+	return self.selectItem
+end
+
+function ItemList:getSelectId()
+	return self.selectItem:getId()
 end
 
 return ItemList

@@ -16,11 +16,11 @@ local lineup = require "GameScript/Scene/lineup/lineuplayer"
 
 local M = {}
 
-function M:create()
+function M:create(data)
 	local scene = display.newScene("lineup")
 
 	---------------插入layer---------------------
-	scene:addChild(lineup:new(15,60):getLayer())
+	scene:addChild(lineup:new(data):getLayer())
 	scene:addChild(InfoLayer:create(true):getLayer())
 --	scene:addChild(BTLuaLayer())
 	---------------------------------------------

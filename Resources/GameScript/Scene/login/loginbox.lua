@@ -25,7 +25,7 @@ function M:create( ... )
 
 	--[[创建输入框]]
 	this.account = CCTextFieldTTF:textFieldWithPlaceHolder("Open ID" , "Thonburi" , 48);
-	this.account:setString("web")
+	this.account:setString("rhzc")
 	--[[设置颜色]]
 	this.account:setColor( ccc3(255 , 255 , 0) )
 	this.account:setColorSpaceHolder( ccc3(255 , 255 , 0) )

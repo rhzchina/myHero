@@ -34,8 +34,8 @@ function InfoLayer:create(hideTop)
 
 	    {"embattle",
 	    	function()
-	    		HTTPS:send("Battle" , 
-		    		{m="battle",a="battle",battle = "select_up"} ,
+	    		HTTPS:send("Skill" , 
+		    		{m="skill",a="skill",skill = "selectline"} ,
 		    		{success_callback = function()
 						switchScene("lineup")
 					end })

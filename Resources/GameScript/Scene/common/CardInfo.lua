@@ -4,7 +4,7 @@ local CardInfo= {
 	layer,  --信息头
 }
 
-	function CardInfo:new(x,y,params)
+function CardInfo:new(x,y,params)
 	local this={}
 	setmetatable(this,self)
 	self.__index = self
@@ -70,6 +70,27 @@ local CardInfo= {
 		proText = newLabel(str, 25, {x = 25, y = 190 + (proBg:getContentSize().height - height ) / 2, dimensions = CCSizeMake(30,height)})
 		this.layer:addChild(proText)
 	end
+	
+	local legal,lastX
+	this.layer:setTouchEnabled(true)
+	this.layer:registerScriptTouchHandler(
+		function(type, x, y)
+			if this:getRange():containsPoint(ccp(x,y)) then
+				if type == CCTOUCHBEGAN then
+					legal = true
+					lastX = x
+				elseif type == CCTOUCHMOVED then
+					if math.abs(x - lastX) > 20 then
+						legal = false
+					end
+				else
+					if legal and this.params.callback then
+						this.params.callback() 
+					end
+				end	
+			end	
+			return true
+		end,false,0,false)
 	
 
 	return this

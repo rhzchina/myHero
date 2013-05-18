@@ -1,14 +1,16 @@
 local PATH = IMG_SCENE.."embattle/"
 local ItemList = require(SRC.."Scene/common/ItemList")
 
-local lineuplayer = {layer}
+local lineuplayer = {
+	layer,
+}
 
-function lineuplayer:new(x,y)
+function lineuplayer:new(data)
 	local this = {}
 	setmetatable(this,self)
 	self.__index  = self
 
-	local size = DATA_Battle:size()
+	local size = DATA_Embattle:getLen() 
 
 	local num --阵容的个数
 	if size < 3 then
@@ -40,18 +42,55 @@ function lineuplayer:new(x,y)
 	---[[英雄信息滑块]]
 	local infolayer = require"GameScript/Scene/lineup/lineupInfo"
 	local ksv = ScrollView:new(15,100,450,550,0,true,1)
-	local infos
 	local card_x = 56
 	local card_y = 680
-	for i = 1,DATA_LineUp:size() do
-		infos = infolayer:new(i,ksv,DATA_LineUp:get(i),0,100,
+	local selected
+	for i = 1, num do
+		local infos
+		infos = infolayer:new(i,ksv,DATA_Embattle:get(i),0,100,
 			{
 				parent = ksv,
-				equipCallback = function()
+				equipCallback = function(type,filter,pos)
 					local list
 					list = ItemList:new({
+						type = type,
+						filter = filter,
+						checkBoxOpt = function()	 --列表复选框回调
+							print(filter)
+						end,
 						okCallback = function()
-							print("确定了")
+							if list:getSelectItem() then
+								HTTPS:send("Skill", {a = "skill", m = "skill",skill = "inserSkill", index = pos,
+									card_id = getBag("hero", infos:get_gid(),"id") , card_cid = infos:get_gid() , skill_id = getBag(type,list:getSelectId(),"id") , skill_cid = list:getSelectId(),}, {success_callback=
+									function()
+										switchScene("lineup",ksv:getOffset())
+									end
+								})
+							else
+								KNMsg.getInstance():flashShow("请选 择装备的物口")
+							end
+						end
+					})
+					this.layer:addChild(list:getLayer())
+				end,
+				cardCallback = function(pos)
+					local list
+					list = ItemList:new({
+						type = "hero",
+						checkBoxOpt = function()	 --列表复选框回调
+							print(filter)
+						end,
+						okCallback = function()
+							if list:getSelectItem() then
+								HTTPS:send("Battle", {a = "battle", m = "battle",battle = "up", index = pos,
+									id = getBag("hero", list:getSelectId(), "id"), cid = list:getSelectId()}, {success_callback=
+									function()
+										switchScene("lineup",ksv:getOffset())
+									end
+								})
+							else
+								KNMsg.getInstance():flashShow("请选择要上阵列的武将")
+							end
 						end
 					})
 					this.layer:addChild(list:getLayer())
@@ -92,9 +131,10 @@ function lineuplayer:new(x,y)
 		    		end
 	    		 })
 	this.layer:addChild(temps:getLayer())
-
-
-
+	
+	if data then
+		ksv:setOffset(data)
+	end
 return this
 end
 
