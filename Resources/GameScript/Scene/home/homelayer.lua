@@ -1,4 +1,5 @@
 local PATH = IMG_SCENE.."home/"
+local CommEmbattle = require(SRC.."Scene/common/CommEmbattle")
 HomeLayer= {
 }
 function HomeLayer:create()
@@ -17,6 +18,9 @@ function HomeLayer:create()
 	bg = newSprite(PATH.."embattle_bg.png")
 	setAnchPos(bg, 0, 505)
 	layer:addChild(bg)
+	
+	local embattle = CommEmbattle:new(45, 535, 390)
+	layer:addChild(embattle:getLayer())
 
 	--底部按钮
 	local main_small = {

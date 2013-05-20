@@ -121,8 +121,8 @@ function FightRole:getY()
 	return self.y
 end
 
---执行战斗动作 type攻击类型，role：是攻击者还是被攻击者
-function FightRole:doAction(type,role,callback)
+--执行战斗动作 type攻击类型，role：是攻击者还是被攻击者,callback 回调， id,攻击效果的id
+function FightRole:doAction(type,role,callback,id)
 	local array = CCArray:create()
 	local flipX, flipY, anchX, anchY,moveY = false, false, 0, 0, 0 
 	if type == "atk" then   --普通攻击
@@ -166,7 +166,7 @@ function FightRole:doAction(type,role,callback)
 			array:addObject(CCRotateTo:create(0.05,0))    --回位
 			self.layer:runAction(CCSequence:create(array))
 			self.layer:runAction(CCScaleTo:create(0.1,1.05))
-		else
+		else --被攻击的人
 			self.layer:setAnchorPoint(ccp(0.5,0.5))
 			array:addObject(CCCallFunc:create(
 				function()
@@ -182,6 +182,10 @@ function FightRole:doAction(type,role,callback)
 			array:addObject(CCScaleTo:create(0.1,0.8))			
 			array:addObject(CCScaleTo:create(0.1,1))
 			self.layer:runAction(CCSequence:create(array))
+		end
+	elseif type == "skill" then
+		if role == "adt" then
+		else
 		end
 	else
 	end

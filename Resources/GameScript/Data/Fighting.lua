@@ -10,6 +10,7 @@ local step = 1 --第几步
 
 function DATA_Fighting:set(data)
 	_data = data
+	dump(_data)
 end
 
 function DATA_Fighting:getMonster()
@@ -22,7 +23,7 @@ function DATA_Fighting:getHero()
 		return _data["me"]
 end
 --获取攻击类型
-function DATA_Fighting:getAttackType()
+function DATA_Fighting:getAttackType(type)
 	if not _data then
 --		local file = io.open("/mnt/sdcard/fight.txt","r")
 		local file = io.open("c:\\fight.txt","r")
@@ -30,7 +31,7 @@ function DATA_Fighting:getAttackType()
 		_data = json.decode(str)["start"]	
 		file:close()
 	end
-	return _data["data"][turn][step]["type"]
+	return _data["data"][turn][step][type]
 end
 
 --攻击者数据

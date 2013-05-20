@@ -15,6 +15,8 @@ function lineuplayer:new(data)
 	local num --阵容的个数
 	if size < 3 then
 		num = 3
+	elseif size >= 6 then
+		num = 6
 	else
 		num  = size + 1
 	end

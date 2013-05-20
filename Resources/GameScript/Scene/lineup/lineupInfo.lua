@@ -92,6 +92,9 @@ function lineuinfoplayer:new(index,sv,data,x,y,params)
 		cid = data["cid"],
 		callback= function()
 			this.params.cardCallback(index)
+--			HTTPS:send("AddHero", {a = "heros", m = "heros", heros = "add", star = 5})
+--			HTTPS:send("Skill", {a = "skill", m = "skill", skill="arm_add",id = 6307})
+--			HTTPS:send("Skill", {a = "skill", m = "skill", skill="shiping_add",id = 7304})
 		end
 	})
 	this.layer:addChild(card:getLayer())

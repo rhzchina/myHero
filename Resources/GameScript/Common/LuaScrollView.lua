@@ -68,7 +68,7 @@ function LuaScrollView:new(x,y,width,height,divider,horizontal,mode,params)
 	local lastTime     --最后点击的时间
     local selectedItem   --将选中的元素保存k
 	local function scrollX(x,y)           --此函数在翻页模式时做滑动判断
-		if math.abs(x - lastTouchPt.x) > 20 then  -- 当移动超过十个像素判断滑动
+		if math.abs(x - lastTouchPt.x) > 10 then  -- 当移动超过十个像素判断滑动
 			if x > lastTouchPt.x then  --上一页
 				if this.index > 1 and this.index <= this.count then
 					this:autoScroll(PREVIOUS,this.params)
