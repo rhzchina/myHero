@@ -81,7 +81,7 @@ function roostLayer:new(ksv,data,p_x,p_y)
 	    						 fighting = "start", 
 	    						 bHurdle = math.floor(data["id"] / 100), 
 	    						 sHurdle = data["id"]},{success_callback= function()
-	    						 	
+	    						 	switchScene("fighting")
 	    						 end
 	    						 })
 	    				 end

@@ -125,7 +125,7 @@ end
 function FightRole:doAction(type,role,callback,id)
 	local array = CCArray:create()
 	local flipX, flipY, anchX, anchY,moveY = false, false, 0, 0, 0 
-	if type == "atk" then   --普通攻击
+	if type == "atk" or type == "skill" then   --普通攻击
 		if role == "adt" then   --攻击者特效
 			if self.group == 1 then  --己方英雄
 				self.layer:setAnchorPoint(ccp(1,0))
@@ -184,10 +184,13 @@ function FightRole:doAction(type,role,callback,id)
 			self.layer:runAction(CCSequence:create(array))
 		end
 	elseif type == "skill" then
+		print("技能数据改")
 		if role == "adt" then
+				
 		else
 		end
 	else
+		print("其它的",type)
 	end
 end
 return FightRole

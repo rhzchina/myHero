@@ -44,15 +44,19 @@ function DATA_Fighting:getAttacker(type)
 end
 
 --被攻击者数据
-function DATA_Fighting:getVictim(type)
+function DATA_Fighting:getVictim(index,type)
 	if table.nums(_data["data"][turn][step]["beatt"]) > 0 then
 		if type then
-			return _data["data"][turn][step]["beatt"][type]
+			return _data["data"][turn][step]["beatt"][index][type]
 		else
-			return _data["data"][turn][step]["beatt"]
+			return _data["data"][turn][step]["beatt"][index]
 		end
 	end
 	return ":出错++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+end
+
+function DATA_Fighting:getVictimCount()
+	return table.nums(_data["data"][turn][step]["beatt"])
 end
 
 function DATA_Fighting:getTurn()

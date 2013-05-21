@@ -86,38 +86,45 @@ function FightLayer:fightLogic()
 --			dump(data:getAttacker())
 --			print("------------------------")
 			--掉血动画
-			self.effect:hpChange(
-				data:getVictim("change"),
-				self.group[data:getVictim("group")][data:getVictim("index")]:getX(),
-				self.group[data:getVictim("group")][data:getVictim("index")]:getY()
-			)
-			self.group[data:getVictim("group")][data:getVictim("index")]:setHp(data:getVictim("hp"))
-			--被攻击者动画	
-			self.group[data:getVictim("group")][data:getVictim("index")]:doAction(
-				data:getAttackType(),
-				"beatt",
-				function()
---				print("--------------------被攻击方---------")
---					dump(data:getVictim())
---				print("---------------------------")
-					local winner = data:nextStep()
-					if not winner then
-						self:fightLogic()
-					else
-						local text
-						if winner == 1 then
-							text = "您赢得了战斗胜利，确定重新开始战斗,取消退出战斗"
-						else
-							text = "很遗憾，战斗失败，确定重新开始战斗,取消退出战斗"
+			local num = data:getVictimCount()
+			for i = 1, num do
+				print("第几个循环",i,data:getVictimCount())
+				self.effect:hpChange(
+					data:getVictim(i,"change"),
+					self.group[data:getVictim(i,"group")][data:getVictim(i,"index")]:getX(),
+					self.group[data:getVictim(i,"group")][data:getVictim(i,"index")]:getY()
+				)
+				self.group[data:getVictim(i,"group")][data:getVictim(i,"index")]:setHp(data:getVictim(i,"hp"))
+				--被攻击者动画	
+				self.group[data:getVictim(i,"group")][data:getVictim(i,"index")]:doAction(
+					data:getAttackType("type"),
+					"beatt",
+					function()
+					    if i == num then	
+					    	data:nextStep()
+					    	self:fightLogic()
+					    	print("执行")
+--							local winner = data:nextStep()
+--							if not winner then
+--								print("下一个")
+--								self:fightLogic()
+--							else
+--								print("没了")
+--								local text
+--								if winner == 1 then
+--									text = "您赢得了战斗胜利，确定重新开始战斗,取消退出战斗"
+--								else
+--									text = "很遗憾，战斗失败，确定重新开始战斗,取消退出战斗"
+--								end
+--								KNMsg.getInstance():boxShow(text,{confirmFun = 
+--								function()
+--									data:clear()
+--									switchScene("fighting")
+--								end,cancelFun=function()data:clear() switchScene("home")end})
+--							end
 						end
-						KNMsg.getInstance():boxShow(text,{confirmFun = 
-						function()
-							data:clear()
-							switchScene("fighting")
-						end,cancelFun=function()data:clear() switchScene("home")end})
-					end
-				end,data:getAttackType("Mode")
-			)
+					end,data:getAttackType("Mode"))
+			end
 		end,data:getAttackType("Mode"))
 end
  
