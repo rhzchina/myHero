@@ -10,7 +10,6 @@ local step = 1 --第几步
 
 function DATA_Fighting:set(data)
 	_data = data
-	dump(_data)
 end
 
 function DATA_Fighting:getMonster()
@@ -80,10 +79,13 @@ function DATA_Fighting:nextStep()
 	if step > #_data["data"][turn] then
 		step = 1
 		turn = turn + 1
-		if not _data["data"][turn] then
+		
+		if not _data["data"][turn] or not _data["data"][turn][step] then
+			print("已结束",_data["win"])
 			return _data["win"]
 		end
 	end
+	print("当前第",turn,"关第",step,"步")
 	return nil
 end
 

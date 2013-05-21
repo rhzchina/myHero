@@ -1,6 +1,7 @@
 local PATH = IMG_SCENE.."fighting/"
 local FightRole = require "GameScript/Scene/fighting/fightrole"
 local Effect = require "GameScript/Scene/fighting/effect"
+local Result = require(SRC.."Scene/common/FightResult")
 local data = DATA_Fighting
 local FightLayer = {
 	layer,
@@ -87,9 +88,14 @@ function FightLayer:fightLogic()
 --			print("------------------------")
 			--掉血动画
 			local num = data:getVictimCount()
+			local str
 			for i = 1, num do
-				print("第几个循环",i,data:getVictimCount())
-				self.effect:hpChange(
+				if data:getVictim(i,"type") == "blood" then
+					str = "+"
+				else
+					str = "-"
+				end
+				self.effect:hpChange(str,
 					data:getVictim(i,"change"),
 					self.group[data:getVictim(i,"group")][data:getVictim(i,"index")]:getX(),
 					self.group[data:getVictim(i,"group")][data:getVictim(i,"index")]:getY()
@@ -101,27 +107,13 @@ function FightLayer:fightLogic()
 					"beatt",
 					function()
 					    if i == num then	
-					    	data:nextStep()
-					    	self:fightLogic()
-					    	print("执行")
---							local winner = data:nextStep()
---							if not winner then
---								print("下一个")
---								self:fightLogic()
---							else
---								print("没了")
---								local text
---								if winner == 1 then
---									text = "您赢得了战斗胜利，确定重新开始战斗,取消退出战斗"
---								else
---									text = "很遗憾，战斗失败，确定重新开始战斗,取消退出战斗"
---								end
---								KNMsg.getInstance():boxShow(text,{confirmFun = 
---								function()
---									data:clear()
---									switchScene("fighting")
---								end,cancelFun=function()data:clear() switchScene("home")end})
---							end
+							local winner = data:nextStep()
+							if not winner then
+								self:fightLogic()
+							else
+								data:clear(true)
+								self.layer:addChild(Result:new():getLayer())	
+							end
 						end
 					end,data:getAttackType("Mode"))
 			end

@@ -86,8 +86,8 @@ function Effect:showByType(type,x,y,delay,params)
 	self.layer:addChild(sprite)	
 end
 
-function Effect:hpChange(num,x,y)
-		local value ="-"..num
+function Effect:hpChange(flag,num,x,y)
+		local value =flag..num
 		local text = newLabel(value,50)	
 		text:setColor(ccc3(55,255,0))
 		setAnchPos(text,x,y + 80)	

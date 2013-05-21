@@ -22,7 +22,6 @@ function M.Landed( type , data , callback )
 	elseif type == 2 then
 		-- 回调处理
 		local result = data
-		dump(result)
 		-- 存储数据
 		DATA_Bag:set(result["bag"])
 		DATA_Session:set({ uid = result["userinfo"]["uid"] , sid = result["userinfo"]["sid"] , server_id = result["userinfo"]["server_id"] })
@@ -55,7 +54,6 @@ function M.Task( type , data , callback )
 	else
 		local result = data
 		if result["type"] == 1 then
-			dump(result)
 			DATA_MapNum:set(result["hurdle"]["bHurdle"])
 			DATA_MapSmall:set(result["hurdle"]["sHurdle"])
 		elseif  result["type"] == 2  then
@@ -70,7 +68,6 @@ end
 function M.Skill(type, data, callback)
 	if type == 1 then
 	else
-		dump(data)
 		local result = data
 		if result["type"] == 3 then --获取英雄装备信息
 			DATA_Dress:set(result["equipage"])
