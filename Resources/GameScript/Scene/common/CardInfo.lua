@@ -71,7 +71,7 @@ function CardInfo:new(x,y,params)
 		this.layer:addChild(proText)
 	end
 	
-	local legal,lastX
+	local legal,lastX = nil, 0
 	this.layer:setTouchEnabled(true)
 	this.layer:registerScriptTouchHandler(
 		function(type, x, y)

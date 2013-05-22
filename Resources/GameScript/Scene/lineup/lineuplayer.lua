@@ -1,6 +1,7 @@
 local PATH = IMG_SCENE.."embattle/"
 local ItemList = require(SRC.."Scene/common/ItemList")
 
+local CommEmbattle = require(SRC.."Scene/common/CommEmbattle")
 local lineuplayer = {
 	layer,
 }
@@ -113,8 +114,13 @@ function lineuplayer:new(data)
 	this.layer:addChild(ksv:getLayer())
 
 
+
+
+	local embattle = CommEmbattle:new(60, 655, 290)
+	this.layer:addChild(embattle:getLayer())
+	
 	--阵容
-	local temps = Btn:new(PATH,{"embattle.png","embattle_press.png"},390,675,
+	local temps = Btn:new(PATH,{"embattle.png","embattle_press.png"},390,655,
 	    		{
 	    			highLight = true,
 	    			scale = true,
