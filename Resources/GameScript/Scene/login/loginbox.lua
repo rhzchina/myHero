@@ -22,40 +22,30 @@ function M:create( ... )
 	local bg = newSprite(IMG_SCENE.."login/login_bg.jpg")
 	setAnchPos(bg, 0, 0)
 	this.layer:addChild(bg)
-
-	--[[创建输入框]]
-	this.account = CCTextFieldTTF:textFieldWithPlaceHolder("Open ID" , "Thonburi" , 48);
-	this.account:setString("rhzch")
-	--[[设置颜色]]
-	this.account:setColor( ccc3(255 , 255 , 0) )
-	this.account:setColorSpaceHolder( ccc3(255 , 255 , 0) )
-
-	display.align(this.account , display.CENTER , display.cx , display.cy + 100)
-	this.layer:addChild( this.account )
-
-
-	--[[绑定事件]]
-	local onAttachWithIME = true
-	this.account:attachWithIME()
-	this.layer:registerScriptTouchHandler( function()
-		if onAttachWithIME then
-			echoLog("Login" , "detachWithIME")
-
-			this.account:detachWithIME()
-			onAttachWithIME = false
-		else
-			echoLog("Login" , "attachWithIME")
-
-			this.account:attachWithIME()
-			onAttachWithIME = true
-		end
-
-		return false
-	end )
-	this.layer:setTouchEnabled( true )
-
-
-
+	
+	
+	this:createOptBox(START)
+--
+--	
+--	this.layer:registerScriptTouchHandler( function()
+--		if onAttachWithIME then
+--			echoLog("Login" , "detachWithIME")
+--
+--			this.account:detachWithIME()
+--			onAttachWithIME = false
+--		else
+--			echoLog("Login" , "attachWithIME")
+--
+--			this.account:attachWithIME()
+--			onAttachWithIME = true
+--		end
+--
+--		return false
+--	end )
+--	this.layer:setTouchEnabled( true )
+--
+--
+--
 
 	
 --跳 过按钮
@@ -70,7 +60,6 @@ function M:create( ... )
 		end})
 	this.layer:addChild(exit:getLayer())
 	
-	this:createOptBox(START)
 	return this.layer
 end
 
@@ -152,7 +141,7 @@ function M:accountInput()
 	pwdText = newSprite(PATH.."input_bg.png")
 	setAnchPos(pwdText,120,400)
 	self.optLayer:addChild(pwdText)
---	
+	
 --	local remindPwd = CheckBox:new(100,350,{file = {}})
 --	self.optLayer:addChild(remindPwd:getLayer())
 --	
@@ -174,6 +163,23 @@ function M:accountInput()
 	self.optLayer:addChild(login_button:getLayer())
 	
 	self.layer:addChild(self.optLayer)
+	
+	
+	--[[创建输入框]]
+	self.account = CCTextFieldTTF:textFieldWithPlaceHolder("Open ID" , "Thonburi" , 48);
+	self.account:setString("cctv")
+	--[[设置颜色]]
+	self.account:setColor( ccc3(255 , 255 , 0) )
+	self.account:setColorSpaceHolder( ccc3(255 , 255 , 0) )
+
+	display.align(self.account , display.CENTER , display.cx , display.cy + 100)
+	self.layer:addChild( self.account )
+
+
+	--[[绑定事件]]
+	local onAttachWithIME = true
+	self.account:attachWithIME()
+--	
 end
 
 return M

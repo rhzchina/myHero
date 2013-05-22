@@ -111,8 +111,8 @@ function FightLayer:fightLogic()
 							if not winner then
 								self:fightLogic()
 							else
+								self.layer:addChild(Result:new(winner,data:getHero(),data:getResult("guanka")):getLayer())	
 								data:clear(true)
-								self.layer:addChild(Result:new():getLayer())	
 							end
 						end
 					end,data:getAttackType("Mode"))

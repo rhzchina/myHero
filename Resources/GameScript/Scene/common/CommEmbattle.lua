@@ -14,13 +14,25 @@ function CommEmbattle:new(x, y, width)
 	
 	this.layer:addChild(this.scroll:getLayer())
 	
-	local cid, str
-	for i = 1, DATA_Embattle:getLen() do
+	local num = DATA_Embattle:getLen()
+	if num < 6 then
+		num = num + 1
+	end
+	local cid, str, front, other
+	for i = 1, num do
 		cid = DATA_Embattle:get(i,"cid")
-		str = "icon_bg"..getBag("hero",cid , "star")..".png"
-		local btn = Btn:new(IMG_COMMON, {str}, 100, 300, {
-			front = IMG_ICON.."hero/S_"..getBag("hero", cid, "look")..".png",
+		if cid then
+			str = "icon_bg"..getBag("hero",cid , "star")..".png"
+			front = IMG_ICON.."hero/S_"..getBag("hero", cid, "look")..".png"
 			other = {IMG_COMMON.."icon_border"..getBag("hero", cid, "star")..".png", 45, 45}
+		else
+			str = "icon_empty.png"
+			front = nil
+			other = nil
+		end
+		local btn = Btn:new(IMG_COMMON, {str}, 100, 300, {
+			front = front,
+			other = other
 		})
 		this.scroll:addChild(btn:getLayer(), btn)
 	end

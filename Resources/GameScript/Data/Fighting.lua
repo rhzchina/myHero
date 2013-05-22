@@ -10,6 +10,7 @@ local step = 1 --第几步
 
 function DATA_Fighting:set(data)
 	_data = data
+--	dump(_data)
 end
 
 function DATA_Fighting:getMonster()
@@ -52,6 +53,10 @@ function DATA_Fighting:getVictim(index,type)
 		end
 	end
 	return ":出错++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+end
+
+function DATA_Fighting:getResult(type)
+	return _data["gameover"][type]
 end
 
 function DATA_Fighting:getVictimCount()

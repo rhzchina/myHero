@@ -12,8 +12,8 @@ function DATA_Bag:get(...)
 		result = result[arg[i]..""]
 		
 		if not result then
-			dump(_data[arg[1]])
-			dump(arg)		
+--			dump(_data[arg[1]])
+--			dump(arg)		
 			print(arg[i],"取到resut为空")
 			break
 		end

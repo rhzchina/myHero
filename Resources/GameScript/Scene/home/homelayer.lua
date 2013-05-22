@@ -47,9 +47,9 @@ function HomeLayer:create()
 	 			--加武器
 --	 			HTTPS:send("Skill",{m="skill",a="skill",skill="arm_add",id=6203},{})
 --加英雄
---	 			HTTPS:send("AddHero",{m="heros",a="heros",heros="add",star=5},{})
+	 			HTTPS:send("AddHero",{m="heros",a="heros",heros="add",star=5},{})
 
-	 			HTTPS:send("Skill",{m="skill",a="skill",skill="add",star=5},{})
+--	 			HTTPS:send("Skill",{m="skill",a="skill",skill="add",star=5},{})
 	 		end
 	 	},
     	{"king",185,400},
