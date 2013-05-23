@@ -52,7 +52,13 @@ function HomeLayer:create()
 --	 			HTTPS:send("Skill",{m="skill",a="skill",skill="add",star=5},{})
 	 		end
 	 	},
-    	{"king",185,400},
+    	{"king",185,400,function()
+    			HTTPS:send("Task" ,  
+					{m="task",a="task",task = "map"} ,
+					{success_callback = function()
+						switchScene("roost")
+					end })
+    		end},
 	    {"athletics",325,295},
 	    {"fb",50,295},
 	    {"explore",185,180}

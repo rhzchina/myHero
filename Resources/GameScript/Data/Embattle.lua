@@ -4,7 +4,6 @@ local _data
 
 function DATA_Embattle:set(data)
 	_data = data
-	dump(_data)
 end
 
 function DATA_Embattle:get(...)

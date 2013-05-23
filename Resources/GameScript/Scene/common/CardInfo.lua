@@ -71,6 +71,9 @@ function CardInfo:new(x,y,params)
 		this.layer:addChild(proText)
 	end
 	
+	this.layer:setScaleX(this.params.scaleX or 1)
+	this.layer:setScaleY(this.params.scaleY or 1)
+	
 	local legal,lastX = nil, 0
 	this.layer:setTouchEnabled(true)
 	this.layer:registerScriptTouchHandler(
@@ -105,22 +108,32 @@ function CardInfo:getRange()
 --		y = y + self.params["parent"]:getY() + self.params["parent"]:getOffsetY()
 --	end
 	local parent = self.layer:getParent()
-	x = x + parent:getPositionX()
-	y = y + parent:getPositionY()
-	while parent:getParent() do
-		parent = parent:getParent()
+	if parent then
 		x = x + parent:getPositionX()
 		y = y + parent:getPositionY()
+		while parent:getParent() do
+			parent = parent:getParent()
+			x = x + parent:getPositionX()
+			y = y + parent:getPositionY()
+		end
 	end
-	return CCRectMake(x,y,self.layer:getContentSize().width,self.layer:getContentSize().height)
+	return CCRectMake(x,y,self.layer:getContentSize().width * (self.params.scaleX or 1),self.layer:getContentSize().height * (self.params.scaleY or 1))
 end
 
 function CardInfo:getLayer()
 	return self.layer
 end
 
+function CardInfo:getPosition()
+	return self.layer:getPosition()
+end
+
 function CardInfo:getWidth()
-	return self.layer:getContentSize().width
+	return self.layer:getContentSize().width * (self.params.scaleX or 1)
+end
+
+function CardInfo:getHeight()
+	return self.layer:getContentSize().height * (self.params.scaleY or 1)
 end
 
 return CardInfo

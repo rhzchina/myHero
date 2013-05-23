@@ -125,17 +125,7 @@ function lineuplayer:new(data)
 	    			highLight = true,
 	    			scale = true,
 	    			callback= function()
-							HTTPS:send("Battle" , 
-							 {
-								m="battle",
-								a="battle",
-								battle = "select_up"
-							} ,
-							{
-								success_callback = function()
-									switchScene("battlere")
-								end 
-							})
+						switchScene("embattle")
 		    		end
 	    		 })
 	this.layer:addChild(temps:getLayer())
