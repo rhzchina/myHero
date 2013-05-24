@@ -123,9 +123,16 @@ function newLabel(str, size, params)
 	end
 
 	local label = CCLabelTTF:create(str, font,size)
+	--换行设置
 	if p.dimensions then
 		label:setDimensions(p.dimensions)
 	end
+	
+	--对齐设置
+	if p.align then
+		label:setHorizontalAlignment(p.align)
+	end
+	
 	setAnchPos(label, p.x, p.y, p.ax, p.ay)
 	label:setColor(p.color or ccc3(255, 255, 255))
 	

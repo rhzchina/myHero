@@ -7,8 +7,7 @@
 --[[包含所有 DATA]]
 require("GameScript/Data/Session")
 require("GameScript/Data/User")
-require("GameScript/Data/MapNum")
-require("GameScript/Data/MapSmall")
+require("GameScript/Data/Mission")
 require("GameScript/Data/Fighting")
 require("GameScript/Data/Bag")
 require("GameScript/Data/Embattle")
@@ -54,8 +53,7 @@ function M.Task( type , data , callback )
 	else
 		local result = data
 		if result["type"] == 1 then
-			DATA_MapNum:set(result["hurdle"]["bHurdle"])
-			DATA_MapSmall:set(result["hurdle"]["sHurdle"])
+			DATA_Mission:set(data["hurdle"])
 		elseif  result["type"] == 2  then
 
 		end

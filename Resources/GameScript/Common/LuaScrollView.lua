@@ -452,12 +452,20 @@ function LuaScrollView:setIndex(index,ani)
 	self.index = index
 	if self.horizontal then	
 		self.xOffset = -(self.itemsWidth[1] + self.dividerWidth) * (self.index - 1)
-		self.contentLayer:setPosition(ccp(self.xOffset,self.contentLayer:getPositionY()))
+		if not ani then
+			self.contentLayer:setPosition(ccp(self.xOffset,self.contentLayer:getPositionY()))
+		end
 	else
 		self.yOffset = (self.itemsWidth[1] + self.dividerWidth) * (self.index - 1)
-		self.contentLayer:setPosition(ccp(self.contentLayer:getPositionX(),self.yOffset))
+		if not ani then
+			self.contentLayer:setPosition(ccp(self.contentLayer:getPositionX(),self.yOffset))
+		end
 	end
+	if ani then
+		self:autoScroll(nil, {index = index, page_callback = self.params.page_callback})
+	else
 		self:autoScroll()
+	end
 end
 
 function LuaScrollView:scrollTo(id)

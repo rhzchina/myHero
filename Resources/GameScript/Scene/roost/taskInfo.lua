@@ -1,3 +1,4 @@
+local PATH = IMG_SCENE.."mission/"
 local roostLayer = {layer}
 function roostLayer:new(ksv,data,p_x,p_y)
 	local this = {}
@@ -6,7 +7,7 @@ function roostLayer:new(ksv,data,p_x,p_y)
 
 	this.layer = CCLayer:create()
 	setAnchPos(this.layer,p_x,p_y+10)
-	local bg = newSprite("image/scene/task/infobox.png")
+	local bg = newSprite(PATH.."infobox.png")
 	setAnchPos(bg,5,0)
 	this.layer:addChild(bg)
 	this.layer:setContentSize(bg:getContentSize())
