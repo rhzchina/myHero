@@ -1,11 +1,15 @@
 #include "ODSocket.h"
 #include <stdio.h>
-#include<vector>
+#include <vector>
 #include <string>
+
+
 using namespace std;
 
 #ifdef WIN32
-	#pragma comment(lib, "wsock32")
+	#pragma comment(lib , "wsock32")
+	#pragma comment(lib , "libcurl_imp.lib")
+	#pragma comment(lib , "pthreadVCE2.lib")
 #endif
 
 
@@ -23,21 +27,24 @@ int ODSocket::Init()
 #ifdef WIN32
 	WSADATA wsaData;
 	WORD version = MAKEWORD(2, 0);
-	int ret = WSAStartup(version, &wsaData);//win sock start up
+	int ret = WSAStartup(version, &wsaData);		//win sock start up
 	if ( ret ) {
 		return -1;
 	}
 #endif
 	return 0;
 }
+
+
 //this is just for windows
 int ODSocket::Clean()
 {
 #ifdef WIN32
-		return (WSACleanup());
+	return (WSACleanup());
 #endif
-		return 0;
+	return 0;
 }
+
 
 ODSocket& ODSocket::operator = (SOCKET s)
 {
@@ -47,14 +54,15 @@ ODSocket& ODSocket::operator = (SOCKET s)
 
 ODSocket::operator SOCKET ()
 {
-	
 	return m_sock;
 }
-//create a socket object win/lin is the same
+
+
+// create a socket object win/lin is the same
 // af:
 bool ODSocket::Create(int af, int type, int protocol)
 {
-	m_sock = socket(af, type, protocol);
+	m_sock = socket(af , type , protocol);
 	if ( m_sock == INVALID_SOCKET ) {
 		return false;
 	}
@@ -91,22 +99,9 @@ bool ODSocket::Create(int af, int type, int protocol)
 	return true;
 }
 
+
 bool ODSocket::Connect(const char* ip, unsigned short port)
 {
-	//struct sockaddr_in serv_addr;
-	//serv_addr.sin_family=AF_INET; 
-	//serv_addr.sin_port=htons(port); 
-	//int ret = inet_pton(AF_INET,argv[1],&addr);
-	//memcpy(&serv_addr.sin_addr,&addr,sizeof(struct in_addr));
-	//// serv_addr.sin_addr.s_addr = htons(atoi(argv[1])); 
-	//bzero( &(serv_addr.sin_zero),8);
-	//fprintf(stderr,"line:%d\n",__LINE__); 
-	//if (connect(sockfd, (struct sockaddr *) &serv_addr, 
-	//	sizeof(struct sockaddr)) == -1) { 
-	//		perror("connect出错！"); 
-	//		exit(1); 
-	//} 
-
 	struct sockaddr_in svraddr;
 	svraddr.sin_family = AF_INET;
 	svraddr.sin_addr.s_addr = inet_addr(ip);
@@ -116,10 +111,11 @@ bool ODSocket::Connect(const char* ip, unsigned short port)
 		return false;
 	}
 
-	
 	return true;
 }
 
+
+/*
 bool ODSocket::Bind(unsigned short port)
 {
 	struct sockaddr_in svraddr;
@@ -136,10 +132,12 @@ bool ODSocket::Bind(unsigned short port)
 		return false;
 	}
 
-	
 	return true;
 }
-//for server
+
+
+// for server
+
 bool ODSocket::Listen(int backlog)
 {
 	int ret = listen(m_sock, backlog);
@@ -164,11 +162,16 @@ bool ODSocket::Accept(ODSocket& s, char* fromip)
 
 	return true;
 }
+*/
 
+
+// 发送数据
 int ODSocket::Send(const char* buf, int len, int flags)
 {
 	int bytes;
 	int count = 0;
+
+	// CCLog("%s" , buf);
 
 	while ( count < len ) {
 
@@ -181,75 +184,79 @@ int ODSocket::Send(const char* buf, int len, int flags)
 	return count;
 }
 
-int ODSocket::Recv(char* buf, int len, int flags)
-{
-	vector<string> ch;
-	string respons ="";
-	int type = 0;
-	int time_num = 0;
-	int bytes;
 
+// 接收数据
+int ODSocket::Recv(char* buf , int len , int flags)
+{
+	if(buf == NULL) return -1;
+
+	int bytes;
 	int buffer_len = 100;
 
 	char buffer[101] = "\0";
+	unsigned long length = 0;
+	unsigned long temp_int = 0;
+
+	// 读取包头
+	bytes = recv(m_sock , buffer , 5 , 0);
+	if(bytes < 0) {
+		return bytes;
+	}
+
+	if( bytes != 5    /*|| buffer[0] != 0xff*/ ) {
+		unsigned long pack_header = 0;
+		memcpy(&pack_header , &buffer , 1);
+
+		if(pack_header != 255) {
+			CCLog("%s" , "package header wrong");
+			return -1;
+		}
+	}
+
+	memcpy(&temp_int , &buffer[1] , 4);
+	length = ntohl(temp_int);
+
+	if( length <= 0 ) return -1;
+
+
+	// 接收数据
+	unsigned long total_recv = 0;
+	char * p = NULL;
+	p = new char[length];
 
 	while(1) {
-		// 接收数据
+		memset(buffer , 0 , buffer_len);
+
 		bytes = recv(m_sock , buffer , buffer_len , 0);
 
 		if( bytes != 0 ) {
-
-			if( strlen(buffer) > bytes ) {
-				char buffer2[101] = "\0";
-				strncpy(buffer2 , buffer , bytes);
-				ch.push_back( buffer2 );	//把元素一个一个存入到vector中
-				//printf("%d\n" , strlen(buffer2));
-			} else {
-				ch.push_back( buffer );	//把元素一个一个存入到vector中
-			}
-
-			// ch.push_back( buffer );
+			memcpy(p + total_recv , buffer , bytes);
+			total_recv = total_recv + bytes;
 		}
 
-		//printf("%d - %d\n" , bytes , strlen(buffer));
+		// printf("%d - %d\n" , bytes , strlen(buffer));
 
 		if(bytes == SOCKET_ERROR) {
+			delete(p);
 			printf("接收数据失败!\n");
 			return 0;
 		}
 
-		if( bytes == 0 || (bytes < buffer_len && buffer[bytes - 1] == '\n' ) ) {
-			int j = 0;
-			for(std::vector<std::string> ::iterator it = ch.begin();it != ch.end();++it,j++){
-				respons+=it->data();
-			} 
-			strcpy(buf,respons.c_str()) ;
+		if( total_recv >= length || bytes == 0    /* || (bytes < buffer_len && buffer[bytes - 1] == 0x00 ) */ ) {
+			memcpy(buf , p , total_recv);
+			delete(p);
 
-			//printf("total length: %d" , strlen(buf));
-			printf("接收数据完成!\n");
-			return 0;
+			// printf("total length: %d" , total_recv);
+			// printf("接收数据完成!\n");
+			return total_recv;
 		}
 	}
 
 	return 0;
-
-	/*std::string reposnt = "";
-	char recvBuff[1024];
-	int type = 0;
-	bool is_socket = true;
-	while(is_socket) {
-		memset(recvBuff,'\0',1024);
-		type = recv(m_sock,recvBuff,1024,0);    
-		printf("recv msg from client: %s \n",recvBuff);
-		reposnt +=recvBuff;
-		if (type<0)
-		{
-			is_socket = false;
-		}
-	}*/
-	//return recv(m_sock,buf,len,0);
 }
 
+
+// 关闭链接
 int ODSocket::Close()
 {
 #ifdef WIN32
@@ -258,6 +265,7 @@ int ODSocket::Close()
 	return (close(m_sock));
 #endif
 }
+
 
 int ODSocket::GetError()
 {
@@ -268,6 +276,7 @@ int ODSocket::GetError()
 #endif
 }
 
+/*
 bool ODSocket::DnsParse(const char* domain, char* ip)
 {
 	struct hostent* p;
@@ -283,18 +292,6 @@ bool ODSocket::DnsParse(const char* domain, char* ip)
 	
 	return true;
 }
+*/
 
 
-//char* ODSocket::G2U(const char* gb2312)
-//{
-//	int len = MultiByteToWideChar(CP_ACP, 0, gb2312, -1, NULL, 0);
-//	wchar_t* wstr = new wchar_t[len+1];
-//	memset(wstr, 0, len+1);
-//	MultiByteToWideChar(CP_ACP, 0, gb2312, -1, wstr, len);
-//	len = WideCharToMultiByte(CP_UTF8, 0, wstr, -1, NULL, 0, NULL, NULL);
-//	char* str = new char[len+1];
-//	memset(str, 0, len+1);
-//	WideCharToMultiByte(CP_UTF8, 0, wstr, -1, str, len, NULL, NULL);
-//	if(wstr) delete[] wstr;
-//	return str;
-//}

@@ -30,8 +30,11 @@
 	//#pragma endregion
 #endif
 
+#include "cocos2d.h"
+USING_NS_CC;
 
-class ODSocket {
+
+class ODSocket : public CCObject{
 
 public:
 	bool is_getData;
@@ -45,20 +48,20 @@ public:
 	bool Connect(const char* ip, unsigned short port);
 	//#region server
 	// Bind socket
-	bool Bind(unsigned short port);
+	// bool Bind(unsigned short port);
 
 	// Listen socket
-	bool Listen(int backlog = 5); 
+	// bool Listen(int backlog = 5); 
 
 	// Accept socket
-	bool Accept(ODSocket& s, char* fromip = NULL);
+	// bool Accept(ODSocket& s, char* fromip = NULL);
 	//#endregion
 	
 	// Send socket
 	int Send(const char* buf, int len, int flags = 0);
 
 	// Recv socket
-	int Recv(char* buf, int len, int flags = 0);
+	int Recv(char* buf , int len, int flags = 0);
 	
 	// Close socket
 	int Close();
@@ -74,7 +77,7 @@ public:
 	//#pragma endregion
 
 	// Domain parse
-	static bool DnsParse(const char* domain, char* ip);
+	// static bool DnsParse(const char* domain, char* ip);
 
 	ODSocket& operator = (SOCKET s);
 

@@ -109,20 +109,44 @@ function HTTPS:send(mod  , data , param)
 		return json.encode( data )
 	end
 
-	-- 一次http请求
+--	-- 一次http请求
 	local function sendRequest(url , postdata , callback)
-		print("发送数据")
-		local http = HSHttpRequest:getInstance()
-		http:SetUrl(url)
-		http:SetRequestType(HTTP_MODE_POST)
+		local request = network.createHTTPRequest(function(event)
+			local request = event.request
 
-		http:SetRequestData(postdata , string.len(postdata))
-		http:SetTag("POST")
+			local error_code = request:getErrorCode()
+			if error_code ~= 0 then
+				local error_msg = request:getErrorMessage()
+				echoLog("HTTP" , "===== error: " .. error_code .. " , msg: " .. error_msg .. " =====" )
 
-		HSBaseHttp:GetInstance():Send(http);
-		http:creadFuancuan(callback)
+				if string.find(error_msg , "resolve host name") ~= nil or string.find(error_msg , "connect to server") or string.find(error_msg , "Failed sending data") then
+					error_msg = "网络异常，无法连接服务器"
+				elseif string.find(error_msg , "Timeout") ~= nil then
+					error_msg = "网络连接超时"
+				end
+				callback( error_code , error_msg )
+				return
+			end
 
-		http:release()
+			callback( request:getResponseStatusCode() , request:getResponseDataLua() )
+		end , url , "POST")
+
+		-- request:setAcceptEncoding(kCCHTTPRequestAcceptEncodingDeflate)
+		request:setPOSTData(postdata)
+
+		request:start()
+--		print("发送数据")
+--		local http = HSHttpRequest:getInstance()
+--		http:SetUrl(url)
+--		http:SetRequestType(HTTP_MODE_POST)
+--
+--		http:SetRequestData(postdata , string.len(postdata))
+--		http:SetTag("POST")
+--
+--		HSBaseHttp:GetInstance():Send(http);
+--		http:creadFuancuan(callback)
+--
+--		http:release()
 	end
 
 

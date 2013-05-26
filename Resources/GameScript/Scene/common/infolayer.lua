@@ -125,7 +125,7 @@ function InfoLayer:createtop()
 	
 	local goldLeaf  = newSprite(PATH.."gold_bg.png", 345, 55)--金叶子
 	self.topLayer:addChild(goldLeaf)
-	goldLeaf = newLabel(DATA_User:get("Coin"),  20, {x = 415, y = 60, ax = 0.5})--金叶子
+	goldLeaf = newLabel(DATA_User:get("Gold"),  20, {x = 415, y = 60, ax = 0.5})--金叶子
 	self.topLayer:addChild(goldLeaf)
 	
 	local power  = newSprite(PATH.."power_bg.png", 220, 15)

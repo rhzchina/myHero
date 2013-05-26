@@ -3,9 +3,6 @@
 #define __LUACOCOS2D_H_
 
 /******************add socket**********************/
-#include "HSHttpRequest.h"
-#include "HSHttpResponse.h"
-#include "HSBaseHttp.h"
 #include "LuaSocket.h"
 #include "AnimatePacker/AnimatePacker.h"
 //#include "Singleton.h"
