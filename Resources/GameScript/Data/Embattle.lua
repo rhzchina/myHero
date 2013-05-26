@@ -24,3 +24,7 @@ end
 function DATA_Embattle:getLen()
 	return table.nums(_data)
 end
+
+function DATA_Embattle:isLegal()
+	return _data ~= nil
+end

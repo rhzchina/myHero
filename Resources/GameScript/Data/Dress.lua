@@ -20,3 +20,8 @@ function DATA_Dress:get(...)
 	end
 	return result
 end
+
+function DATA_Dress:isLegal()
+	return _data ~= nil
+end
+	

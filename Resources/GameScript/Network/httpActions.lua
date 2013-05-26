@@ -12,6 +12,7 @@ require("GameScript/Data/Fighting")
 require("GameScript/Data/Bag")
 require("GameScript/Data/Embattle")
 require("GameScript/Data/Dress")
+require("GameScript/Data/Shop")
 local M = {}
 
 --[[登录]]
@@ -93,4 +94,13 @@ function M.Fighting(type,data,callback)
 	return true,data
 end
 
+function M.Shop(type, data, callback)
+	if type == 1 then
+	else
+		DATA_Shop:set(data["shop"])
+		dump(data)
+		callback()
+	end
+	return true,data
+end
 return M

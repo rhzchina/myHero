@@ -34,11 +34,16 @@ function InfoLayer:create(hideTop)
 
 	    {"embattle",
 	    	function()
-	    		HTTPS:send("Skill" , 
+	    		if DATA_Dress:isLegal() then
+					switchScene("lineup")
+	    		else
+	    			HTTPS:send("Skill" , 
 		    		{m="skill",a="skill",skill = "selectline"} ,
 		    		{success_callback = function()
 						switchScene("lineup")
 					end })
+	    		end
+	    		
 	    	end
 	    },
 	    {"bag",
@@ -62,6 +67,15 @@ function InfoLayer:create(hideTop)
 	
 		{"shop",
 			function()
+				if DATA_Shop:isLegal() then
+					switchScene("shop")
+				else
+					HTTPS:send("Shop" ,  
+						{m="shop",a="shop",shop = "select"} ,
+						{success_callback = function()
+							switchScene("shop")
+						end })
+				end
 			end
 		}
 	}
