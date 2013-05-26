@@ -35,7 +35,15 @@ end
 function M.Battle( type , data , callback )
 	if type == 1 then
 	else
-		callback()
+		dump(data)
+		if data["error"] then
+			print(data["error"])	
+		else
+			if data["type"] == 3 then --武将上阵返回数据
+				DATA_Embattle:set(data["battle"])
+			end
+			callback()
+		end
 	end
 	return true,data
 end

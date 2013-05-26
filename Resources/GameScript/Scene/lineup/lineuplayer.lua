@@ -66,7 +66,7 @@ function lineuplayer:new(data)
 								HTTPS:send("Skill", {a = "skill", m = "skill",skill = "inserSkill", index = pos,
 									card_id = getBag("hero", infos:get_gid(),"id") , card_cid = infos:get_gid() , skill_id = getBag(type,list:getSelectId(),"id") , skill_cid = list:getSelectId(),}, {success_callback=
 									function()
-										switchScene("lineup",ksv:getOffset())
+										switchScene("lineup",ksv:getCurIndex())
 									end
 								})
 							else
@@ -88,7 +88,7 @@ function lineuplayer:new(data)
 								HTTPS:send("Battle", {a = "battle", m = "battle",battle = "up", index = pos,
 									id = getBag("hero", list:getSelectId(), "id"), cid = list:getSelectId()}, {success_callback=
 									function()
-										switchScene("lineup",ksv:getOffset())
+										switchScene("lineup",ksv:getCurIndex())
 									end
 								})
 							else
@@ -131,7 +131,7 @@ function lineuplayer:new(data)
 	this.layer:addChild(temps:getLayer())
 	
 	if data then
-		ksv:setOffset(data)
+		ksv:setIndex(data)
 	end
 return this
 end

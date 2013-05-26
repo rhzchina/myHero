@@ -10,7 +10,7 @@ collectgarbage("setstepmul" , 5000)
 
 
 -- [[ 包含各种 Layer ]]
-local embattle = require (SRC.."/Scene/embattle/EmbattleLayer")
+local embattle = require (SRC.."Scene/embattle/EmbattleLayer")
 
 
 local M = {}

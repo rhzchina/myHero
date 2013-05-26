@@ -105,7 +105,7 @@ function InfoLayer:createtop()
 		leftIcon = {"level_bg.png",18,28}
 	})
 	self.topLayer:addChild(level:getLayer())
-	level = newLabel(DATA_User:get("Gold"),  20, {x = 23, y = 35})
+	level = newLabel(DATA_User:get("lv"),  30, {x = 48, y = 30, ax = 0.5})
 	self.topLayer:addChild(level)
 
 	--用户名

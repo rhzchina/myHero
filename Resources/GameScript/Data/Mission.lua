@@ -4,7 +4,6 @@ local _data
 
 function DATA_Mission:set(data)
 	_data = data
-	dump(data)
 end
 
 function DATA_Mission:get(...)
@@ -14,7 +13,7 @@ function DATA_Mission:get(...)
 		if not result then
 --			dump(_data[arg[1]])
 --			dump(arg)		
-			print(arg[i],"取到resut为空")
+--			print(arg[i],"取到resut为空")
 			break
 		end
 	end

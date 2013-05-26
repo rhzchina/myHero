@@ -14,7 +14,7 @@ function DATA_Bag:get(...)
 		if not result then
 --			dump(_data[arg[1]])
 --			dump(arg)		
-			print(arg[i],"取到resut为空")
+--			print(arg[i],"取到resut为空")
 			break
 		end
 	end
@@ -23,7 +23,6 @@ end
 
 function DATA_Bag:getByFilter(type,filter)
 	local result = {}
-	print(type,filter)
 	for k, v in pairs(_data[type]) do
 		if v["type"] then
 			if v["type"] == filter or not filter then

@@ -40,8 +40,8 @@ xpcall(function()
 	CheckBox = require(SRC.."Common/LuaCheckBox")
 	Mask = require(SRC.."Common/LuaMask")
 	Progress = require(SRC.."Common/LuaProgress")
+	Label = require(SRC.."Common/LuaLabel")
 	require(SRC.."Common/KNMsg")
-
 
 	switchScene("login")
 
