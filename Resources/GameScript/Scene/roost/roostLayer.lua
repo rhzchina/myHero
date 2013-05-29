@@ -25,12 +25,20 @@ function roostLayer:new(x,y)
 	local bsv 
 	bsv = ScrollView:new(54,640,440,50,0,true,1, {
 		page_callback = function()
-			this:createMission(bsv:getCurIndex())
+				if DATA_Mission:get("sHurdle", bsv:getCurIndex()) then
+						this:createMission(bsv:getCurIndex())
+				else		
+					HTTPS:send("Task", {a = "task", m = "task", task = "select_hurdle", bHurdle_id = DATA_Mission:get("bHurdle", bsv:getCurIndex(), "id")},{
+						success_callback = function()	
+							this:createMission(bsv:getCurIndex())
+						end
+					})	
+				end
 		end
 	})
 	for i = 1, #DATA_Mission:get("bHurdle")  do --DATA_MapNum:size()
 		local nameLayer = newLayer()
-		local name = newLabel(DATA_Mission:get("bHurdle",i,"name"), 30, {x = 180, y = -5, ax = 0.5})
+		local name = newLabel(DATA_Mission:get("bHurdle",i,"name"), 30, {x = 100, y = -5})
 		
 		nameLayer:setContentSize(CCSizeMake(440,30))
 		nameLayer:addChild(name)
@@ -87,8 +95,8 @@ function roostLayer:createMission(level)
 	local task_x = 0
 	local task_y = 100
 	local ksv = ScrollView:new(0,90,480,420,10,false)
-	for i = 1, #DATA_Mission:get("sHurdle")  do
-			task = taskinfo:new(ksv,DATA_Mission:get("sHurdle",i),task_x,task_y)
+	for i = 1, #DATA_Mission:get("sHurdle", level)  do
+			task = taskinfo:new(ksv,DATA_Mission:get("sHurdle",level, i),task_x,task_y)
 			ksv:addChild(task:getLayer(),task)
 			task_y = task_y -180
 	end

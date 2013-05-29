@@ -36,12 +36,12 @@ end
 function M.Battle( type , data , callback )
 	if type == 1 then
 	else
-		dump(data)
 		if data["error"] then
 			print(data["error"])	
 		else
 			if data["type"] == 3 then --武将上阵返回数据
 				DATA_Embattle:set(data["battle"])
+				DATA_Dress:set(data["equipage"])
 			end
 			callback()
 		end
@@ -60,13 +60,17 @@ end
 function M.Task( type , data , callback )
 	if type == 1 then
 	else
+		local curLevel  --当前的小关卡数据是第几关
 		local result = data
-		if result["type"] == 1 then
-			DATA_Mission:set(data["hurdle"])
-		elseif  result["type"] == 2  then
-
+		if result["type"] == 1 then  --当前的关卡数据
+			curLevel = math.floor(result["hurdle"]["sHurdle"][1]["id"] / 100) % 10
+			
+			DATA_Mission:setByKey("bHurdle",data["hurdle"]["bHurdle"])
+			DATA_Mission:setByKey("sHurdle",curLevel,data["hurdle"]["sHurdle"])
+		elseif  result["type"] == 2  then  --更新关卡数据
+			curLevel = math.floor(result["hurdle"][1]["id"] / 100) % 10
+			DATA_Mission:setByKey("sHurdle", curLevel, data["hurdle"])
 		end
-
 		callback()
 	end
 	return true,data
@@ -98,7 +102,6 @@ function M.Shop(type, data, callback)
 	if type == 1 then
 	else
 		DATA_Shop:set(data["shop"])
-		dump(data)
 		callback()
 	end
 	return true,data

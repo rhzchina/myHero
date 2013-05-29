@@ -26,7 +26,10 @@ function HomeLayer:create()
 	local main_small = {
 	 	{"chat",20,
 	 	},
-    	{"update",110},
+    	{"update",110,
+    		function()
+    			switchScene("update")
+    		end},
 	    {"athletics",200},
 	    {"friend",290},
 	    {"menu",380}
