@@ -40,6 +40,7 @@ function M.Battle( type , data , callback )
 			print(data["error"])	
 		else
 			if data["type"] == 3 then --武将上阵返回数据
+				dump(data)
 				DATA_Embattle:set(data["battle"])
 				DATA_Dress:set(data["equipage"])
 			end
