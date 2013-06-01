@@ -36,6 +36,7 @@ function ShopItem:new(kind, key, params)
 	local buy = Btn:new(IMG_BTN, {"buy.png", "buy_pre.png"}, 370, 5, {
 			priority = this.params.priority,
 			parent = this.params.parent,
+			callback = this.params.optCallback,
 		})
 	this.layer:addChild(buy:getLayer())
 		

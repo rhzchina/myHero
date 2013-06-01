@@ -1,5 +1,6 @@
 local ITEM = require(SRC.."Scene/shop/shopitem")
 local Detail = require(SRC.."Scene/common/CardDetail")
+local PATH = IMG_SCENE.."shop/"
 
 local M = {
 	layer,
@@ -65,6 +66,9 @@ function M:createList(kind)
 		local item 
 		item = ITEM:new(kind, k,{
 			parent = scroll,	
+			optCallback = function()
+				self:buy()
+			end
 --			iconCallback = function()
 --				self.layer:addChild(Detail:new(kind,v["cid"]):getLayer(),1)
 --			end
@@ -75,6 +79,72 @@ function M:createList(kind)
 	
 	self.listLayer:addChild(scroll:getLayer())
 	self.layer:addChild(self.listLayer)
+end
+
+function M:buy()
+	local numLabel, valueLabel
+	local totalNum, totalValue = 1, 0
+	local layer = newLayer()
+	local bg = newSprite(IMG_COMMON.."tip_bg.png")
+	
+	setAnchPos(bg, 240, 425, 0.5, 0.5)
+	layer:addChild(bg)
+	
+	local mask 
+	
+	local okBtn = Btn:new(IMG_BTN, {"ok.png", "ok_press.png"}, 70, 320, {
+		priority = -131,
+	})
+	layer:addChild(okBtn:getLayer())
+	
+	local cancelBtn = Btn:new(IMG_BTN, {"cancel.png", "cancel_press.png"}, 280, 320, {
+		priority = -131,
+		callback = function()
+			self.layer:removeChild(mask, true)
+		end
+	})
+	layer:addChild(cancelBtn:getLayer())
+	
+	local num = newLabel("数量:", 40, {x = 60, y = 480})
+	layer:addChild(num)
+	
+	num = newSprite(PATH.."num_bg.png")
+	setAnchPos(num, 160, 480)
+	layer:addChild(num)
+	
+	numLabel = newLabel(totalNum, 40, {x = 240, y = 480, ax = 0.5})
+	layer:addChild(numLabel)
+	
+	
+	local addBtn = Btn:new(IMG_BTN, {"add.png", "add_press.png"}, 320, 480, {
+		priority = -131,
+		callback = function()
+			totalNum = totalNum + 1
+			numLabel:setString(totalNum.."")
+		end
+	})
+	layer:addChild(addBtn:getLayer())
+	
+	
+	local minusBtn = Btn:new(IMG_BTN,{"minus.png", "minus_press.png"}, 370, 480, {
+		priority = -131,
+		callback = function()
+		end
+	})
+	layer:addChild(minusBtn:getLayer())
+	local price = newLabel("价格:", 40, {x = 60, y = 410})
+	layer:addChild(price)
+	
+	price = newSprite(PATH.."value_bg.png")
+	setAnchPos(price, 160, 410)
+	layer:addChild(price)
+	
+	valueLabel = newLabel(totalValue, 40, {x = 240, y = 410, ax = 0.5})
+	layer:addChild(valueLabel)
+	
+	
+	mask = Mask:new({item = layer})
+	self.layer:addChild(mask)
 end
 
 return M

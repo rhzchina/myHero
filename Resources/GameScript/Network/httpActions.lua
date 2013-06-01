@@ -43,6 +43,7 @@ function M.Battle( type , data , callback )
 				dump(data)
 				DATA_Embattle:set(data["battle"])
 				DATA_Dress:set(data["equipage"])
+				DATA_Bag:setByKey("skill",data["skill"]["cid"],data["skill"])
 			end
 			callback()
 		end

@@ -1,5 +1,6 @@
 local PATH = IMG_SCENE.."home/"
 local CommEmbattle = require(SRC.."Scene/common/CommEmbattle")
+
 HomeLayer= {
 }
 function HomeLayer:create()
@@ -19,7 +20,9 @@ function HomeLayer:create()
 	setAnchPos(bg, 0, 505)
 	layer:addChild(bg)
 	
-	local embattle = CommEmbattle:new(45, 535, 390)
+	local embattle = CommEmbattle:new(45, 535, 390, {
+		parent = layer
+	})
 	layer:addChild(embattle:getLayer())
 
 	--底部按钮

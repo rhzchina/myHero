@@ -4,7 +4,18 @@ local _data
 
 function DATA_Bag:set(data)
 	_data = data
-	dump(data)
+end
+
+function DATA_Bag:setByKey(first, second, third)
+	if third then
+		if not _data[first] then
+			_data[first] = {}
+		end
+		_data[first][second] = third
+	else	
+		_data[first] = second
+	end
+	dump(_data[first])
 end
 
 function DATA_Bag:get(...)
