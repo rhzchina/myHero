@@ -108,6 +108,16 @@ function M.Skill_selectline(type, data, callback)
 	return true, data
 end
 
+function M.Skill_inserSkill(type, data, callback)
+	if type == 1 then
+	else
+		local result = data
+		DATA_Dress:set(result["equipage"])
+		callback()
+	end
+	return true, data
+end
+
 function M.Fighting(type,data,callback)
 	if type == 1 then
 	else
@@ -136,6 +146,7 @@ function M.Shop_buy(type, data, callback)
 		else
 			DATA_User:setkey("Gold", data["shop"]["Gold"])
 		end
+		DATA_Bag:setByKey("prop", data["shop"]["prop"]["cid"], data["shop"]["prop"])
 		callback()
 	end
 	return true,data

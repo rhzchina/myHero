@@ -16,6 +16,7 @@ function DATA_Bag:setByKey(first, second, third)
 	else	
 		_data[first] = second
 	end
+	dump(_data)
 end
 
 function DATA_Bag:insert(type, data)

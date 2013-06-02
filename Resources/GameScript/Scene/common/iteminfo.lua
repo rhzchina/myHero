@@ -30,11 +30,11 @@ function ItemInfo:new(kind,cid,params)
 	this.layer:addChild(bg)
 	this.layer:setContentSize(bg:getContentSize())
 	
-	
-	local icon = Btn:new(IMG_COMMON,{"icon_bg"..DATA_Bag:get(kind,cid,"star")..".png"}, ix, iy, {
+
+	local icon = Btn:new(IMG_COMMON,{"icon_bg"..(DATA_Bag:get(kind,cid,"star") or 1)..".png"}, ix, iy, {
 		front = IMG_ICON..kind.."/S_"..DATA_Bag:get(kind,cid,"look")..".png",
-		other = {IMG_COMMON.."icon_border"..DATA_Bag:get(kind,cid,"star")..".png",45,45},
-		scale = true,
+		other = {IMG_COMMON.."icon_border"..(DATA_Bag:get(kind,cid,"star") or 1 )..".png",45,45},
+		scale = this.params.iconCallback and true,
 		priority = this.params.priority,
 		parent = this.params.parent,
 		callback = this.params.iconCallback
@@ -67,14 +67,19 @@ function ItemInfo:createLayout(kind, cid)
 		local text = newLabel("名称:"..DATA_Bag:get(kind,cid,"name"),20,{x = 150, y = 80, color = ccc3(0,0,0)})
 		self.layer:addChild(text)
 		
-		text = newLabel("等级:"..DATA_Bag:get(kind,cid,"lev"),20,{x = 150, y = 50, color = ccc3(0,0,0)})
-		self.layer:addChild(text)
+		if kind ~= "prop" then
+			text = newLabel("等级:"..DATA_Bag:get(kind,cid,"lev"),20,{x = 150, y = 50, color = ccc3(0,0,0)})
+			self.layer:addChild(text)
 		
-		local star
-		for i = 1, DATA_Bag:get(kind,cid,"star") do
-			star = newSprite(IMG_COMMON.."star.png")
-			setAnchPos(star, 150 + (i - 1) * 25, 20)
-			self.layer:addChild(star)
+			local star
+			for i = 1, DATA_Bag:get(kind,cid,"star") do
+				star = newSprite(IMG_COMMON.."star.png")
+				setAnchPos(star, 150 + (i - 1) * 25, 20)
+				self.layer:addChild(star)
+			end
+		else
+			text = newLabel(DATA_Bag:get(kind, cid, "exps"), 20, {x = 140, y = 20, dimensions = CCSizeMake(220, 50)})
+			self.layer:addChild(text)
 		end
 	else
 		local text = newLabel(DATA_Bag:get(kind,cid,"name"),20,{x = 130, y = 70,noFont = true, color = ccc3(0,0,0)})

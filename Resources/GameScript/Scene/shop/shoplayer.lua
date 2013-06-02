@@ -69,7 +69,7 @@ function M:createList(kind)
 		item = ITEM:new(kind, k,{
 			parent = scroll,	
 			optCallback = function()
-				self:buy(kind,k)
+				self:buySingle(kind,k)
 			end
 --			iconCallback = function()
 --				self.layer:addChild(Detail:new(kind,v["cid"]):getLayer(),1)
@@ -81,6 +81,53 @@ function M:createList(kind)
 	
 	self.listLayer:addChild(scroll:getLayer())
 	self.layer:addChild(self.listLayer)
+end
+
+function M:buySingle(type, id)
+	local numLabel, valueLabel
+	local totalNum, perValue = 1, DATA_Shop:get(id, "money") 
+	local layer = newLayer()
+	local bg = newSprite(IMG_COMMON.."tip_bg.png")
+	
+	setAnchPos(bg, 240, 425, 0.5, 0.5)
+	layer:addChild(bg)
+	
+	local mask 
+	
+	local okBtn = Btn:new(IMG_BTN, {"ok.png", "ok_press.png"}, 70, 320, {
+		priority = -131,
+		callback = function()
+			HTTPS:send("Shop", {a = "shop", m = "shop", shop = "buy", type = type, pag_id = DATA_Shop:get(id,"id")}, {
+				success_callback = function()
+					self.layer:removeChild(mask, true)
+					self.infoLayer:createtop()
+					MsgBox.create():flashShow("购买 成功")
+				end
+			})
+		end
+	})
+	layer:addChild(okBtn:getLayer())
+	
+	local cancelBtn = Btn:new(IMG_BTN, {"cancel.png", "cancel_press.png"}, 280, 320, {
+		priority = -131,
+		callback = function()
+			self.layer:removeChild(mask, true)
+		end
+	})
+	layer:addChild(cancelBtn:getLayer())
+	
+	local icon = Btn:new(IMG_COMMON,{"icon_bg1.png"}, 80, 420, {
+		front = IMG_ICON.."equip/S_7401.png",
+		other = {IMG_COMMON.."icon_border1.png",45,45},
+		text = {DATA_Shop:get(id, "name"),20,ccc3(255,255,255), ccp(0, -60), }
+	})
+	layer:addChild(icon:getLayer())
+	
+	local desc = newLabel(DATA_Shop:get(id, "exps"), 25, {x = 180, y = 450, dimensions=CCSizeMake(200, 60)})
+	layer:addChild(desc)
+	
+	mask = Mask:new({item = layer})
+	self.layer:addChild(mask)
 end
 
 function M:buy(type, id)
@@ -101,6 +148,7 @@ function M:buy(type, id)
 				success_callback = function()
 					self.layer:removeChild(mask, true)
 					self.infoLayer:createtop()
+					MsgBox.create():flashShow("购买 成功")
 				end
 			})
 		end

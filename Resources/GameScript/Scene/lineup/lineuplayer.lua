@@ -71,7 +71,7 @@ function lineuplayer:new(data)
 									end
 								})
 							else
-								MsgBox.create:flashShow("请选 择装备的物口")
+								MsgBox.create():flashShow("请选 择装备的物口")
 							end
 						end
 					})
@@ -96,7 +96,7 @@ function lineuplayer:new(data)
 										end
 									})
 								else
-									MsgBox.create:flashShow("请选择要上阵列的武将")
+									MsgBox.create():flashShow("请选择要上阵列的武将")
 								end
 							end
 						})

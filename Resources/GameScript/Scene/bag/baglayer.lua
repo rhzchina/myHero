@@ -58,12 +58,16 @@ function M:createList(kind)
 	local temp
 	for k, v in pairs(DATA_Bag:get(kind)) do
 		local item 
+		local callback
+		if kind ~= "prop" then
+			callback = function()
+				self.layer:addChild(Detail:new(kind,v["cid"]):getLayer(),1)
+			end
+		end
 		item = ITEM:new(kind,v["cid"],{
 			parent = scroll,	
 			type = "bag",
-			iconCallback = function()
-				self.layer:addChild(Detail:new(kind,v["cid"]):getLayer(),1)
-			end
+			iconCallback = callback
 		})
 		scroll:addChild(item:getLayer(),item)
 	end

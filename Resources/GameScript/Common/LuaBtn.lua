@@ -127,7 +127,7 @@ function LuaBtn:new(path, file, x, y, params, group)
 					ty = 0
 				end
 --				local text = CCLabelTTF:create(v[1],FONT,v[2])
-				local text = display.strokeLabel(v[1], 0, 0, v[2], ccc3( 0x2c , 0x00 , 0x00 ) , 2 , ccc3( 0x40 , 0x1d , 0x0c ))
+				local text = newLabel(v[1], v[2], {color = v[3] })
 				
 				if v[5] then  --若存在则设置对齐方式，否则默认居中
 					setAnchPos(text,tx, (this.layer:getContentSize().height - text:getContentSize().height) / 2 + ty)
@@ -151,8 +151,8 @@ function LuaBtn:new(path, file, x, y, params, group)
 			end
 			
 --			local text = CCLabelTTF:create(this.params["text"][1],FONT,this.params["text"][2])
-			local text = display.strokeLabel(this.params["text"][1], 0, 0, this.params["text"][2], ccc3( 0x2c , 0x00 , 0x00 ) , 2 , ccc3( 0x40 , 0x1d , 0x0c ))
 			
+			local text = newLabel(this.params["text"][1], this.params["text"][2], {color = this.params["text"][3] })
 			if this.params["text"][5] then  --若存在则设置对齐方式，否则默认居中
 				setAnchPos(text,tx, (this.layer:getContentSize().height - text:getContentSize().height) / 2 + ty)
 			else
@@ -179,7 +179,6 @@ function LuaBtn:new(path, file, x, y, params, group)
 
 	local press , moveOn   --press为是否按下，moveOn 为按钮按下后是否有移动 j
 	local lastX = 0  -- lastX 最后点击的坐标
-
 	
 	function this.layer:onTouch(type, x, y)
 		if this.state == DISABLE then  --禁 用状态直接返回
@@ -263,9 +262,6 @@ function LuaBtn:new(path, file, x, y, params, group)
 						if group then
 							group:chooseBtn(this)
 						end	
-						
-
-						
 					end
 				else
 				end
@@ -451,7 +447,7 @@ function LuaBtn:setEnable(bool)
 	if not bool then
 		self:setState(DISABLE)
 	else
-			self:setState(NORMAL)
+		self:setState(NORMAL)
 	end
 end
 
