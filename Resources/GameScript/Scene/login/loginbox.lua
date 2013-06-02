@@ -155,7 +155,7 @@ function M:accountInput()
 			local open_id = self.account:getString()
 			open_id = string.trim( open_id )
 			if open_id == "" then
-				KNMsg:getInstance():flashShow("请输入OPEN ID")
+				MsgBox.create:flashShow("请输入OPEN ID")
 				return
 			end
 			HTTPS:send("Landed" , {m="login",a="develop",open_id = open_id} )    -- 登录

@@ -4,9 +4,9 @@
 
 ]]
 
-KNMsg = {}
+MsgBox = {}
 
-function KNMsg:new()
+function MsgBox:new()
 	local store = nil
 
 	return function(self)
@@ -233,5 +233,4 @@ function KNMsg:new()
 	end
 end
 
-
-KNMsg.getInstance = KNMsg:new()
+MsgBox.create = MsgBox:new()

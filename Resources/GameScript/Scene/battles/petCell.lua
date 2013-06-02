@@ -156,7 +156,7 @@ function M:create( data )
 				
 				SOCKET:getInstance("battle"):call("mission" , "execute_process" , "process" , battle_call_data , {
 					error_callback = function(err)
-						KNMsg.getInstance():flashShow("[" .. err.code .. "]" .. err.msg)	-- 弹出错误文字提示
+						MsgBox.getInstance():flashShow("[" .. err.code .. "]" .. err.msg)	-- 弹出错误文字提示
 						logic:resume("socket")
 					end,
 					success_callback = refreshData

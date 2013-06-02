@@ -54,8 +54,7 @@ function roostLayer:new(ksv,data,p_x,p_y)
 	this.layer:addChild(text_qi)
 
 	---描述
-	local text_desc = newLabel(data["descs"], 25)
-	setAnchPos(text_desc,30,45)
+	local text_desc = newLabel(data["descs"], 25, {x = 5, y = 15, dimensions = CCSizeMake(375,50)})
 	this.layer:addChild(text_desc)
 
 	--技能

@@ -36,6 +36,12 @@ function CardDetail:new(kind,cid,params)
 	local intro = newSprite(PATH.."intro_bg.png")
 	setAnchPos(intro,20 + card:getWidth() ,290)
 	this.contentLayer:addChild(intro)
+	
+	intro = newLabel("简介", 20, {x = 350, y = 596, noFont = true, color = ccc3(0, 0, 0)})
+	this.contentLayer:addChild(intro)
+	
+	intro = newLabel("困苦进顶替顶替栽顶替茜茜茜村茜枯堙苛塔顶地", 20, {x = 290, y = 250,dimensions = CCSizeMake(150, 200), noFont = true})
+	this.contentLayer:addChild(intro)
 
 	
 	local btn = Btn:new(IMG_BTN,{"btn_bg.png", "btn_bg_press.png"}, 130, 190, {

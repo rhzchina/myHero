@@ -73,7 +73,7 @@ function SOCKET.new( socket_type , host , port )
 		--是否存在回调 错误 函数
 		if type(param.error_callback)   ~= "function" then
 			param.error_callback = function(err)
-				KNMsg.getInstance():flashShow("[" .. err.code .. "]" .. err.msg)	-- 弹出错误文字提示
+				MsgBox.getInstance():flashShow("[" .. err.code .. "]" .. err.msg)	-- 弹出错误文字提示
 			end
 		end
 		if type(data) ~= "table" then data = {} end

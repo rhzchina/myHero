@@ -5,7 +5,8 @@ local PATH = IMG_SCENE.."shop/"
 local M = {
 	layer,
 	listLayer,
-	tabGroup
+	tabGroup,
+	infoLayre
 }
 
 function M:create( ... )
@@ -50,7 +51,8 @@ function M:create( ... )
 	})
 	this.layer:addChild(gift:getLayer())
 
-	this.layer:addChild(InfoLayer:create():getLayer())
+	this.infoLayer = InfoLayer:create()
+	this.layer:addChild(this.infoLayer:getLayer())
 	return this.layer
 end
 
@@ -67,7 +69,7 @@ function M:createList(kind)
 		item = ITEM:new(kind, k,{
 			parent = scroll,	
 			optCallback = function()
-				self:buy()
+				self:buy(kind,k)
 			end
 --			iconCallback = function()
 --				self.layer:addChild(Detail:new(kind,v["cid"]):getLayer(),1)
@@ -81,9 +83,9 @@ function M:createList(kind)
 	self.layer:addChild(self.listLayer)
 end
 
-function M:buy()
+function M:buy(type, id)
 	local numLabel, valueLabel
-	local totalNum, totalValue = 1, 0
+	local totalNum, perValue = 1, DATA_Shop:get(id, "money") 
 	local layer = newLayer()
 	local bg = newSprite(IMG_COMMON.."tip_bg.png")
 	
@@ -94,6 +96,14 @@ function M:buy()
 	
 	local okBtn = Btn:new(IMG_BTN, {"ok.png", "ok_press.png"}, 70, 320, {
 		priority = -131,
+		callback = function()
+			HTTPS:send("Shop", {a = "shop", m = "shop", shop = "buy", type = type, pag_id = DATA_Shop:get(id,"id")}, {
+				success_callback = function()
+					self.layer:removeChild(mask, true)
+					self.infoLayer:createtop()
+				end
+			})
+		end
 	})
 	layer:addChild(okBtn:getLayer())
 	
@@ -121,6 +131,7 @@ function M:buy()
 		callback = function()
 			totalNum = totalNum + 1
 			numLabel:setString(totalNum.."")
+			valueLabel:setString(totalNum * perValue)	
 		end
 	})
 	layer:addChild(addBtn:getLayer())
@@ -129,6 +140,11 @@ function M:buy()
 	local minusBtn = Btn:new(IMG_BTN,{"minus.png", "minus_press.png"}, 370, 480, {
 		priority = -131,
 		callback = function()
+			if totalNum > 1 then
+				totalNum = totalNum - 1
+				numLabel:setString(totalNum.."")
+				valueLabel:setString(totalNum * perValue)	
+			end
 		end
 	})
 	layer:addChild(minusBtn:getLayer())
@@ -139,7 +155,7 @@ function M:buy()
 	setAnchPos(price, 160, 410)
 	layer:addChild(price)
 	
-	valueLabel = newLabel(totalValue, 40, {x = 240, y = 410, ax = 0.5})
+	valueLabel = newLabel(perValue * totalNum, 40, {x = 280, y = 410, ax = 0.5})
 	layer:addChild(valueLabel)
 	
 	

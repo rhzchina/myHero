@@ -6,7 +6,10 @@ local json = require("GameScript/Network/dkjson")
 local KNLoading = require("GameScript/Common/KNLoading")
 
 function HTTPS:send(mod  , data , param)
-	local func = mod--设置为回调函数字段
+	local func = mod
+	if data[string.lower(mod)] then  --拼接回调 方法
+		func = mod.."_"..data[string.lower(mod)]
+	end
 	local loading = nil
 	local urldata = mod
 	local success = false
@@ -16,7 +19,7 @@ function HTTPS:send(mod  , data , param)
 	if type(param.success_callback) ~= "function" then param.success_callback = function() end end
 	if type(param.error_callback)   ~= "function" then
 		param.error_callback = function(err)
-			KNMsg.getInstance():flashShow("[" .. err.code .. "]" .. err.msg)	-- 弹出错误文字提示
+			MsgBox:new():flashShow("[" .. err.code .. "]" .. err.msg)	-- 弹出错误文字提示
 		end
 	end
 

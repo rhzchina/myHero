@@ -1,6 +1,7 @@
 local PATH = IMG_SCENE.."embattle/"
 local ItemList = require(SRC.."Scene/common/ItemList")
 
+local Detail = require(SRC.."Scene/common/CardDetail")
 local CommEmbattle = require(SRC.."Scene/common/CommEmbattle")
 local lineuplayer = {
 	layer,
@@ -70,33 +71,37 @@ function lineuplayer:new(data)
 									end
 								})
 							else
-								KNMsg.getInstance():flashShow("请选 择装备的物口")
+								MsgBox.create:flashShow("请选 择装备的物口")
 							end
 						end
 					})
 					this.layer:addChild(list:getLayer())
 				end,
 				cardCallback = function(pos)
-					local list
-					list = ItemList:new({
-						type = "hero",
-						checkBoxOpt = function()	 --列表复选框回调
-							print(filter)
-						end,
-						okCallback = function()
-							if list:getSelectItem() then
-								HTTPS:send("Battle", {a = "battle", m = "battle",battle = "up", index = pos,
-									id = getBag("hero", list:getSelectId(), "id"), cid = list:getSelectId()}, {success_callback=
-									function()
-										switchScene("lineup",ksv:getCurIndex())
-									end
-								})
-							else
-								KNMsg.getInstance():flashShow("请选择要上阵列的武将")
+					if infos:get_gid() then
+						this.layer:addChild(Detail:new("hero",infos:get_gid()):getLayer(),1)
+					else
+						local list
+						list = ItemList:new({
+							type = "hero",
+							checkBoxOpt = function()	 --列表复选框回调
+								print(filter)
+							end,
+							okCallback = function()
+								if list:getSelectItem() then
+									HTTPS:send("Battle", {a = "battle", m = "battle",battle = "up", index = pos,
+										id = getBag("hero", list:getSelectId(), "id"), cid = list:getSelectId()}, {success_callback=
+										function()
+											switchScene("lineup",ksv:getCurIndex())
+										end
+									})
+								else
+									MsgBox.create:flashShow("请选择要上阵列的武将")
+								end
 							end
-						end
-					})
-					this.layer:addChild(list:getLayer())
+						})
+						this.layer:addChild(list:getLayer())
+					end
 				end,
 				callback = function(card_this,card_x,card_y)
 					HTTPS:send("Battle",{

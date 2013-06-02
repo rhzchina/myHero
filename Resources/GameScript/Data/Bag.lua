@@ -4,6 +4,7 @@ local _data
 
 function DATA_Bag:set(data)
 	_data = data
+	dump(_data)
 end
 
 function DATA_Bag:setByKey(first, second, third)
@@ -15,8 +16,14 @@ function DATA_Bag:setByKey(first, second, third)
 	else	
 		_data[first] = second
 	end
-	dump(_data[first])
 end
+
+function DATA_Bag:insert(type, data)
+	for k, v in pairs(data) do
+		_data[type][k] = v
+	end
+end
+
 
 function DATA_Bag:get(...)
 	local result = _data

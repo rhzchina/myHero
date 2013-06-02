@@ -62,7 +62,7 @@ function CardInfo:new(x,y,params)
 		proText = newLabel("防"..getBag(this.params.type, this.params.cid, "defe"), 17, {x = 170, y = 22})
 		this.layer:addChild(proText)
 		
-		proText = newLabel(getBag(this.params.type, this.params.cid, "lev")..9, 20, {x = 40, y = 55, ax = 0.5})	
+		proText = newLabel(getBag(this.params.type, this.params.cid, "lev"), 20, {x = 40, y = 55, ax = 0.5})	
 		this.layer:addChild(proText)
 		
 		local str = getBag(this.params.type, this.params.cid, "name")

@@ -77,7 +77,7 @@ function lineuinfoplayer:new(index,sv,data,x,y,params)
 	    					if data["cid"] then
 	    						this.params.equipCallback(kind,v[1],v[4])
 	    					else
-	    						KNMsg.getInstance():flashShow("请选 择要上阵列的武将")
+	    						MsgBox.create():flashShow("请选 择要上阵列的武将")
 	    					end
 	    				else
 	    				end
@@ -146,18 +146,10 @@ if _G.next (data)  ~= nil then
 --		card_bar:setIsShowText(false)
 --		this.layer:addChild(card_bar)
 
-		--------[[英雄描述]]
-		local desc_test = {
-												{"事实上事实上",30,238-this.point_y},
-												{"事实上事实上",30,200-this.point_y},
-												{"事实上事实上",30,162-this.point_y}}
 
-		for i,v in pairs(desc_test) do
-			local text_desc = newLabel(v[1] , 20)
-			setAnchPos(text_desc,v[2],v[3])
-			this.layer:addChild(text_desc )
-		end
-
+		local text_desc = newLabel(getBag("hero", this.gid, "exps") , 30)
+		setAnchPos(text_desc,30,133)
+		this.layer:addChild(text_desc )
 	end
 
 --	this.layer:setTouchEnabled(true)

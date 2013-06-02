@@ -33,18 +33,31 @@ function M.Landed( type , data , callback )
 	return true , data
 end
 
-function M.Battle( type , data , callback )
+function M.Battle_up( type , data , callback )
 	if type == 1 then
 	else
 		if data["error"] then
 			print(data["error"])	
 		else
-			if data["type"] == 3 then --武将上阵返回数据
-				dump(data)
-				DATA_Embattle:set(data["battle"])
-				DATA_Dress:set(data["equipage"])
-				DATA_Bag:setByKey("skill",data["skill"]["cid"],data["skill"])
-			end
+			DATA_Embattle:set(data["battle"])
+			DATA_Dress:set(data["equipage"])
+			DATA_Bag:setByKey("skill",data["skill"]["cid"],data["skill"])
+			callback()
+		end
+	end
+	return true,data
+end
+
+function M.Battle_replace( type , data , callback )
+	if type == 1 then
+	else
+		if data["error"] then
+			print(data["error"])	
+		else
+			dump(data)
+			DATA_Embattle:set(data["battle"])
+--			DATA_Dress:set(data["equipage"])
+--			DATA_Bag:setByKey("skill",data["skill"]["cid"],data["skill"])
 			callback()
 		end
 	end
@@ -59,33 +72,37 @@ function M.AddHero( type , data , callback )
 	return true,data
 end
 
-function M.Task( type , data , callback )
+function M.Task_map(type, data, callback)
 	if type == 1 then
 	else
 		local curLevel  --当前的小关卡数据是第几关
 		local result = data
-		if result["type"] == 1 then  --当前的关卡数据
-			curLevel = math.floor(result["hurdle"]["sHurdle"][1]["id"] / 100) % 10
-			
-			DATA_Mission:setByKey("bHurdle",data["hurdle"]["bHurdle"])
-			DATA_Mission:setByKey("sHurdle",curLevel,data["hurdle"]["sHurdle"])
-		elseif  result["type"] == 2  then  --更新关卡数据
-			curLevel = math.floor(result["hurdle"][1]["id"] / 100) % 10
-			DATA_Mission:setByKey("sHurdle", curLevel, data["hurdle"])
-		end
+		curLevel = math.floor(result["hurdle"]["sHurdle"][1]["id"] / 100) % 10
+		
+		DATA_Mission:setByKey("bHurdle",data["hurdle"]["bHurdle"])
+		DATA_Mission:setByKey("sHurdle",curLevel,data["hurdle"]["sHurdle"])
+		callback()
+	end
+	return true, data
+end
+
+function M.Task_select_hurdle( type , data , callback )
+	if type == 1 then
+	else
+		local curLevel  --当前的小关卡数据是第几关
+		local result = data
+		curLevel = math.floor(result["hurdle"][1]["id"] / 100) % 10
+		DATA_Mission:setByKey("sHurdle", curLevel, data["hurdle"])
 		callback()
 	end
 	return true,data
 end
 
-function M.Skill(type, data, callback)
+function M.Skill_selectline(type, data, callback)
 	if type == 1 then
 	else
 		local result = data
-		if result["type"] == 3 then --获取英雄装备信息
-			DATA_Dress:set(result["equipage"])
-		else
-		end
+		DATA_Dress:set(result["equipage"])
 		callback()
 	end
 	return true, data
@@ -100,10 +117,25 @@ function M.Fighting(type,data,callback)
 	return true,data
 end
 
-function M.Shop(type, data, callback)
+function M.Shop_select(type, data, callback)
 	if type == 1 then
 	else
 		DATA_Shop:set(data["shop"])
+		callback()
+	end
+	return true,data
+end
+
+
+function M.Shop_buy(type, data, callback)
+	if type == 1 then
+	else
+		dump(data)
+		if data["shop"]["Money"] then
+			DATA_User:setkey("Money", data["shop"]["Money"])
+		else
+			DATA_User:setkey("Gold", data["shop"]["Gold"])
+		end
 		callback()
 	end
 	return true,data

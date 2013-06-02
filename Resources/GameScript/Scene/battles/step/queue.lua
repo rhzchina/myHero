@@ -21,7 +21,7 @@ function M:run( type , data )
 	local function hero_click(_data)
 		logic:pause("heroinfo")
 
-		KNMsg.getInstance():boxShow(_data["name"] .. "\n血:" .. _data["org_hp"] .. "  攻:" .. _data["atk"] .. "  防:" .. _data["def"] .. "  敏:" .. _data["agi"] , {
+		MsgBox.getInstance():boxShow(_data["name"] .. "\n血:" .. _data["org_hp"] .. "  攻:" .. _data["atk"] .. "  防:" .. _data["def"] .. "  敏:" .. _data["agi"] , {
 			confirmFun = function()
 				logic:resume("heroinfo")
 			end

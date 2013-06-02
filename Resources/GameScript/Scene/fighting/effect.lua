@@ -78,7 +78,7 @@ function Effect:showByType(type,x,y,delay,params)
 --				controller:fightLogic()
 --			else
 --				print("战斗结束",winner)
---				KNMsg.getInstance():flashShow("赢的人是",winner)
+--				MsgBox.getInstance():flashShow("赢的人是",winner)
 --			end
 		end))
 	sprite:runAction(CCSequence:create(frames))
