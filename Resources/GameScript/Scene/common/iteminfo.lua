@@ -41,6 +41,13 @@ function ItemInfo:new(kind,cid,params)
 	})
 	this.layer:addChild(icon:getLayer())
 	
+	if this.params.optCallback then
+		local btn = Btn:new(IMG_BTN, {"strength.png", "strength_press.png"}, 340, 30, {
+			callback = this.params.optCallback
+		})
+		this.layer:addChild(btn:getLayer())
+	end
+
 	this:createLayout(kind, cid)
 	
 	return this
@@ -78,7 +85,7 @@ function ItemInfo:createLayout(kind, cid)
 				self.layer:addChild(star)
 			end
 		else
-			text = newLabel(DATA_Bag:get(kind, cid, "exps"), 20, {x = 140, y = 20, dimensions = CCSizeMake(220, 50)})
+			text = newLabel(DATA_Bag:get(kind, cid, "exps"), 20, {x = 140, y = 20, dimensions = CCSizeMake(180, 50)})
 			self.layer:addChild(text)
 		end
 	else

@@ -39,8 +39,9 @@ function M.Battle_up( type , data , callback )
 		if data["error"] then
 			print(data["error"])	
 		else
+			dump(data)
 			DATA_Embattle:set(data["battle"])
-			DATA_Dress:set(data["equipage"])
+			DATA_Dress:set(data["equip"])
 			DATA_Bag:setByKey("skill",data["skill"]["cid"],data["skill"])
 			callback()
 		end
@@ -150,5 +151,22 @@ function M.Shop_buy(type, data, callback)
 		callback()
 	end
 	return true,data
+end
+
+
+function M.Shop_open(type, data, callback)
+	if type == 1 then
+	else
+		callback()
+	end
+	return true,data
+end
+
+function M.Strong_get(type, data, callback)
+	if type == 1 then
+	else
+		callback(data["strong"])
+	end
+	return true, data
 end
 return M

@@ -21,8 +21,8 @@ function M:create( ... )
 	this.tabGroup = RadioGroup:new()
 	
 	local tabs = {
-		{"equip"},
 		{"hero"},
+		{"equip"},
 		{"skill"},
 		{"prop"}
 	}
@@ -58,16 +58,32 @@ function M:createList(kind)
 	local temp
 	for k, v in pairs(DATA_Bag:get(kind)) do
 		local item 
-		local callback
+		local callback, optCallback
 		if kind ~= "prop" then
 			callback = function()
 				self.layer:addChild(Detail:new(kind,v["cid"]):getLayer(),1)
+			end
+			optCallback = function()
+				switchScene("update")	
+			end
+		else
+			optCallback = function()	
+				HTTPS:send("Shop", {a = "shop", m = "shop", 
+					shop = "open",
+					type = getBag("prop", item:getId(), "types"), 
+					id = getBag("prop", item:getId(), "id")	,
+					cid = item:getId()
+				},{success_callback = function()
+					
+				end})
+				print(item:getId(),getBag("prop", item:getId(), "exps"))
 			end
 		end
 		item = ITEM:new(kind,v["cid"],{
 			parent = scroll,	
 			type = "bag",
-			iconCallback = callback
+			iconCallback = callback,
+			optCallback =  optCallback
 		})
 		scroll:addChild(item:getLayer(),item)
 	end

@@ -16,7 +16,6 @@ function DATA_Bag:setByKey(first, second, third)
 	else	
 		_data[first] = second
 	end
-	dump(_data)
 end
 
 function DATA_Bag:insert(type, data)
@@ -41,16 +40,24 @@ function DATA_Bag:get(...)
 	return result
 end
 
-function DATA_Bag:getByFilter(type,filter)
+function DATA_Bag:getByFilter(kind,filter)
 	local result = {}
-	for k, v in pairs(_data[type]) do
-		if v["type"] then
-			if v["type"] == filter or not filter then
+	if type(kind) ~= "table" then
+		for k, v in pairs(_data[kind]) do
+			if v["type"] then
+				if v["type"] == filter or not filter then
+					result[k] = v
+				end
+			else
 				result[k] = v
 			end
-		else
-			result[k] = v
+		end	
+	else --将table中的数据返回
+		for k, v in pairs(kind) do
+			for sk, sv in pairs(_data[v]) do
+				result[sk] = sv
+			end
 		end
-	end	
+	end
 	return result
 end

@@ -13,6 +13,7 @@ local _data = {}
 
 function DATA_User:set(data)
 	_data = data
+	dump(_data)
 end
 
 

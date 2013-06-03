@@ -22,7 +22,6 @@ extern "C" {
 
 using namespace cocos2d;
 using namespace CocosDenshion;
-
 TOLUA_API int tolua_Cocos2d_open(lua_State* tolua_S);
 
 #endif // __LUACOCOS2D_H_

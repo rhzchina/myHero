@@ -22,11 +22,10 @@ function ItemList:new(params)
 	local temp
 	for k, v in pairs(DATA_Bag:getByFilter(this.params.type, this.params.filter)) do
 		local item 
-		item = Item:new(this.params.type,v["cid"],{
+		item = Item:new(v["type"],v["cid"],{
 			parent = this.scroll,	
-			iconCallback = function()
-				self.layer:addChild(Detail:new(this.params.type,v["cid"]):getLayer(),1)
-			end,
+			iconCallback = this.params.iconCallback,
+			optCallback = this.params.optCallback,
 			checkBoxOpt = function()
 				--这里的复选框暂时默认是单选
 				if item:isSelect() then	
