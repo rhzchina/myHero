@@ -125,7 +125,6 @@ function UpdateLayer:createHeroUp(cid, data)
 	if self.contentLayer then
 		self.layer:removeChild(self.contentLayer, true)
 	end
-	dump(data)
 	self.contentLayer = newLayer()
 	local use = {
 		{"魂魄白 x", DATA_User:get("soul_w"),data and data["condition"]["exp_w"] or ""},
@@ -154,6 +153,7 @@ function UpdateLayer:createHeroUp(cid, data)
 					id = getBag("hero", list:getSelectId(), "id") , 
 					cid = list:getSelectId()},{
 					success_callback = function(rec)
+						dump(rec)
 						self:createHeroUp(list:getSelectId(), rec)
 					end}
 				)
@@ -176,9 +176,13 @@ function UpdateLayer:createHeroUp(cid, data)
 		setAnchPos(bg, 280, 630 - 65 * (i - 1))
 		self.contentLayer:addChild(bg)
 		
-		
-		text = newLabel(info[i][1].."   "..(cid and getBag("hero", cid, info[i][2]) or ""), 25, {x = 285, y = 645 - 65 * (i - 1)})
+		text = newLabel(info[i][1], 18, {x = 285, y = 645 - 65 * (i - 1)})
 		self.contentLayer:addChild(text)
+		
+		if cid then
+			text = newLabel(getBag("hero", cid, info[i][2]).." - "..data["strong"]["chan_"..info[i][2]], 18, {x = 395, y = 645 - 65 * (i - 1), ax = 0.5})
+			self.contentLayer:addChild(text)
+		end
 	end
 	
 	bg = newSprite(PATH.."up_info.png")
@@ -190,10 +194,19 @@ function UpdateLayer:createHeroUp(cid, data)
 	
 	if cid then
 		for i = 1, #use do
-			text = newLabel(use[i][1]..use[i][3], 20, {x = 20 + (i - 1) * 150, y = 250})
+			text = newLabel(use[i][1]..use[i][3], 20, {x = 20 + (i - 1) * 150, y = 240})
 			self.contentLayer:addChild(text)
 		end
+		
+		text = newSprite(IMG_COMMON.."silver.png")
+		setAnchPos(text, 190, 190)
+		self.contentLayer:addChild(text)
+		
+		text = newLabel(data["condition"]["money"], 25, {x = 230, y = 185})
+		self.contentLayer:addChild(text)
 	end
+	
+	
 	
 	
 	

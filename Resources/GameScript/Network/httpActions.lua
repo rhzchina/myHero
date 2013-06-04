@@ -55,7 +55,6 @@ function M.Battle_replace( type , data , callback )
 		if data["error"] then
 			print(data["error"])	
 		else
-			dump(data)
 			DATA_Embattle:set(data["battle"])
 --			DATA_Dress:set(data["equipage"])
 --			DATA_Bag:setByKey("skill",data["skill"]["cid"],data["skill"])

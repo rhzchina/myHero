@@ -93,7 +93,7 @@ function HTTPS:send(mod  , data , param)
 		end
 
 		--[[执行回调]]
-		param.success_callback(response)
+--		param.success_callback(response)
 
 
 		if loading ~= nil then loading:remove() end 		-- 去掉 loading
