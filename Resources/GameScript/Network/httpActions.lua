@@ -91,7 +91,7 @@ function M.Task_select_hurdle( type , data , callback )
 	else
 		local curLevel  --当前的小关卡数据是第几关
 		local result = data
-		curLevel = math.floor(result["hurdle"][1]["id"] / 100) % 10
+		curLevel = math.floor(result["hurdle"][1]["id"] / 100) % 100
 		DATA_Mission:setByKey("sHurdle", curLevel, data["hurdle"])
 		callback()
 	end
@@ -140,7 +140,6 @@ end
 function M.Shop_buy(type, data, callback)
 	if type == 1 then
 	else
-		dump(data)
 		if data["shop"]["Money"] then
 			DATA_User:setkey("Money", data["shop"]["Money"])
 		else
@@ -156,6 +155,7 @@ end
 function M.Shop_open(type, data, callback)
 	if type == 1 then
 	else
+		dump(data)
 		callback()
 	end
 	return true,data
@@ -168,4 +168,23 @@ function M.Strong_get(type, data, callback)
 	end
 	return true, data
 end
+
+function M.Strong_upgrade(kind, data, callback)
+	if kind == 1 then
+	else
+		dump(data)
+		DATA_User:set(data["Userdata"])
+		for k, v in pairs(data) do
+			print(k)
+			if type(v) == "table" and v.type == "hero" then
+				print(k,"这里是满足条件")
+				DATA_Bag:setByKey("hero", k, v)
+				break
+			end
+		end
+		callback(data["strong"])
+	end
+	return true, data
+end
+	
 return M

@@ -34,7 +34,7 @@ function UpdateLayer:new(data)
 		},group)
 		this.layer:addChild(heroUp:getLayer())		
 	end
-	group:chooseByIndex(2, true)
+	group:chooseByIndex(1, true)
 	
 	local line = newSprite(IMG_COMMON.."tabs/tab_separator.png")
 	setAnchPos(line, 0, 748)
@@ -72,6 +72,9 @@ function UpdateLayer:createCardUp()
 			local list
 			list = List:new({
 				type = {"hero", "equip"},
+				checkBoxOpt = function()
+					print("haah")
+				end
 				
 			})
 			self.layer:addChild(list:getLayer())
@@ -81,7 +84,9 @@ function UpdateLayer:createCardUp()
 	
 	--升级按钮
 	local update = Btn:new(PATH, {"update.png", "update_pre.png"}, 250, 310, {
-	
+		callback = function()
+		
+		end
 	})
 	self.contentLayer:addChild(update:getLayer())
 	
@@ -153,7 +158,6 @@ function UpdateLayer:createHeroUp(cid, data)
 					id = getBag("hero", list:getSelectId(), "id") , 
 					cid = list:getSelectId()},{
 					success_callback = function(rec)
-						dump(rec)
 						self:createHeroUp(list:getSelectId(), rec)
 					end}
 				)
@@ -211,7 +215,16 @@ function UpdateLayer:createHeroUp(cid, data)
 	
 	
 	local upStar = Btn:new(PATH, {"up_star.png", "up_star_pre.png"}, 20, 95, {
-	
+		callback = function()	
+			if cid then
+				HTTPS:send("Strong", {a = "hero", m = "strong", strong = "upgrade", id = getBag("hero", cid, "id"), cid = cid}, {
+					success_callback = function(rec)
+						self:createHeroUp(cid, rec)
+						MsgBox.create():flashShow("英雄提升星级成功！！！！！！~")
+					end
+				})
+			end
+		end
 	})
 	self.contentLayer:addChild(upStar:getLayer())
 	

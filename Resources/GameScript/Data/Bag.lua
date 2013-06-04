@@ -4,7 +4,6 @@ local _data
 
 function DATA_Bag:set(data)
 	_data = data
-	dump(_data)
 end
 
 function DATA_Bag:setByKey(first, second, third)
@@ -16,6 +15,7 @@ function DATA_Bag:setByKey(first, second, third)
 	else	
 		_data[first] = second
 	end
+	print(first, second,third)
 end
 
 function DATA_Bag:insert(type, data)
@@ -44,8 +44,8 @@ function DATA_Bag:getByFilter(kind,filter)
 	local result = {}
 	if type(kind) ~= "table" then
 		for k, v in pairs(_data[kind]) do
-			if v["type"] then
-				if v["type"] == filter or not filter then
+			if v["filter"] then
+				if v["filter"] == filter or not filter then
 					result[k] = v
 				end
 			else

@@ -81,6 +81,10 @@ function lineuplayer:new(data)
 					if infos:get_gid() then
 						this.layer:addChild(Detail:new("hero",infos:get_gid()):getLayer(),1)
 					else
+						if i > DATA_Embattle:getLen() then  --未解销的关
+							MsgBox.create():flashShow("此阵未还未解锁，请继续努力吧！~")
+							return 
+						end
 						local list
 						list = ItemList:new({
 							type = "hero",

@@ -42,7 +42,7 @@ function ItemInfo:new(kind,cid,params)
 	this.layer:addChild(icon:getLayer())
 	
 	if this.params.optCallback then
-		local btn = Btn:new(IMG_BTN, {"strength.png", "strength_press.png"}, 340, 30, {
+		local btn = Btn:new(IMG_BTN, {this.params["btn"]..".png", this.params["btn"].."_press.png"}, 340, 30, {
 			callback = this.params.optCallback
 		})
 		this.layer:addChild(btn:getLayer())

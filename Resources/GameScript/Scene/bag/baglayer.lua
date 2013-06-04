@@ -57,7 +57,7 @@ function M:createList(kind)
 	local scroll = ScrollView:new(0,90,480,575,5)
 	local temp
 	for k, v in pairs(DATA_Bag:get(kind)) do
-		local item 
+		local item, optBtn 
 		local callback, optCallback
 		if kind ~= "prop" then
 			callback = function()
@@ -66,7 +66,9 @@ function M:createList(kind)
 			optCallback = function()
 				switchScene("update")	
 			end
+			optBtn = "strength"
 		else
+			optBtn = "use"
 			optCallback = function()	
 				HTTPS:send("Shop", {a = "shop", m = "shop", 
 					shop = "open",
@@ -82,6 +84,7 @@ function M:createList(kind)
 		item = ITEM:new(kind,v["cid"],{
 			parent = scroll,	
 			type = "bag",
+			btn = optBtn,
 			iconCallback = callback,
 			optCallback =  optCallback
 		})
