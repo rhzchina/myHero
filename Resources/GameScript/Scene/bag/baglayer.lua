@@ -7,12 +7,13 @@ local M = {
 	tabGroup
 }
 
-function M:create( ... )
+function M:create( params )
 	local this = {}
 	setmetatable(this,self)
 	self.__index = self
 	
 	this.layer = CCLayer:create()
+	local params = params or {}
 	
 	local bg = newSprite(IMG_COMMON.."main.png")
 	setAnchPos(bg, 0, 80)
@@ -21,17 +22,17 @@ function M:create( ... )
 	this.tabGroup = RadioGroup:new()
 	
 	local tabs = {
-		{"hero"},
-		{"equip"},
-		{"skill"},
-		{"prop"}
+		{"hero", 1}, 
+		{"equip", 2},
+		{"skill", 3},
+		{"prop", 4}
 	}
 	
 	local x = 12
 	for k, v in pairs(tabs) do
 		local btn = Btn:new(IMG_COMMON.."tabs/", {"tab_"..v[1]..".png", "tab_"..v[1].."_select.png"}, x, 668, { 
 			callback = function()
-				this:createList(v[1])
+				this:createList(v[1],v[2], params.offset or 0)
 			end
 		},this.tabGroup)
 		this.layer:addChild(btn:getLayer())		
@@ -42,13 +43,13 @@ function M:create( ... )
 	setAnchPos(separator,0,667)
 	this.layer:addChild(separator)
 	
-	this.tabGroup:chooseByIndex(1,true)
+	this.tabGroup:chooseByIndex(params.tab or 1, true)
 
 	this.layer:addChild(InfoLayer:create():getLayer())
 	return this.layer
 end
 
-function M:createList(kind)
+function M:createList(kind, tab, offset)
 	if self.listLayer then
 		self.layer:removeChild(self.listLayer,true)
 	end
@@ -76,7 +77,7 @@ function M:createList(kind)
 					id = getBag("prop", item:getId(), "id")	,
 					cid = item:getId()
 				},{success_callback = function()
-					
+					switchScene("bag",{tab = tab,offset = scroll:getOffset()})
 				end})
 				print(item:getId(),getBag("prop", item:getId(), "exps"))
 			end
@@ -89,9 +90,9 @@ function M:createList(kind)
 			optCallback =  optCallback
 		})
 		scroll:addChild(item:getLayer(),item)
-	end
+	end 
 	scroll:alignCenter()
-	
+	scroll:setOffset(offset or 0)
 	self.listLayer:addChild(scroll:getLayer())
 	self.layer:addChild(self.listLayer)
 end

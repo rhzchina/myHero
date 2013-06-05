@@ -18,6 +18,10 @@ function DATA_Bag:setByKey(first, second, third)
 	print(first, second,third)
 end
 
+function DATA_Bag:delItem(first, second)
+	_data[first][second]  = nils
+end
+
 function DATA_Bag:insert(type, data)
 	for k, v in pairs(data) do
 		_data[type][k] = v

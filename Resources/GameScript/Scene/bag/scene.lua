@@ -16,11 +16,11 @@ local bagLayer = require "GameScript/Scene/bag/baglayer"
 
 local M = {}
 
-function M:create()
+function M:create(params)
 	local scene = display.newScene("login")
 
 	---------------插入layer---------------------
-	scene:addChild( bagLayer:create() )
+	scene:addChild( bagLayer:create(params) )
 	---------------------------------------------
 
 	return scene

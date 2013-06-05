@@ -39,7 +39,6 @@ function M.Battle_up( type , data , callback )
 		if data["error"] then
 			print(data["error"])	
 		else
-			dump(data)
 			DATA_Embattle:set(data["battle"])
 			DATA_Dress:set(data["equip"])
 			DATA_Bag:setByKey("skill",data["skill"]["cid"],data["skill"])
@@ -155,7 +154,13 @@ end
 function M.Shop_open(type, data, callback)
 	if type == 1 then
 	else
-		dump(data)
+		for k, v in pairs(data["shop"]) do
+			if v["change"] == "delect" then
+				DATA_Bag:delItem(v["type"], k)
+			elseif v["change"] == "add" then
+				DATA_Bag:setByKey(v["type"], k, v)
+			end
+		end
 		callback()
 	end
 	return true,data
