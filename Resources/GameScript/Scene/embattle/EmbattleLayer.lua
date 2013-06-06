@@ -18,6 +18,7 @@ function EmbattleLayer:new()
 	this.layer:addChild(bg)
 	
 	local btn = Btn:new(IMG_BTN,{"btn_bg.png", "btn_bg_press.png"}, 20 ,110, {
+		front = IMG_TEXT.."save.png",
 		callback = function()
 			HTTPS:send("Battle",{m = "battle", a = "battle", battle = "replace",data = this.data},{
 				success_callback=function()
@@ -28,6 +29,7 @@ function EmbattleLayer:new()
 	this.layer:addChild(btn:getLayer())
 	
 	btn = Btn:new(IMG_BTN,{"btn_bg.png", "btn_bg_press.png"}, 250 ,110, {
+		front = IMG_TEXT.."back.png",
 		callback = function()
 			switchScene("lineup")
 		end

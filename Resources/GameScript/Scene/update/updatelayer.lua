@@ -155,7 +155,7 @@ function UpdateLayer:createHeroUp(cid, data)
 			end,
 			okCallback = function()
 				HTTPS:send("Strong", {a = "hero", m = "strong", 
-					strong = "get", 
+					strong = "hero_get", 
 					id = getBag("hero", list:getSelectId(), "id") , 
 					cid = list:getSelectId()},{
 					success_callback = function(rec)
@@ -164,7 +164,7 @@ function UpdateLayer:createHeroUp(cid, data)
 				)
 			end
 		})	
-		self.layer:addChild(list:getLayer())
+		self.layer:addChild(list:getLayer(),2)
 	end})
 	self.contentLayer:addChild(card:getLayer())
 	
@@ -232,7 +232,7 @@ function UpdateLayer:createHeroUp(cid, data)
 	local split = Btn:new(PATH, {"split.png", "split_pre.png"}, 250, 95, {
 		callback = function()
 			local page
-			page = Pages:new(0,0) 			
+			page = Pages:new(0,0, {type = "hero", showOpt = true}) 			
 			self.contentLayer:addChild(page:getLayer())
 		end
 	})

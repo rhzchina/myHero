@@ -44,6 +44,10 @@ function DATA_Bag:get(...)
 	return result
 end
 
+function DATA_Bag:count(type)
+	return table.nums(DATA_Bag:get(type))
+end
+
 function DATA_Bag:getByFilter(kind,filter)
 	local result = {}
 	if type(kind) ~= "table" then

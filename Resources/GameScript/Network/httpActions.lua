@@ -166,7 +166,7 @@ function M.Shop_open(type, data, callback)
 	return true,data
 end
 
-function M.Strong_get(type, data, callback)
+function M.Strong_hero_get(type, data, callback)
 	if type == 1 then
 	else
 		callback(data["strong"])
