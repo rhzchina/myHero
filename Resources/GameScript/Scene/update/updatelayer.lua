@@ -1,6 +1,7 @@
 local PATH = IMG_SCENE.."update/"
 local Card = require(SRC.."Scene/common/CardInfo")
 local List = require(SRC.."Scene/common/ItemList")
+local Pages = require(SRC.."Scene/common/ItemsPage")
 
 local UpdateLayer = {
 	layer,
@@ -230,11 +231,14 @@ function UpdateLayer:createHeroUp(cid, data)
 	
 	local split = Btn:new(PATH, {"split.png", "split_pre.png"}, 250, 95, {
 		callback = function()
+			local page
+			page = Pages:new(0,0) 			
+			self.contentLayer:addChild(page:getLayer())
 		end
 	})
 	self.contentLayer:addChild(split:getLayer())
 	
-	self.layer:addChild(self.contentLayer)
+	self.layer:addChild(self.contentLayer, 1)
 end
 
 function UpdateLayer:getLayer()

@@ -139,3 +139,11 @@ function newLabel(str, size, params)
 
 	return label
 end
+
+function getSequence(...)
+	local array = CCArray:create()	
+	for i = 1, arg["n"] do
+		array:addObject(arg[i])
+	end
+	return CCSequence:create(array)
+end
