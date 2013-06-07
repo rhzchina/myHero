@@ -229,11 +229,32 @@ function UpdateLayer:createHeroUp(cid, data)
 	})
 	self.contentLayer:addChild(upStar:getLayer())
 	
+	local function createSplit()
+		local page 
+		page = Pages:new(0,0, {
+			type = "hero", 
+			showOpt = {
+				{"split.png", "split_press.png"},
+				function()
+					local data = {}
+					for k, v in pairs(page:getItems()) do
+						table.insert(data,{cid = k, id = getBag("hero", k, "id")})
+					end
+					HTTPS:send("Strong", {a = "hero", m="strong", strong = "resolve", data = data}, {
+						success_callback = function()
+							self.contentLayer:removeChild(page:getLayer(), true)
+							createSplit()
+							MsgBox.create():flashShow("英雄分解成功，获得魂魄!!")
+						end
+					})
+				end
+			}}) 			
+		self.contentLayer:addChild(page:getLayer())
+	end
+	
 	local split = Btn:new(PATH, {"split.png", "split_pre.png"}, 250, 95, {
 		callback = function()
-			local page
-			page = Pages:new(0,0, {type = "hero", showOpt = true}) 			
-			self.contentLayer:addChild(page:getLayer())
+			createSplit()
 		end
 	})
 	self.contentLayer:addChild(split:getLayer())

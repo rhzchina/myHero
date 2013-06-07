@@ -140,10 +140,22 @@ function newLabel(str, size, params)
 	return label
 end
 
+--获取动作序列
 function getSequence(...)
 	local array = CCArray:create()	
 	for i = 1, arg["n"] do
 		array:addObject(arg[i])
 	end
 	return CCSequence:create(array)
+end
+
+--获取排序后的table键值
+function getSortKey(t, rule)
+	local list = {}
+	for k, v in pairs(t) do
+		table.insert(list, k)
+	end
+	
+	table.sort(list, rule)
+	return list	
 end

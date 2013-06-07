@@ -177,17 +177,29 @@ end
 function M.Strong_upgrade(kind, data, callback)
 	if kind == 1 then
 	else
-		dump(data)
 		DATA_User:set(data["Userdata"])
 		for k, v in pairs(data) do
-			print(k)
 			if type(v) == "table" and v.type == "hero" then
-				print(k,"这里是满足条件")
 				DATA_Bag:setByKey("hero", k, v)
 				break
 			end
 		end
 		callback(data["strong"])
+	end
+	return true, data
+end
+
+function M.Strong_resolve(kind, data, callback)
+	if kind == 1 then
+	else
+		DATA_User:set(data["Userdata"])
+		
+		for k, v in pairs(data) do
+			if type(v) == "table" and v.type == "hero" then
+				DATA_Bag:delItem("hero", k)
+			end
+		end	
+		callback()
 	end
 	return true, data
 end

@@ -5,6 +5,8 @@ local ItemPage = {
 	params,
 	max,
 	cur,
+	selectItems,
+	nums
 }
 
 function ItemPage:new(x, y, params)
@@ -16,6 +18,7 @@ function ItemPage:new(x, y, params)
 	this.params = params or {}
 	this.cur = 1
 	this.max = 1
+	this.selectItems = {}
 	
 	local bg = newSprite(IMG_COMMON.."list_bg.png")
 	setAnchPos(bg)
@@ -29,10 +32,7 @@ function ItemPage:new(x, y, params)
 	setAnchPos(bg, 0, 675 - y)
 	this.layer:addChild(bg)
 	
-	
-
 	this:createItems(150 - y)
-	
 
 	this:turnLayer(100 - y)
 	
@@ -45,18 +45,25 @@ function ItemPage:new(x, y, params)
 	this.layer:addChild(back:getLayer())
 	
 	
-	
-	
 	this.mask = Mask:new({item = this.layer})
 	return this
 end
 
 function ItemPage:turnLayer(y)
-	local layer = newLayer()
 	
 	local realY = y
 	if self.params.showOpt then
-		realY = y + 120
+		realY = y + 70
+		
+		local opt = Btn:new(IMG_BTN, self.params.showOpt[1], 300, y, {
+			priority = -131,
+			callback = self.params.showOpt[2]
+		} )
+		self.layer:addChild(opt:getLayer())
+		
+		self.nums = newLabel("已选择:0", 20)
+		setAnchPos(self.nums, 0, y + 30)
+		self.layer:addChild(self.nums)
 	end
 	
 	local bg = newSprite(IMG_COMMON.."page_bg.png")
@@ -105,13 +112,13 @@ function ItemPage:createItems(by, ani, dir)
 	if self.params.type then
 		self.itemsLayer = newLayer()
 		
-		local max, total = 12, DATA_Bag:count(self.params.type) 
-		print(max, total)
+		local list = getSortKey( getBag(self.params.type)) 
+		local max,total, spaceY = 12,#list, 1.4 
 		if self.params.showOpt then  --在翻页下方是不是有操作的按钮
 			max = 9
+			spaceY = 1.6
 		end
 		self.max = math.ceil(total / max)
-		print(self.max)
 		
 		local num = max
 		if total - max * (self.cur - 1) < max then
@@ -119,21 +126,42 @@ function ItemPage:createItems(by, ani, dir)
 		end
 		
 		
-		local x, y = 30, by + 420
-		for i = 1, num do
-			local item = Btn:new(IMG_COMMON, {"icon_bg1.png"}, x, y, {
-				other = {IMG_COMMON.."icon_border1.png", 45, 45},
-				text = {"卡片信息", 20, ccc3(255,255,255), ccp(0, -60)}
+		local x, y, count = 30, by + 420, 1
+		local start = (self.cur - 1) * num 
+		for i = start + 1, start + num do
+				local item 
+				item = Btn:new(IMG_COMMON, {"icon_bg"..getBag(self.params.type, list[i], "star")..".png", "card_selected.png"}, x, y, {
+				scale = true,
+				priority = -131,
+				selectable = true,
+				selectZOrder = 20,
+				selectOffset = {28, -30},
+				noHide = true,
+				front = IMG_ICON.."/"..self.params.type.."/".."S_"..getBag(self.params.type, list[i], "look")..".png",
+				other = {IMG_COMMON.."icon_border"..getBag(self.params.type, list[i], "star")..".png", 45, 45},
+				text = {getBag(self.params.type, list[i], "name"), 20, ccc3(255,255,255), ccp(0, -60)},
+				callback = function()
+					if item:isSelect() then
+						self.selectItems[list[i]] = list[i]
+						self.nums:setString("已选择:"..table.nums(self.selectItems))
+					else
+						self.selectItems[list[i]] = nil
+						self.nums:setString("已选择:"..table.nums(self.selectItems))
+					end
+				end
 			})
 			self.itemsLayer:addChild(item:getLayer())
+			if self.selectItems[list[i]] then
+				item:select(true)
+			end
 			
 			x = x + item:getWidth() * 1.8	
-			
-			if i % 3 == 0 then
+			if count % 3 == 0 then
 				x = 30 
-				
-				y = y - item:getHeight() * 1.4
+				y = y - item:getHeight() * spaceY 
 			end
+			
+			count = count + 1
 		end
 		self.layer:addChild(self.itemsLayer)
 		
@@ -148,6 +176,8 @@ function ItemPage:getLayer()
 	return self.mask
 end
 
-
+function ItemPage:getItems()
+	return self.selectItems
+end
 
 return ItemPage

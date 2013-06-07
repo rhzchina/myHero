@@ -42,6 +42,7 @@ function LuaBtn:new(path, file, x, y, params, group)
 		path = string.sub(path,0,string.len(path) - 1)
 	end
 	--跟据参数初始化按钮状态图片
+	--跟据参数初始化按钮状态图片
 	for i = 1, table.nums(file)	do
 		local z = 0
 		if file[i] ~= "nil" then
@@ -56,7 +57,7 @@ function LuaBtn:new(path, file, x, y, params, group)
 					
 				setAnchPos(cur,-(cur:getContentSize().width - this.item[1]:getContentSize().width ) / 2 + offset[1],
 					 -(cur:getContentSize().height - this.item[1]:getContentSize().height ) / 2 + offset[2])
-				z = -1
+				z = this.params["selectZOrder"] or -1
 			else
 				z = 0
 				setAnchPos(this.item[i])
@@ -242,6 +243,14 @@ function LuaBtn:new(path, file, x, y, params, group)
 			elseif type == CCTOUCHENDED then
 				if this:getRange():containsPoint(ccp(x,y)) then
 					if press and moveOn then
+					--设置是否选中
+						if not this.params["selectable"] then
+							this:setState(NORMAL)
+						else
+--							this.chosen = true
+							this:select(not this.chosen)
+						end
+						
 						--放开后执行回调
 						if this.params["callback"] then
 							if not this.params["disableWhenChoose"] then
@@ -253,12 +262,6 @@ function LuaBtn:new(path, file, x, y, params, group)
 							end
 						end
 
-						--设置是否选中
-						if not this.params["selectable"]	then
-							this:setState(NORMAL)
-						else
-							this.chosen = true
-						end
 						if group then
 							group:chooseBtn(this)
 						end	
@@ -406,7 +409,6 @@ function LuaBtn:select(selecte,callback)
 			self:setState(SELECTED)
 			if callback then  --若选中时需要要执行按钮的回调 ，则将callback置为true
 				self.params["callback"]()
-				print("执行")
 			end
 		else
 			self:setState(NORMAL)
@@ -502,6 +504,10 @@ end
 --	end
 --	self.touchRange = CCRectMake(tx,ty,self.layer:getContentSize().width,self.layer:getContentSize().height)
 --end
+
+function LuaBtn:isSelect()
+	return self.chosen
+end
 
 
 return LuaBtn
