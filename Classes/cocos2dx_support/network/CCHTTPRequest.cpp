@@ -341,11 +341,11 @@ void CCHTTPRequest::onRequest(void)
     {
         chunk = curl_slist_append(chunk, (*it).c_str());
     }
-    
-    curl_easy_setopt(m_curl, CURLOPT_HTTPHEADER, chunk);
-    CURLcode code = curl_easy_perform(m_curl);
-    curl_easy_getinfo(m_curl, CURLINFO_RESPONSE_CODE, &m_responseCode);
-    curl_easy_cleanup(m_curl);
+
+	curl_easy_setopt(m_curl, CURLOPT_HTTPHEADER, chunk);
+	CURLcode code = curl_easy_perform(m_curl);
+	curl_easy_getinfo(m_curl, CURLINFO_RESPONSE_CODE, &m_responseCode);
+	curl_easy_cleanup(m_curl);
     m_curl = NULL;
     curl_slist_free_all(chunk);
     

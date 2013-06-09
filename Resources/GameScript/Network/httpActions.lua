@@ -192,12 +192,11 @@ end
 function M.Strong_resolve(kind, data, callback)
 	if kind == 1 then
 	else
+		dump(data)
 		DATA_User:set(data["Userdata"])
 		
-		for k, v in pairs(data) do
-			if type(v) == "table" and v.type == "hero" then
-				DATA_Bag:delItem("hero", k)
-			end
+		for k, v in pairs(data["hero"]) do
+			DATA_Bag:delItem("hero", k)
 		end	
 		callback()
 	end

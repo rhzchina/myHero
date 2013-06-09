@@ -18,7 +18,7 @@ function ItemPage:new(x, y, params)
 	this.params = params or {}
 	this.cur = 1
 	this.max = 1
-	this.selectItems = {}
+	this.selectItems = this.params.data or {} 
 	
 	local bg = newSprite(IMG_COMMON.."list_bg.png")
 	setAnchPos(bg)
@@ -59,9 +59,10 @@ function ItemPage:turnLayer(y)
 			priority = -131,
 			callback = self.params.showOpt[2]
 		} )
+		setAnchPos(opt:getLayer(), 470 - opt:getWidth(), y)
 		self.layer:addChild(opt:getLayer())
 		
-		self.nums = newLabel("已选择:0", 20)
+		self.nums = newLabel("已选择:"..table.nums(self.selectItems), 20)
 		setAnchPos(self.nums, 0, y + 30)
 		self.layer:addChild(self.nums)
 	end
@@ -113,6 +114,7 @@ function ItemPage:createItems(by, ani, dir)
 		self.itemsLayer = newLayer()
 		
 		local list = getSortKey( getBag(self.params.type)) 
+		dump(list)
 		local max,total, spaceY = 12,#list, 1.4 
 		if self.params.showOpt then  --在翻页下方是不是有操作的按钮
 			max = 9

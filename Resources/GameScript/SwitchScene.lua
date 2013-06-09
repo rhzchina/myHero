@@ -22,3 +22,14 @@ function switchScene( name , temp_data , callback )
 		callback()
 	end
 end
+
+function pushScene(name,params)
+	local scene_file = SRC.."Scene/" .. name .. "/scene"
+	local scene = require(scene_file)
+	
+	CCDirector:sharedDirector():pushScene(scene:create(params))
+end
+
+function popScene()
+	CCDirector:sharedDirector():popScene()
+end

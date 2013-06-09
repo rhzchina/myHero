@@ -35,7 +35,7 @@ function HomeLayer:create()
     		end},
 	    {"athletics",200},
 	    {"friend",290},
-	    {"menu",380}
+	    {"menu",380, function() pushScene("menu") end}
 	}
 
 	for i ,v in pairs(main_small) do

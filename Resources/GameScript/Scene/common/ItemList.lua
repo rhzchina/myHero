@@ -94,4 +94,8 @@ function ItemList:getSelectId()
 	return self.selectItem:getId()
 end
 
+function ItemList:getSelectKind()
+	return self.selectItem:getKind()
+end
+
 return ItemList

@@ -61,6 +61,10 @@ function ItemInfo:getId()
 	return self.cid
 end
 
+function ItemInfo:getKind()
+	return self.kind
+end
+
 function ItemInfo:choose(bool)
 	self.checkBox:check(bool)
 end

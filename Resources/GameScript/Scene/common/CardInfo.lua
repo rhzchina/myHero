@@ -26,7 +26,11 @@ function CardInfo:new(x,y,params)
 	if this.params.cid then --若阵容位置有武将
 		--头像
 		local icon = newSprite(IMG_ICON..this.params.type.."/L_"..getBag(this.params.type,this.params.cid,"look")..".png")
-		setAnchPos(icon, bg:getContentSize().width / 2, bg:getContentSize().height/ 2, 0.5, 0.5)
+		if this.params.type == "hero" then
+			setAnchPos(icon, bg:getContentSize().width / 2, bg:getContentSize().height/ 2, 0.5, 0.5)
+		else
+			setAnchPos(icon, bg:getContentSize().width / 2, bg:getContentSize().height/ 2, 0.5, 0.8 )
+		end
 		this.layer:addChild(icon)
 		
 		--星级
@@ -53,16 +57,10 @@ function CardInfo:new(x,y,params)
 		setAnchPos(proBg, 20, 190)
 		this.layer:addChild(proBg)
 		
-		local proText = newLabel("血"..getBag(this.params.type, this.params.cid, "hp"), 17, {x = 20, y = 22})
-		this.layer:addChild(proText)
+		--根据类型读取属性
+		this:createProperties()
 		
-		proText = newLabel("攻"..getBag(this.params.type ,this.params.cid, "att"), 17, {x = 95, y = 22})
-		this.layer:addChild(proText)
-		
-		proText = newLabel("防"..getBag(this.params.type, this.params.cid, "defe"), 17, {x = 170, y = 22})
-		this.layer:addChild(proText)
-		
-		proText = newLabel(getBag(this.params.type, this.params.cid, "lev"), 20, {x = 40, y = 55, ax = 0.5})	
+		local proText = newLabel(getBag(this.params.type, this.params.cid, "lev"), 20, {x = 40, y = 55, ax = 0.5})	
 		this.layer:addChild(proText)
 		
 		local str = getBag(this.params.type, this.params.cid, "name")
@@ -97,6 +95,21 @@ function CardInfo:new(x,y,params)
 	
 
 	return this
+end
+
+function CardInfo:createProperties()
+	local proText
+	if self.params.type == "hero" then
+		proText = newLabel("血"..getBag(self.params.type, self.params.cid, "hp"), 17, {x = 20, y = 22})
+		self.layer:addChild(proText)
+		
+		proText = newLabel("攻"..getBag(self.params.type ,self.params.cid, "att"), 17, {x = 95, y = 22})
+		self.layer:addChild(proText)
+		
+		proText = newLabel("防"..getBag(self.params.type, self.params.cid, "defe"), 17, {x = 170, y = 22})
+		self.layer:addChild(proText)
+	else
+	end
 end
 
 

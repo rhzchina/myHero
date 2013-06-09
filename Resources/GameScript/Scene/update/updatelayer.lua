@@ -5,6 +5,7 @@ local Pages = require(SRC.."Scene/common/ItemsPage")
 
 local UpdateLayer = {
 	layer,
+	page
 }
 
 function UpdateLayer:new(data)
@@ -45,14 +46,18 @@ function UpdateLayer:new(data)
 	return this
 end
 
-function UpdateLayer:createCardUp()
+function UpdateLayer:createCardUp(kind, cid)
 	if self.contentLayer then
 		self.layer:removeChild(self.contentLayer, true)
 	end
 	
 	self.contentLayer = newLayer()
 	
-	local card = Card:new(10, 400)
+	print(kind,cid)
+	local card = Card:new(10, 400, {
+		type = kind,
+		cid = cid,
+	})
 	self.contentLayer:addChild(card:getLayer())
 	
 	local bg = newSprite(PATH.."gold_bg.png")
@@ -67,6 +72,28 @@ function UpdateLayer:createCardUp()
 	setAnchPos(bg, 280, 430)
 	self.contentLayer:addChild(bg)
 	
+	local items = {target = {type = kind, cid = cid}}
+	local scroll
+	
+	local function upItems(data)
+		if scroll then
+			self.contentLayer:removeChild(scroll:getLayer(), true)	
+		end
+		scroll = ScrollView:new(0, 170, 480, 100, 10, true)
+		
+		local list = getSortKey(data)
+		
+		for i = 1, #list do
+			local item = Btn:new(IMG_COMMON, {"icon_bg"..getBag(kind, list[i], "star")..".png"}, 0, 0,{
+				other = {IMG_COMMON.."icon_border"..getBag(kind, list[i], "star")..".png", 45, 45},
+				front = IMG_ICON..kind.."/S_"..getBag(kind, list[i], "look")..".png"
+			})
+			scroll:addChild(item:getLayer(), item)
+		end
+		scroll:alignCenter()
+		self.contentLayer:addChild(scroll:getLayer())
+	end
+	
 	--选择目标卡牌
 	local choose = Btn:new(PATH, {"choose_card.png", "choose_card_pre.png"}, 20, 310, {
 		callback = function()
@@ -74,7 +101,11 @@ function UpdateLayer:createCardUp()
 			list = List:new({
 				type = {"hero", "equip"},
 				checkBoxOpt = function()
-					print("haah")
+				end,
+				okCallback = function()
+					self.page = nil
+					print(list:getSelectKind())
+					self:createCardUp(list:getSelectKind(), list:getSelectId())
 				end
 				
 			})
@@ -93,7 +124,20 @@ function UpdateLayer:createCardUp()
 	
 	--选择销毁卡牌
 	local chooseItems = Btn:new(PATH, {"choose_item.png", "choose_item_pre.png"}, 20, 100, {
-	
+		callback = function()
+--			if items.target then
+				local data
+				if self.page then
+					data = self.page:getItems()
+				end
+				self:createSplit(items.target.type, {"ok.png", "ok_press.png"}, function()
+					upItems(self.page:getItems())
+					self.contentLayer:removeChild(self.page:getLayer(), true)
+				end,data)
+--			else
+--				MsgBox.create():flashShow("请选择需要强化的卡牌！~")
+--			end
+		end
 	})
 	self.contentLayer:addChild(chooseItems:getLayer())
 	
@@ -109,19 +153,7 @@ function UpdateLayer:createCardUp()
 	local line = newSprite(IMG_COMMON.."tabs/tab_separator.png")
 	setAnchPos(line, 0, 280)
 	self.contentLayer:addChild(line)
-	
-	local scroll = ScrollView:new(0, 170, 480, 100, 10, true)
-	
-	for i = 1, 5 do
-		local item = Btn:new(IMG_COMMON, {"icon_bg1.png"}, 0, 0,{
-			other = {IMG_COMMON.."icon_border1.png", 45, 45}
-		})
-		scroll:addChild(item:getLayer(), item)
-	end
-	scroll:alignCenter()
-	self.contentLayer:addChild(scroll:getLayer())
-	
-	
+
 	
 	self.layer:addChild(self.contentLayer)
 end
@@ -147,25 +179,25 @@ function UpdateLayer:createHeroUp(cid, data)
 		type = "hero",
 		cid = cid,
 		callback = function()
-		local list 
-		list = List:new({
-			type = "hero",
-			checkBoxOpt = function()
-				print(list:getSelectId())
-			end,
-			okCallback = function()
-				HTTPS:send("Strong", {a = "hero", m = "strong", 
-					strong = "hero_get", 
-					id = getBag("hero", list:getSelectId(), "id") , 
-					cid = list:getSelectId()},{
-					success_callback = function(rec)
-						self:createHeroUp(list:getSelectId(), rec)
-					end}
-				)
-			end
-		})	
-		self.layer:addChild(list:getLayer(),2)
-	end})
+			local list 
+			list = List:new({
+				type = "hero",
+				checkBoxOpt = function()
+					print(list:getSelectId())
+				end,
+				okCallback = function()
+					HTTPS:send("Strong", {a = "hero", m = "strong", 
+						strong = "hero_get", 
+						id = getBag("hero", list:getSelectId(), "id") , 
+						cid = list:getSelectId()},{
+						success_callback = function(rec)
+							self:createHeroUp(list:getSelectId(), rec)
+						end}
+					)
+				end
+			})	
+			self.layer:addChild(list:getLayer(),2)
+		end})
 	self.contentLayer:addChild(card:getLayer())
 	
 	local info = {
@@ -229,32 +261,24 @@ function UpdateLayer:createHeroUp(cid, data)
 	})
 	self.contentLayer:addChild(upStar:getLayer())
 	
-	local function createSplit()
-		local page 
-		page = Pages:new(0,0, {
-			type = "hero", 
-			showOpt = {
-				{"split.png", "split_press.png"},
-				function()
-					local data = {}
-					for k, v in pairs(page:getItems()) do
-						table.insert(data,{cid = k, id = getBag("hero", k, "id")})
-					end
-					HTTPS:send("Strong", {a = "hero", m="strong", strong = "resolve", data = data}, {
-						success_callback = function()
-							self.contentLayer:removeChild(page:getLayer(), true)
-							createSplit()
-							MsgBox.create():flashShow("英雄分解成功，获得魂魄!!")
-						end
-					})
-				end
-			}}) 			
-		self.contentLayer:addChild(page:getLayer())
+	--武将的分解方法
+	local func 
+	func = function()
+		local data = {}
+		for k, v in pairs(self.page:getItems()) do
+			table.insert(data,{cid = k, id = getBag("hero", k, "id")})
+		end
+		HTTPS:send("Strong", {a = "hero", m="strong", strong = "resolve", data = data}, {
+			success_callback = function()
+				self:createSplit("hero",{"split.png", "split_press.png"}, func)
+				MsgBox.create():flashShow("英雄分解成功，获得魂魄!!")
+			end
+		})
 	end
 	
 	local split = Btn:new(PATH, {"split.png", "split_pre.png"}, 250, 95, {
 		callback = function()
-			createSplit()
+				self:createSplit("hero",{"split.png", "split_press.png"}, func)
 		end
 	})
 	self.contentLayer:addChild(split:getLayer())
@@ -264,6 +288,17 @@ end
 
 function UpdateLayer:getLayer()
 	return self.layer
+end
+
+function UpdateLayer:createSplit(kind, btnImages, func, data)
+		if self.page then
+			self.contentLayer:removeChild(self.page:getLayer(), true)
+		end
+		self.page = Pages:new(0,0, {
+			data = data,
+			type = kind, 
+			showOpt = { btnImages, func}}) 			
+		self.contentLayer:addChild(self.page:getLayer())
 end
 
 return UpdateLayer

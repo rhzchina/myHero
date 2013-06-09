@@ -168,15 +168,24 @@ function LuaBtn:new(path, file, x, y, params, group)
 		end
 	end
 
-	--可以在按钮上添加其他的图层，暂时用来做宠物主页的宠物状态标签
+--可以在按钮上添加其他的图层，
 	if this.params["other"] then
-		this.item["other"] = newSprite(this.params["other"][1])
---		setAnchPos(bg,60,20)
-		setAnchPos(this.item["other"],this.params["other"][2] ,this.params["other"][3],0.5,0.5)
-		this.layer:addChild(this.item["other"],11)
+		if type(this.params["other"][1]) ~= "table" then
+			local state = display.newSprite(this.params["other"][1])
+	--		setAnchPos(bg,60,20)
+			setAnchPos(state,this.params["other"][2] ,this.params["other"][3], 0.5, 0.5)
+			this.layer:addChild(state,11)
+		else
+			for k, v in pairs(this.params["other"]) do
+				local state = display.newSprite(v[1])
+				setAnchPos(state,v[2] ,v[3], 0.5, 0.5)
+				this.layer:addChild(state,11)	
+			end
+		end
 --		this.layer:addChild(this.params["other"][1])
 --		this.layer:setContentSize(CCSize:new(this.item[1]:getContentSize().width + bg:getContentSize().width / 2,this.item[1]:getContentSize().height))
 	end
+
 
 	local press , moveOn   --press为是否按下，moveOn 为按钮按下后是否有移动 j
 	local lastX = 0  -- lastX 最后点击的坐标

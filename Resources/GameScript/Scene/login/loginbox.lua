@@ -56,7 +56,8 @@ function M:create( ... )
 		priority = -199,
 		callback = 
 		function()
-			switchScene("fighting")
+--			switchScene("fighting")
+			pushScene("menu")
 		end})
 	this.layer:addChild(exit:getLayer())
 	
@@ -167,7 +168,7 @@ function M:accountInput()
 	
 	--[[创建输入框]]
 	self.account = CCTextFieldTTF:textFieldWithPlaceHolder("Open ID" , "Thonburi" , 48);
-	self.account:setString("vcaa")
+	self.account:setString("bcb")
 	--[[设置颜色]]
 	self.account:setColor( ccc3(255 , 255 , 0) )
 	self.account:setColorSpaceHolder( ccc3(255 , 255 , 0) )
