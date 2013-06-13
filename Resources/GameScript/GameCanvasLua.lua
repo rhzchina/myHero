@@ -9,7 +9,7 @@ end
 -- 简单配置
 -- 0 - disable debug info, 1 - less debug info, 2 - verbose debug info
 
-DEBUG = 2
+DEBUG = 0
 DEBUG_MEM_USAGE = 10	-- 显示内存使用
 
 LineUp_Index = 1

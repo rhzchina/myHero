@@ -4,6 +4,7 @@ local _data
 
 function DATA_Bag:set(data)
 	_data = data
+	dump(data)
 end
 
 function DATA_Bag:setByKey(first, second, third)

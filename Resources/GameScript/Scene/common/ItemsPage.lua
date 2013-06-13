@@ -114,7 +114,6 @@ function ItemPage:createItems(by, ani, dir)
 		self.itemsLayer = newLayer()
 		
 		local list = getSortKey( getBag(self.params.type)) 
-		dump(list)
 		local max,total, spaceY = 12,#list, 1.4 
 		if self.params.showOpt then  --在翻页下方是不是有操作的按钮
 			max = 9
@@ -139,7 +138,7 @@ function ItemPage:createItems(by, ani, dir)
 				selectZOrder = 20,
 				selectOffset = {28, -30},
 				noHide = true,
-				front = IMG_ICON.."/"..self.params.type.."/".."S_"..getBag(self.params.type, list[i], "look")..".png",
+				front = IMG_ICON..self.params.type.."/".."S_"..getBag(self.params.type, list[i], "look")..".png",
 				other = {IMG_COMMON.."icon_border"..getBag(self.params.type, list[i], "star")..".png", 45, 45},
 				text = {getBag(self.params.type, list[i], "name"), 20, ccc3(255,255,255), ccp(0, -60)},
 				callback = function()

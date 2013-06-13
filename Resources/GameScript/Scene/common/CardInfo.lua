@@ -29,7 +29,7 @@ function CardInfo:new(x,y,params)
 		if this.params.type == "hero" then
 			setAnchPos(icon, bg:getContentSize().width / 2, bg:getContentSize().height/ 2, 0.5, 0.5)
 		else
-			setAnchPos(icon, bg:getContentSize().width / 2, bg:getContentSize().height/ 2, 0.5, 0.8 )
+			setAnchPos(icon, bg:getContentSize().width / 2, bg:getContentSize().height/ 2, 0.3, 0.2 )
 		end
 		this.layer:addChild(icon)
 		
