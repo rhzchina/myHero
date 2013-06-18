@@ -117,7 +117,7 @@ function M.Skill_inserSkill(type, data, callback)
 	return true, data
 end
 
-function M.Fighting(type,data,callback)
+function M.Fighting_start(type,data,callback)
 	if type == 1 then
 	else
 		DATA_Fighting:set(data["start"])

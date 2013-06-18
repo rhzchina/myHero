@@ -168,7 +168,7 @@ function M:accountInput()
 	
 	--[[创建输入框]]
 	self.account = CCTextFieldTTF:textFieldWithPlaceHolder("Open ID" , "Thonburi" , 48);
-	self.account:setString("bcb")
+	self.account:setString("cctb")
 	--[[设置颜色]]
 	self.account:setColor( ccc3(255 , 255 , 0) )
 	self.account:setColorSpaceHolder( ccc3(255 , 255 , 0) )

@@ -42,14 +42,18 @@ local this = {}
 	
 	--初始化英雄
 	for i, v in pairs(data:getHero()) do
-		this.group[1][i - 1] = FightRole:new(1, v["id"], i - 1,{hp = v["hp"],star = v["star"] ,effect = this.effect}) 
-		this.roleLayer:addChild(this.group[1][i - 1]:getLayer())
+--		this.group[1][i - 1] = FightRole:new(1, v["id"], i - 1,{hp = v["hp"],star = v["star"] ,effect = this.effect}) 
+--		this.roleLayer:addChild(this.group[1][i - 1]:getLayer())
+		this.group[1][i] = FightRole:new(1, v["id"], i - 1,{hp = v["hp"],star = v["star"] ,effect = this.effect}) 
+		this.roleLayer:addChild(this.group[1][i]:getLayer())
 	end
 	
 	--初始化怪兽
 	for i,v in pairs(data:getMonster()) do
-		this.group[2][i - 1] = FightRole:new(2, v["id"], i - 1,{hp = v["hp"],star = v["star"],effect = this.effect}) 
-		this.roleLayer:addChild(this.group[2][i - 1]:getLayer())
+--		this.group[2][i - 1] = FightRole:new(2, v["id"], i - 1,{hp = v["hp"],star = v["star"],effect = this.effect}) 
+--		this.roleLayer:addChild(this.group[2][i - 1]:getLayer())
+		this.group[2][i] = FightRole:new(2, v["id"], i - 1,{hp = v["hp"],star = v["star"],effect = this.effect}) 
+		this.roleLayer:addChild(this.group[2][i]:getLayer())
 	end
 --	print("战斗开始")
 --		DATA_Fighting:getAttackType()
@@ -74,6 +78,7 @@ local this = {}
 	this.layer:addChild(this.effect:getLayer())
 	
 	--战斗开始
+	
 	this:fightLogic()
 	return this
 end
