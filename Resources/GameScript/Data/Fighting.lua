@@ -10,6 +10,7 @@ local step = 1 --第几步
 
 function DATA_Fighting:set(data)
 	_data = data
+	dump(data)
 end
 
 function DATA_Fighting:getMonster()

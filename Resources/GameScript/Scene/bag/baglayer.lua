@@ -65,7 +65,17 @@ function M:createList(kind, tab, offset)
 				self.layer:addChild(Detail:new(kind,v["cid"]):getLayer(),1)
 			end
 			optCallback = function()
-				switchScene("update")	
+				if kind == "hero" then
+					HTTPS:send("Strong", {a = "hero", m = "strong", 
+						strong = "hero_get", 
+						id = v["id"],
+						cid = v["cid"]},{
+						success_callback = function(rec)
+							switchScene("update", {kind = kind, cid = v["cid"], data = rec})	
+						end})
+				elseif kind == "equip" then
+					switchScene("update", {kind = kind, tab = 2, cid = v["cid"]})
+				end
 			end
 			optBtn = "strength"
 		else

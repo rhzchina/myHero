@@ -145,7 +145,7 @@ function FightRole:doAction(type,role,callback,id)
 			array:addObject(CCCallFunc:create(    --起手完成后开始播放特效
 				function() 
 					if self.params["effect"] then
-						self.params["effect"]:showByType("atk_cut",self.x,self.y,0.04,
+						self.params["effect"]:showByType("11101",self.x,self.y,0.04,
 						{
 							callback = 
 							function()

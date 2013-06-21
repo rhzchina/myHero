@@ -96,11 +96,11 @@ function FightLayer:fightLogic()
 			local str
 			for i = 1, num do
 				if data:getVictim(i,"type") == "blood" then
-					str = "+"
+					str = ":"
 				else
-					str = "-"
+					str = ";"
 				end
-				self.effect:hpChange(str,
+				self.effect:hpChange(data:getVictim(i, "type") or "normal",str,
 					data:getVictim(i,"change"),
 					self.group[data:getVictim(i,"group")][data:getVictim(i,"index")]:getX(),
 					self.group[data:getVictim(i,"group")][data:getVictim(i,"index")]:getY()

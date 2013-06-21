@@ -263,10 +263,10 @@ function LuaBtn:new(path, file, x, y, params, group)
 						--放开后执行回调
 						if this.params["callback"] then
 							if not this.params["disableWhenChoose"] then
-								this.params["callback"]()
+								this.params["callback"](true)
 							else
 								if not this.chosen then
-									this.params["callback"]()
+									this.params["callback"](true)
 								end
 							end
 						end

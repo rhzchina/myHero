@@ -13,6 +13,7 @@ function UpdateLayer:new(data)
 	setmetatable(this,self)
 	self.__index  = self
 	
+	local params = data or {}
 	this.layer = newLayer()
 	
 	local bg = newSprite(IMG_COMMON.."main.png")
@@ -22,21 +23,27 @@ function UpdateLayer:new(data)
 	local group = RadioGroup:new()
 	local upList = {
 		{"hero", function()
-				this:createHeroUp()
+				this:createHeroUp(params.cid, params.data)
 			end},
 		{"card", function()
-				this:createCardUp()
+				this:createCardUp(params.kind, params.cid)
 			end},
 	}
 	
 	for i = 1, #upList do
 		local heroUp = Btn:new(PATH, {upList[i][1].."_up.png", upList[i][1].."_up_select.png"},20 + (i - 1 ) * 160, 750, {
-			callback = upList[i][2],
+			callback = function(touch)
+				if touch then
+					params = {}
+				end
+				upList[i][2]()
+			end,
 			disableWhenChoose = true,
 		},group)
 		this.layer:addChild(heroUp:getLayer())		
 	end
-	group:chooseByIndex(1, true)
+	
+	group:chooseByIndex(params.tab or 1, true)
 	
 	local line = newSprite(IMG_COMMON.."tabs/tab_separator.png")
 	setAnchPos(line, 0, 748)
@@ -53,7 +60,6 @@ function UpdateLayer:createCardUp(kind, cid)
 	
 	self.contentLayer = newLayer()
 	
-	print(kind,cid)
 	local card = Card:new(10, 400, {
 		type = kind,
 		cid = cid,

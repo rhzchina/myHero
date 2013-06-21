@@ -136,9 +136,17 @@ function newLabel(str, size, params)
 	setAnchPos(label, p.x, p.y, p.ax, p.ay)
 	label:setColor(p.color or ccc3(255, 255, 255))
 	
-
 	return label
 end
+
+function newAtlas(str, path, w, h, params)
+	local p = params or {}
+	local atlas = CCLabelAtlas:create(str, path, w, h, 48) 
+	setAnchPos(atlas, p.x, p.y, p.ax, p.ay)	
+	
+	return atlas
+end
+
 
 --获取动作序列
 function getSequence(...)
@@ -148,6 +156,18 @@ function getSequence(...)
 	end
 	return CCSequence:create(array)
 end
+
+
+--获取动作序列
+function getSpawn(...)
+	local array = CCArray:create()	
+	for i = 1, arg["n"] do
+		array:addObject(arg[i])
+	end
+	return CCSpawn:create(array)
+end
+
+
 
 --获取排序后的table键值
 function getSortKey(t, rule)

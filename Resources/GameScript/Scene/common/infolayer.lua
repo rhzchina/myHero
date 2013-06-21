@@ -22,7 +22,7 @@ function InfoLayer:create(hideTop)
 	--底部的元素
 	local bg = newSprite(PATH.."navigation_bottom.png")
 	this.layer:addChild(bg)
-
+	
 	local group = RadioGroup:new()
 	local buttom_array = {
 		{"home",
