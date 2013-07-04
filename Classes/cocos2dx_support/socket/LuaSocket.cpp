@@ -1,4 +1,5 @@
 #include "LuaSocket.h"
+#include "SocketData.h"
 #include <zlib.h>
 
 
@@ -10,8 +11,8 @@ static CCArray* s_responseQueue = NULL;		  //响应队列
 static pthread_mutex_t s_requestQueueMutex;
 static pthread_mutex_t s_responseQueueMutex;
 static int _mhandler;
-static string buf;
-static int return_code;
+// static string buf;
+// static int return_code;
 static bool need_quit = false;
 
 // static LuaSocketResponse* response;
@@ -86,11 +87,16 @@ static void* sendThread(void *data)
 	ret = cSocket->Send(ch.data() , ch.size() , 0);
 	if(ret < 0) {
 		// 出现错误，一般是断网了
+		/*
 		buf.clear();
 		return_code = -101;
 		CCDirector::sharedDirector()->getScheduler()->resumeTarget( LuaSocket::getInstance() );
+		*/
+		// 放入队列，去执行回调
+		pthread_mutex_lock(&s_responseQueueMutex);
+		s_responseQueue->addObject( new SocketData(-101 , "") );
+		pthread_mutex_unlock(&s_responseQueueMutex);
 	}
-
 
 	return 0;
 }
@@ -119,6 +125,9 @@ static void* readThread(void *data)
 	CCLog("%s" , "SOCKET send begin");
 	cSocket->Send(ch , strlen(ch) , 0);
 	*/
+
+	string buf;
+	int return_code;
 
 	buf.clear();
 	while (true) {
@@ -152,20 +161,52 @@ static void* readThread(void *data)
 			ungzip_str.clear();
 		}
 
+		string buf_prefix = buf.substr(0 , 30);
+		buf_prefix.erase(0 , buf_prefix.find_first_not_of(" "));
+
 		return_code = 200;
-		CCDirector::sharedDirector()->getScheduler()->resumeTarget( LuaSocket::getInstance() );
+		if(buf_prefix == "kick_off") {
+			return_code = -99;
+		}
+
+		// 放入队列，去执行回调
+		pthread_mutex_lock(&s_responseQueueMutex);
+		s_responseQueue->addObject( new SocketData(return_code , buf) );
+		pthread_mutex_unlock(&s_responseQueueMutex);
+
+		//CCDirector::sharedDirector()->getScheduler()->resumeTarget( LuaSocket::getInstance() );
 	}
+
 	
 	// 出现错误，一般是断网了
-	return_code = -100;
-	CCDirector::sharedDirector()->getScheduler()->resumeTarget( LuaSocket::getInstance() );
+	// 放入队列，去执行回调
+	pthread_mutex_lock(&s_responseQueueMutex);
+	s_responseQueue->addObject( new SocketData(-100 , "") );
+	pthread_mutex_unlock(&s_responseQueueMutex);
+	/*
+	if(return_code >= 0) {
+		return_code = -100;
+		CCDirector::sharedDirector()->getScheduler()->resumeTarget( LuaSocket::getInstance() );
+	}
+	*/
 
 	return 0;
 }
 
 void LuaSocket::callback(float delta) {
+	pthread_mutex_lock(&s_responseQueueMutex);
+	if (0 != s_responseQueue->count()) {
+		SocketData * data = (SocketData *)(s_responseQueue->objectAtIndex(0));
+		s_responseQueue->removeObjectAtIndex(0);  
+
+		CCScriptEngineManager::sharedManager()->getScriptEngine()->executeFunction(_mhandler , data->code , data->buf.data());
+	}
+	pthread_mutex_unlock(&s_responseQueueMutex);
+
+
 	// 回调lua的函数
-	CCScriptEngineManager::sharedManager()->getScriptEngine()->executeFunction(_mhandler , return_code ,/* reponse->buff->at(0).data()*/buf.data());
+	/*
+	CCScriptEngineManager::sharedManager()->getScriptEngine()->executeFunction(_mhandler , data->code ,buf.data());
 
 	if(need_quit == false) {
 		CCDirector::sharedDirector()->getScheduler()->pauseTarget(LuaSocket::getInstance());
@@ -176,6 +217,7 @@ void LuaSocket::callback(float delta) {
 		s_pGameHttp->closeSocket();
 		s_pGameHttp = NULL;
 	}
+	*/
 
 	
 }
@@ -211,8 +253,9 @@ int LuaSocket::openSocket(const char *ip , int poush) {
 
 
 	// 设置回调函数
-	CCDirector::sharedDirector()->getScheduler()->scheduleSelector(schedule_selector( LuaSocket::callback ) , s_pGameHttp , 0 , false);
-	CCDirector::sharedDirector()->getScheduler()->pauseTarget(s_pGameHttp);
+	CCDirector::sharedDirector()->getScheduler()->unscheduleSelector(schedule_selector( LuaSocket::callback ) , s_pGameHttp);
+	CCDirector::sharedDirector()->getScheduler()->scheduleSelector(schedule_selector( LuaSocket::callback ) , s_pGameHttp , 0.02f , false);
+	// CCDirector::sharedDirector()->getScheduler()->pauseTarget(s_pGameHttp);
 
 
 	// 创建消息队列，传递数据

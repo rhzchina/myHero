@@ -102,6 +102,9 @@ bool ODSocket::Create(int af, int type, int protocol)
 
 bool ODSocket::Connect(const char* ip, unsigned short port)
 {
+	//hostent* host = gethostbyname(ip);
+	//char *temp = inet_ntoa(*((struct in_addr*)host->h_addr));
+	
 	struct sockaddr_in svraddr;
 	svraddr.sin_family = AF_INET;
 	svraddr.sin_addr.s_addr = inet_addr(ip);
@@ -191,30 +194,37 @@ int ODSocket::Recv(char* buf , int len , int flags)
 	if(buf == NULL) return -1;
 
 	int bytes;
-	int buffer_len = 100;
+	int buffer_len = 1000;
 
-	char buffer[101] = "\0";
+	char buffer[1001] = "\0";
 	unsigned long length = 0;
-	unsigned long temp_int = 0;
+	char total_len[10] = "\0";
 
 	// ¶ÁÈ¡°üÍ·
-	bytes = recv(m_sock , buffer , 5 , 0);
+	bytes = recv(m_sock , buffer , 1 , 0);
 	if(bytes < 0) {
 		return bytes;
 	}
+	
+	length = atoi(buffer);
 
-	if( bytes != 5    /*|| buffer[0] != 0xff*/ ) {
-		unsigned long pack_header = 0;
-		memcpy(&pack_header , &buffer , 1);
+	recv(m_sock, buffer, length, 0);
 
-		if(pack_header != 255) {
-			CCLog("%s" , "package header wrong");
-			return -1;
-		}
-	}
+	length = atoi(buffer);
 
-	memcpy(&temp_int , &buffer[1] , 4);
-	length = ntohl(temp_int);
+	//if( bytes != 5    /*|| buffer[0] != 0xff*/ ) {
+	//	unsigned long pack_header = 0;
+	//	memcpy(&pack_header , &buffer , 1);
+
+	//	if(pack_header != 255) {
+	//		CCLog("%s" , "package header wrong");
+	//		return -1;
+	//	}
+	//}
+
+	//memcpy(&temp_int , &buffer[1] , bytes);
+	//length = ntohl(temp_int);
+	////length = 3907;
 
 	if( length <= 0 ) return -1;
 

@@ -29,6 +29,7 @@ xpcall(function()
 
 	require(SRC.."Data/Session")
 	require(SRC.."Network/https")
+	require(SRC.."Network/socket")
 
 	-- 游戏入口 - 后续可以去掉很多
 	require(SRC.."SwitchScene")
