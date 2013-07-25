@@ -23,19 +23,16 @@ function M.Landed( type , data , callback )
 		-- 回调处理
 		local result = data
 		-- 存储数据
-		dump(data)
 		DATA_Bag:set(result["bag"])
 		DATA_Session:set({ uid = result["userinfo"]["uid"] , sid = result["userinfo"]["sid"] , server_id = result["userinfo"]["server_id"] })
 		DATA_User:set(result["Userdata"])
 		DATA_Embattle:set(result["battle"])
-		SOCKET:getInstance("msg"):call("log" , "in" , "open" , {} , {
-				success_callback = function()
-					-- KNGuide:setStep( 1500 )	-- 新手引导
-					-- 登录成功后，跳转到首页
-					switchScene("home")
-				end
-			})
---		switchScene("home")
+--		SOCKET:getInstance("msg"):call("log" , "in" , "open" , {} , {
+--				success_callback = function()
+--					switchScene("home")
+--				end
+--			})
+		SOCKET:get():call("open")
 	end
 
 	return true , data
@@ -200,7 +197,6 @@ end
 function M.Strong_resolve(kind, data, callback)
 	if kind == 1 then
 	else
-		dump(data)
 		DATA_User:set(data["Userdata"])
 		
 		for k, v in pairs(data["hero"]) do
