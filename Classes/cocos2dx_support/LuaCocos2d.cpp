@@ -18,6 +18,8 @@ TOLUA_API int  tolua_Cocos2d_open (lua_State* tolua_S);
 
 #include "WindowLayer.h"
 
+#include "tool.h"
+
 #include "network/CCNetwork.h"
 
 // using namespace std;
@@ -55139,7 +55141,8 @@ static int tolua_Cocos2d_LuaSocket_openSocket00(lua_State* tolua_S)
 		!tolua_isusertype(tolua_S,1,"LuaSocket",0,&tolua_err) ||
 		!tolua_isstring(tolua_S,2,0,&tolua_err) ||
 		!tolua_isnumber(tolua_S,3,0,&tolua_err) ||
-		!tolua_isnoobj(tolua_S,4,&tolua_err)
+		!tolua_isstring(tolua_S,4,0,&tolua_err) ||
+		!tolua_isnoobj(tolua_S,5,&tolua_err)
 		)
 		goto tolua_lerror;
 	else
@@ -55148,12 +55151,13 @@ static int tolua_Cocos2d_LuaSocket_openSocket00(lua_State* tolua_S)
 		LuaSocket* self = (LuaSocket*)  tolua_tousertype(tolua_S,1,0);
 		const char* ip = ((const char*)  tolua_tostring(tolua_S,2,0));
 		int poush = ((int)  tolua_tonumber(tolua_S,3,0));
+		const char* type = ((const char*)  tolua_tostring(tolua_S,4,0));
 #ifndef TOLUA_RELEASE
 		if (!self) tolua_error(tolua_S,"invalid 'self' in function 'openSocket'", NULL);
 #endif
 		{
 			int tolua_ret = 0;
-			tolua_ret = self->openSocket(ip,poush);
+			tolua_ret = self->openSocket(ip,poush, type);
 			tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
 		}
 	}
@@ -56018,7 +56022,32 @@ tolua_lerror:
 #endif //#ifndef TOLUA_DISABLE
 
 
-
+//自定义lua中的特殊回调
+#ifndef TOLUA_DISABLE_tolua_cocos2dx_specialCall00
+static int tolua_cocos2dx_specialCall00(lua_State* tolua_S){
+#ifndef TOLUA_RELEASE
+	tolua_Error tolua_err;
+	if (
+		!tolua_isnumber(tolua_S,1,0,&tolua_err) ||
+		!tolua_isnoobj(tolua_S,2,&tolua_err)
+		)
+		goto tolua_lerror;
+	else
+#endif
+	{
+		int result = (int)tolua_tonumber(tolua_S, 1, 0);
+		
+		luaCallback(result);
+		CCLog("this function is working normal,params is %d",result);
+	}
+	return 1;
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+	tolua_error(tolua_S,"#ferror in function 'specialCall'.",&tolua_err);
+	return 0;
+#endif
+}
+#endif
 
 
 /* method: createHTTPRequestLua of class  CCNetwork */
@@ -58724,6 +58753,9 @@ TOLUA_API int tolua_Cocos2d_open (lua_State* tolua_S)
 	tolua_beginmodule(tolua_S,"CCNetwork");
 		tolua_function(tolua_S,"createHTTPRequestLua",tolua_cocos2dx_extra_luabinding_CCNetwork_createHTTPRequestLua00);
 	tolua_endmodule(tolua_S);
+
+	//自定义调用的功能函数
+	tolua_function(tolua_S,"specialCall",tolua_cocos2dx_specialCall00);
  return 1;
 }
 

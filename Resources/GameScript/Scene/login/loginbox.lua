@@ -122,26 +122,30 @@ function M:accountInput()
 	if self.optLayre then
 		self.layer:removeChild(self.optLayer,true)
 	end
-	self.optLayer = CCLayer:create()
+	self.optLayer = newLayer()
 	
+	local accountLayer = newLayer()
 	
 	
 	local accountText = newSprite(IMG_TEXT.."account_text.png")
-	setAnchPos(accountText,10,500)
-	self.optLayer:addChild(accountText)
+	setAnchPos(accountText,40,485)
+	accountLayer:addChild(accountText)
 	
 	accountText = newSprite(PATH.."input_bg.png")
 	setAnchPos(accountText,120,480)
-	self.optLayer:addChild(accountText)
+	accountLayer:addChild(accountText)
 	
 	
 	local pwdText = newSprite(IMG_TEXT.."password_text.png")
-	setAnchPos(pwdText,10,420)
-	self.optLayer:addChild(pwdText)
+	setAnchPos(pwdText,40,405)
+	accountLayer:addChild(pwdText)
 	
 	pwdText = newSprite(PATH.."input_bg.png")
 	setAnchPos(pwdText,120,400)
-	self.optLayer:addChild(pwdText)
+	accountLayer:addChild(pwdText)
+	
+	self.optLayer:addChild(accountLayer)
+	setAnchPos(accountLayer, 0, -100)
 	
 --	local remindPwd = CheckBox:new(100,350,{file = {}})
 --	self.optLayer:addChild(remindPwd:getLayer())
@@ -168,13 +172,14 @@ function M:accountInput()
 	
 	--[[创建输入框]]
 	self.account = CCTextFieldTTF:textFieldWithPlaceHolder("Open ID" , "Thonburi" , 48);
-	self.account:setString("cctb")
+	self.account:setString("tb")
 	--[[设置颜色]]
 	self.account:setColor( ccc3(255 , 255 , 0) )
 	self.account:setColorSpaceHolder( ccc3(255 , 255 , 0) )
 
-	display.align(self.account , display.CENTER , display.cx , display.cy + 100)
-	self.layer:addChild( self.account )
+--	display.align(self.account , display.CENTER , display.cx , display.cy + 100)
+	setAnchPos(self.account, 240, 485, 0.5)
+	accountLayer:addChild( self.account )
 
 
 	--[[绑定事件]]

@@ -295,9 +295,15 @@ function LuaScrollView:alignCenter()
 end
 
 --跟据视图状态自动滚动
-function LuaScrollView:autoScroll(direction,params) --参数在视图切换模式时使用
+function LuaScrollView:autoScroll(direction,params,noAni) --参数在视图切换模式时使用
 	local autoMove
 	local cha --菜单项与显示栏的差值，若小于显示窗则自动滚动时回到原点
+	local time = 0.2 
+	
+	if noAni then
+		time = 0
+	end
+	
 	if self.horizontal then
 		if self.mode == 0 then  -- 列表模式
 			if self.xOffset + self.nextPos < self.width then  --若已滑动到最右端
@@ -306,11 +312,11 @@ function LuaScrollView:autoScroll(direction,params) --参数在视图切换模�
 					cha = 0
 				end
 				self.xOffset = self.width - self.nextPos - cha
-				autoMove = CCMoveTo:create(0.2,ccp(self.xOffset,self.contentLayer:getPositionY()))
+				autoMove = CCMoveTo:create(time,ccp(self.xOffset,self.contentLayer:getPositionY()))
 				self.contentLayer:runAction(autoMove)
 			elseif self.xOffset > 0 then           --若已滑动到最左端
 				self.xOffset = 0
-				autoMove = CCMoveTo:create(0.2,ccp(self.xOffset,self.contentLayer:getPositionY()))
+				autoMove = CCMoveTo:create(time,ccp(self.xOffset,self.contentLayer:getPositionY()))
 				self.contentLayer:runAction(autoMove)
 			else
 				if params and params["inertia"] then    --惯性滑动条件
@@ -335,7 +341,7 @@ function LuaScrollView:autoScroll(direction,params) --参数在视图切换模�
 					elseif total + self.xOffset > self.width then
 						self.xOffset = self.xOffset - self.itemsWidth[params["scrollTo"]]
 					end
-					self.contentLayer:runAction(CCMoveTo:create(0.2,ccp(self.xOffset,self.yOffset)))
+					self.contentLayer:runAction(CCMoveTo:create(time,ccp(self.xOffset,self.yOffset)))
 				end
 			end
 		else     -- 视图切换模式
@@ -349,7 +355,7 @@ function LuaScrollView:autoScroll(direction,params) --参数在视图切换模�
 			self.xOffset = -(self.width + self.dividerWidth) * (self.index - 1)
 			--翻页后的callback
 			local array = CCArray:create()
-			array:addObject(CCMoveTo:create(0.2,ccp(self.xOffset,self.contentLayer:getPositionY())))
+			array:addObject(CCMoveTo:create(time,ccp(self.xOffset,self.contentLayer:getPositionY())))
 			array:addObject(CCCallFunc:create(
 				function()
 					self.moving = false
@@ -368,11 +374,11 @@ function LuaScrollView:autoScroll(direction,params) --参数在视图切换模�
 				else
 					self.yOffset = 0
 				end
-				autoMove = CCMoveTo:create(0.2,ccp(self.contentLayer:getPositionX(),self.yOffset))
+				autoMove = CCMoveTo:create(time,ccp(self.contentLayer:getPositionX(),self.yOffset))
 				self.contentLayer:runAction(autoMove)
 			elseif self.yOffset < 0 then   -- 已到最顶部
 				self.yOffset = 0
-				autoMove = CCMoveTo:create(0.2,ccp(self.contentLayer:getPositionX(),self.yOffset))
+				autoMove = CCMoveTo:create(time,ccp(self.contentLayer:getPositionX(),self.yOffset))
 				self.contentLayer:runAction(autoMove)
 			else  --惯性滑动位置
 				if params and params["inertia"] then    --惯性滑动条件
@@ -448,24 +454,20 @@ end
 
 
 --设置当前的选项
-function LuaScrollView:setIndex(index,ani)
+function LuaScrollView:setIndex(index,noAni,space)
 	self.index = index
 	if self.horizontal then	
-		self.xOffset = -(self.itemsWidth[1] + self.dividerWidth) * (self.index - 1)
-		if not ani then
+		self.xOffset = -(space or self.itemsWidth[1] + self.dividerWidth) * (self.index - 1)
+		if noAni then
 			self.contentLayer:setPosition(ccp(self.xOffset,self.contentLayer:getPositionY()))
 		end
 	else
-		self.yOffset = (self.itemsWidth[1] + self.dividerWidth) * (self.index - 1)
-		if not ani then
+		self.yOffset = (space or self.itemsWidth[1] + self.dividerWidth) * (self.index - 1)
+		if noAni then
 			self.contentLayer:setPosition(ccp(self.contentLayer:getPositionX(),self.yOffset))
 		end
 	end
-	if ani then
-		self:autoScroll(nil, {index = index, page_callback = self.params.page_callback})
-	else
-		self:autoScroll()
-	end
+	self:autoScroll(nil,nil,noAni)
 end
 
 function LuaScrollView:scrollTo(id)

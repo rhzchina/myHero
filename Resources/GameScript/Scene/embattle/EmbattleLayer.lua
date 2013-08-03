@@ -13,7 +13,7 @@ function EmbattleLayer:new()
 
 	this.layer = newLayer()
 	
-	local bg = newSprite(IMG_COMMON.."main.png")
+	local bg = newSprite(IMG_COMMON.."main.jpg")
 	setAnchPos(bg)
 	this.layer:addChild(bg)
 	

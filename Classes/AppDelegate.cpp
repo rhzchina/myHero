@@ -3,9 +3,8 @@
 #include "AppDelegate.h"
 #include "CCLuaEngine.h"
 #include "SimpleAudioEngine.h"
-//#include "HSHttpRequest.h"
-//#include "HSBaseHttp.h"
-//#include "LuaSocket.h"
+#include "tool.h"
+
 using namespace CocosDenshion;
 
 USING_NS_CC;

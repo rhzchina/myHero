@@ -45,7 +45,7 @@ public:
 	bool Create(int af, int type, int protocol = 0);
 
 	// Connect socket
-	bool Connect(const char* ip, unsigned short port);
+	bool Connect(const char* ip, unsigned short port, const char* type);
 	//#region server
 	// Bind socket
 	// bool Bind(unsigned short port);

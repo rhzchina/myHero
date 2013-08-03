@@ -10,6 +10,8 @@
 --local socketActions = require(SRC.."Network/socketActions")--require("GameLuaScript/Network/socketActions")
 ----local commonActions = require(SRC.."Network/commonActions")--require("GameLuaScript/Network/commonActions")
 local json = require(SRC.."Network/dkjson")-- require("GameLuaScript/Network/dkjson")
+
+local KNLoading = require(SRC.."Common/KNLoading")
 --local KNLoading = require(SRC.."Common/KNLoading")--require("GameLuaScript/Common/KNLoading")
 --
 --
@@ -297,21 +299,21 @@ local json = require(SRC.."Network/dkjson")-- require("GameLuaScript/Network/dkj
 --
 --return SOCKET
 SOCKET = {
-	socket
 }
 
-function SOCKET:get()
-	if not self.socket then
+local socket
+local loading
+
+function SOCKET:init()
+	if not socket then
 		local host =  CONFIG_SOCKET_HOST
 		local port =  CONFIG_SOCKET_PORT
 	
-		self.socket = LuaSocket:getInstance()
-		local opensocket_ret = self.socket:openSocket( host , port )
+		socket = LuaSocket:getInstance()
+		local opensocket_ret = socket:openSocket( host , port, HOST_TYPE )
 		
-		self.socket:creadFuancuan(self.callback)
+		socket:creadFuancuan(SOCKET.callback)
 	end
-	
-	return self
 end
 
 function SOCKET:callback(response)
@@ -322,25 +324,45 @@ function SOCKET:callback(response)
 	end
 	
 	if result.mode == "open" then
+		DATA_Chat:set(result)
 		switchScene("home")
-	else
+	elseif result.mode == "tall" then
+		DATA_Chat:addMsg("tall", result.add)
+		
+		local scene = display.getRunningScene()
+		if scene.name == "chat" then
+			scene:removeChild(loading, true)
+			scene:refresh()
+		end
 	end
 end
 
 function SOCKET:call(command, params)
+
+	SOCKET:init()
+	
 	local request_data = {
 		name = DATA_User:get("name"),
 		hostIp = DATA_Session:get("uid"),
 		type = command 
 	}
-	self:sendRequest( json.encode(request_data))
+	params = params or {}
+	for k, v in pairs(params) do
+		request_data[k] = v
+	end
+	
+	local scene = display.getRunningScene()
+	loading = KNLoading.new()
+	scene:addChild( loading )
+		
+	SOCKET:sendRequest( json.encode(request_data))
 end
+
 
 --	 一次socket请求
 function SOCKET:sendRequest(postdata , callback)
 	echoLog("SOCKET" , postdata)
 	print("发送的数据是"..postdata)
-	self.socket:sendSocket( postdata.."\n" )
+	socket:sendSocket( postdata.."\n" )
 end
-		-- 发送数据
---		sendRequest(DATA_User:get("name").."@"..DATA_Session:get("uid").."@".."open\n")		
+ 

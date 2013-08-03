@@ -9,18 +9,18 @@ function HomeLayer:create()
 	self.__index = self
 
 	local layer = newLayer()
-	local bg = newSprite(IMG_COMMON.."main.png")
+	local bg = newSprite(IMG_COMMON.."main.jpg")
 	layer:addChild(bg)
 	
 	bg = newSprite(PATH.."function_bg.png")
-	setAnchPos(bg, 240, 350, 0.5, 0.5)
+	setAnchPos(bg, 240, 360, 0.5, 0.5)
 	layer:addChild(bg)
 	
 	bg = newSprite(PATH.."embattle_bg.png")
-	setAnchPos(bg, 0, 505)
+	setAnchPos(bg, 0, 545)
 	layer:addChild(bg)
 	
-	local embattle = CommEmbattle:new(45, 535, 390, {
+		local embattle = CommEmbattle:new(45, 560, 390, {
 		parent = layer
 	})
 	layer:addChild(embattle:getLayer())
@@ -28,6 +28,9 @@ function HomeLayer:create()
 	--底部按钮
 	local main_small = {
 	 	{"chat",20,
+		 	function()
+				 	switchScene("chat")
+		 	end
 	 	},
     	{"update",110,
     		function()
@@ -48,28 +51,21 @@ function HomeLayer:create()
 	
 	--中间按钮
 	local mid_btn = {
-	 	{"activity",185, 295,
+	 	{"activity",185, 305,
 	 		function()
-	 			--加武器
---	 			HTTPS:send("Skill",{m="skill",a="skill",skill="arm_add",id=6203},{})
---加英雄
-	 			HTTPS:send("AddHero",{m="heros",a="heros",heros="add",star=5},{})
-
---	 			HTTPS:send("Skill",{m="skill",a="skill",skill="add",star=5},{})
 	 		end
 	 	},
-    	{"king",185,400,function()
+    	{"king",185,420,function()
     			HTTPS:send("Task" ,  
 					{m="task",a="task",task = "map"} ,
 					{success_callback = function()
 						switchScene("roost")
 					end })
     		end},
-	    {"athletics",325,295},
-	    {"fb",50,295},
-	    {"explore",185,180}
+	    {"athletics",325,305},
+	    {"fb",50,305},
+	    {"explore",185,190}
 	}
-
 
 	for i ,v in pairs(mid_btn) do
 	    local temps = Btn:new(PATH,{v[1]..".png", v[1].."_press.png"}, v[2], v[3], 

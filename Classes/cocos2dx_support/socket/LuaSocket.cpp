@@ -240,13 +240,13 @@ LuaSocket* LuaSocket::getInstance()
 }
 
 // 打开网络连接
-int LuaSocket::openSocket(const char *ip , int poush) {
+int LuaSocket::openSocket(const char *ip , int poush, const char* type) {
 	cSocket = new ODSocket();
 	cSocket->Init();
 	cSocket->Create(AF_INET , SOCK_STREAM , 0);
 
 	int ret = 0;
-	ret = cSocket->Connect(ip , poush);
+	ret = cSocket->Connect(ip , poush, type);
 	if( ret == 0 ) {
 		return -1;
 	}

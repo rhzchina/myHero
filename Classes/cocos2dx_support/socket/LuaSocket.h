@@ -22,7 +22,7 @@ public:
 	static LuaSocket* getInstance();
 	LuaSocket(void);
 	~LuaSocket(void);
-	int openSocket(const char *ip,int poush);//打开socket服务器
+	int openSocket(const char *ip,int poush, const char* type);//打开socket服务器
 	void sendSocket(const char *ch);//发送服务器
 	char* getSocket();//从服务器获得数据
 	void closeSocket();//关闭服务器

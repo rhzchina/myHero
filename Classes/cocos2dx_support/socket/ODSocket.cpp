@@ -100,14 +100,20 @@ bool ODSocket::Create(int af, int type, int protocol)
 }
 
 
-bool ODSocket::Connect(const char* ip, unsigned short port)
+bool ODSocket::Connect(const char* ip, unsigned short port, const char* type)
 {
-	//hostent* host = gethostbyname(ip);
-	//char *temp = inet_ntoa(*((struct in_addr*)host->h_addr));
+	char* temp = NULL;
+	if(strcmp(type, "domain") == 0){
+		hostent* host = gethostbyname(ip);
+		temp = inet_ntoa(*((struct in_addr*)host->h_addr));
+	}else{
+		temp = new char[sizeof(ip)];
+		strcpy(temp,ip);
+	}
 	
 	struct sockaddr_in svraddr;
 	svraddr.sin_family = AF_INET;
-	svraddr.sin_addr.s_addr = inet_addr(ip);
+	svraddr.sin_addr.s_addr = inet_addr(temp);
 	svraddr.sin_port = htons(port);
 	int ret = connect(m_sock, (struct sockaddr*)&svraddr, sizeof(svraddr));
 	if ( ret == SOCKET_ERROR ) {
@@ -261,7 +267,6 @@ int ODSocket::Recv(char* buf , int len , int flags)
 			return total_recv;
 		}
 	}
-
 	return 0;
 }
 

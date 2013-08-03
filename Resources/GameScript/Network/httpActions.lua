@@ -13,6 +13,7 @@ require("GameScript/Data/Bag")
 require("GameScript/Data/Embattle")
 require("GameScript/Data/Dress")
 require("GameScript/Data/Shop")
+require("GameScript/Data/Chat")
 local M = {}
 
 --[[登录]]
@@ -32,7 +33,7 @@ function M.Landed( type , data , callback )
 --					switchScene("home")
 --				end
 --			})
-		SOCKET:get():call("open")
+		SOCKET:call("open")
 	end
 
 	return true , data

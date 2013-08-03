@@ -108,7 +108,7 @@ function InfoLayer:createtop()
 	local bg = newSprite(PATH.."navigation_top.png")
 	self.topLayer:addChild(bg)
 	self.topLayer:setContentSize(bg:getContentSize())
-	setAnchPos(self.topLayer, 0, 854 - 50 - bg:getContentSize().height)
+	setAnchPos(self.topLayer, 0, 854 - 44 - bg:getContentSize().height)
 	self.layer:addChild(self.topLayer)
 
 	--等级
