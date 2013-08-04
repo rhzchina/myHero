@@ -220,6 +220,6 @@ function createLabel( params )
 end
 function sendChatMsg(msg)
 	SOCKET:call("tall", {
-		content = msg..os.clock()
+		content = msg
 	})
 end

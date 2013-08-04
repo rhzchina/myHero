@@ -53,7 +53,13 @@ function chatLayer:new(data)
 	
 	local send = Btn:new(IMG_BTN, {"send.png", "send_press.png"}, 165, 95, {
 		callback = function()
-			specialCall(0)
+			if device.platform == "android" then
+				specialCall(0)
+			else
+				SOCKET:call("tall", {
+					content = "这是一条测试消息，看到不"
+				})
+			end
 		end
 	})
 	this.layer:addChild(send:getLayer())
