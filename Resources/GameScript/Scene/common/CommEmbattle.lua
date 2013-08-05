@@ -22,8 +22,10 @@ function CommEmbattle:new(x, y, width, params)
 	end
 	local str, front, other
 	for i = 1, num do
+		dump(DATA_Embattle:get())
 		local cid = DATA_Embattle:get(i,"cid")
 		if cid then
+			dump(getBag("hero"))
 			str = "icon_bg"..getBag("hero",cid , "star")..".png"
 			front = IMG_ICON.."hero/S_"..getBag("hero", cid, "look")..".png"
 			other = {IMG_COMMON.."icon_border"..getBag("hero", cid, "star")..".png", 45, 45}

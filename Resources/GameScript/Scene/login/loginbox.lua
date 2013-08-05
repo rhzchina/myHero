@@ -61,6 +61,8 @@ function M:create( ... )
 		end})
 	this.layer:addChild(exit:getLayer())
 	
+	audio.playMusic(SOUND.."login_bg.ogg")
+	
 	return this.layer
 end
 
@@ -160,7 +162,7 @@ function M:accountInput()
 			local open_id = self.account:getString()
 			open_id = string.trim( open_id )
 			if open_id == "" then
-				MsgBox.create:flashShow("请输入OPEN ID")
+				MsgBox.create():flashShow("请输入OPEN ID")
 				return
 			end
 			HTTPS:send("Landed" , {m="login",a="develop",open_id = open_id} )    -- 登录
@@ -172,7 +174,7 @@ function M:accountInput()
 	
 	--[[创建输入框]]
 	self.account = CCTextFieldTTF:textFieldWithPlaceHolder("Open ID" , "Thonburi" , 48);
-	self.account:setString("tb")
+--	self.account:setString("")
 	--[[设置颜色]]
 	self.account:setColor( ccc3(255 , 255 , 0) )
 	self.account:setColorSpaceHolder( ccc3(255 , 255 , 0) )

@@ -325,6 +325,7 @@ function SOCKET:callback(response)
 	
 	if result.mode == "open" then
 		DATA_Chat:set(result)
+		audio.playMusic(SOUND.."home_bg.ogg")
 		switchScene("home")
 	elseif result.mode == "tall" then
 		DATA_Chat:addMsg("tall", result.add)

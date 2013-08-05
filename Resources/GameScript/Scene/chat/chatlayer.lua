@@ -51,7 +51,22 @@ function chatLayer:new(data)
 --	setAnchPos(inputBg, 5, 97)
 --	this.layer:addChild(inputBg)
 	
-	local send = Btn:new(IMG_BTN, {"send.png", "send_press.png"}, 165, 95, {
+	local inputBg = Btn:new(PATH, {"input_bg.png"}, 5, 97, {
+		text = {"点击输入消息", 26, ccc3(250, 207, 0), ccp(-80, 0)},
+		
+		callback = function()		
+			if device.platform == "android" then
+				specialCall(0)
+			else
+				SOCKET:call("tall", {
+					content = "这是一条测试消息，看到不"
+				})
+			end
+		end
+	})
+	this.layer:addChild(inputBg:getLayer())
+	
+	local send = Btn:new(IMG_BTN, {"send.png", "send_press.png"}, 342, 95, {
 		callback = function()
 			if device.platform == "android" then
 				specialCall(0)

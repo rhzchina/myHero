@@ -74,6 +74,6 @@ function HomeLayer:create()
 		   	})
     	layer:addChild(temps:getLayer())
 	end
-
+	
     return layer
 end
