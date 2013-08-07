@@ -7,11 +7,11 @@ http 通信接口
 -- 该接口是全局变量
 HTTP = {}
 
-local httpActions = require("GameScript/Network/httpActions")
-local json = require("GameScript/Network/dkjson")
-local KNLoading = require("GameScript/Common/KNLoading")
+local httpActions = require(SRC.."Network/httpActions")
+local json = require(SRC.."Network/dkjson")
+local KNLoading = require(SRC.."Common/KNLoading")
 
-require("GameScript/Data/Session")
+require(SRC.."Data/Session")
 
 
 --[[

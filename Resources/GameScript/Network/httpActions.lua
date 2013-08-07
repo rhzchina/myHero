@@ -5,15 +5,15 @@
 ]]
 
 --[[包含所有 DATA]]
-require("GameScript/Data/Session")
-require("GameScript/Data/User")
-require("GameScript/Data/Mission")
-require("GameScript/Data/Fighting")
-require("GameScript/Data/Bag")
-require("GameScript/Data/Embattle")
-require("GameScript/Data/Dress")
-require("GameScript/Data/Shop")
-require("GameScript/Data/Chat")
+require(SRC.."Data/Session")
+require(SRC.."Data/User")
+require(SRC.."Data/Mission")
+require(SRC.."Data/Fighting")
+require(SRC.."Data/Bag")
+require(SRC.."Data/Embattle")
+require(SRC.."Data/Dress")
+require(SRC.."Data/Shop")
+require(SRC.."Data/Chat")
 local M = {}
 
 --[[登录]]

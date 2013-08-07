@@ -1,9 +1,9 @@
 
 HTTPS = {}
 
-local httpActions = require("GameScript/Network/httpActions")
-local json = require("GameScript/Network/dkjson")
-local KNLoading = require("GameScript/Common/KNLoading")
+local httpActions = require(SRC.."Network/httpActions")
+local json = require(SRC.."Network/dkjson")
+local KNLoading = require(SRC.."Common/KNLoading")
 
 function HTTPS:send(mod  , data , param)
 	local func = mod

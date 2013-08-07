@@ -10,7 +10,7 @@ collectgarbage("setstepmul" , 5000)
 
 
 -- [[ 包含各种 Layer ]]
-local update = require "GameScript/Scene/update/updatelayer"
+local update = require(SRC.."Scene/update/updatelayer")
 
 
 

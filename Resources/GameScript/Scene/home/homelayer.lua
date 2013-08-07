@@ -64,7 +64,9 @@ function HomeLayer:create()
     		end},
 	    {"athletics",325,305},
 	    {"fb",50,305},
-	    {"explore",185,190}
+	    {"explore",185,190, function()
+		    switchScene("explore")
+	    end}
 	}
 
 	for i ,v in pairs(mid_btn) do

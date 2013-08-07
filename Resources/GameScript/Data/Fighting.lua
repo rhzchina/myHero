@@ -1,5 +1,5 @@
 
-local json = require("GameScript/Network/dkjson")
+local json = require(SRC.."Network/dkjson")
 DATA_Fighting = {
 }
 

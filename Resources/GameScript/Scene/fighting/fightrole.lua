@@ -1,5 +1,5 @@
 local PATH = IMG_SCENE.."fighting/"
-local KNBar = require("GameScript/Common/KNBar")
+local KNBar = require(SRC.."Common/KNBar")
 
 local HEROSTART, MONSTERSTART, SPACE = ccp(43,200), ccp(43,530), 40
 local FightRole ={

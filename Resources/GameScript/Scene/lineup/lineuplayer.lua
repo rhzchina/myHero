@@ -44,7 +44,7 @@ function lineuplayer:new(data)
 
 
 	---[[英雄信息滑块]]
-	local infolayer = require"GameScript/Scene/lineup/lineupInfo"
+	local infolayer = require(SRC.."Scene/lineup/lineupInfo")
 	local ksv = ScrollView:new(15,100,450,550,0,true,1)
 	local card_x = 56
 	local card_y = 680

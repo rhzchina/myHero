@@ -10,7 +10,7 @@ collectgarbage("setstepmul" , 5000)
 
 
 -- [[ 包含各种 Layer ]]
-local loginbox_layer = require "GameScript/Scene/login/loginbox"
+local loginbox_layer = require(SRC.."Scene/login/loginbox")
 
 
 

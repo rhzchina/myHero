@@ -141,7 +141,6 @@ if _G.next (data)  ~= nil then
 --		this.layer:addChild(lev_box)
 --
 --
---		local KNBar = require("GameScript/Common/KNBar")
 --		local card_bar = KNBar:new("cardinfo" , 122 , 512 +this.point_y, {maxValue=getBag("hero",this.gid,"quick"), curValue=getBag("hero",this.gid,"scalequ")})
 --		card_bar:setIsShowText(false)
 --		this.layer:addChild(card_bar)

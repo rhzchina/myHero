@@ -1,6 +1,6 @@
 local PATH = IMG_SCENE.."fighting/"
-local FightRole = require "GameScript/Scene/fighting/fightrole"
-local Effect = require "GameScript/Scene/fighting/effect"
+local FightRole = require(SRC.."Scene/fighting/fightrole")
+local Effect = require("Scene/fighting/effect")
 local Result = require(SRC.."Scene/common/FightResult")
 local data = DATA_Fighting
 local FightLayer = {
