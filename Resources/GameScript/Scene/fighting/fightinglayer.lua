@@ -1,6 +1,6 @@
 local PATH = IMG_SCENE.."fighting/"
 local FightRole = require(SRC.."Scene/fighting/fightrole")
-local Effect = require("Scene/fighting/effect")
+local Effect = require(SRC.."Scene/fighting/effect")
 local Result = require(SRC.."Scene/common/FightResult")
 local data = DATA_Fighting
 local FightLayer = {
@@ -101,7 +101,7 @@ function FightLayer:fightLogic()
 					str = ";"
 				end
 				self.effect:hpChange(data:getVictim(i, "type") or "normal",str,
-					data:getVictim(i,"change"),
+					data:getVictim(i,"chance"),
 					self.group[data:getVictim(i,"group")][data:getVictim(i,"index")]:getX(),
 					self.group[data:getVictim(i,"group")][data:getVictim(i,"index")]:getY()
 				)

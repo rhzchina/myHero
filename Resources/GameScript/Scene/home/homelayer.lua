@@ -36,7 +36,9 @@ function HomeLayer:create()
     		function()
     			switchScene("update")
     		end},
-	    {"athletics",200},
+	    {"athletics",200, function()
+			   switchScene("athletics")  
+	    end},
 	    {"friend",290},
 	    {"menu",380, function() pushScene("menu") end}
 	}
@@ -53,6 +55,7 @@ function HomeLayer:create()
 	local mid_btn = {
 	 	{"activity",185, 305,
 	 		function()
+		 		switchScene("activity")
 	 		end
 	 	},
     	{"king",185,420,function()
@@ -62,7 +65,9 @@ function HomeLayer:create()
 						switchScene("roost")
 					end })
     		end},
-	    {"athletics",325,305},
+	    {"athletics",325,305, function()
+			    switchScene("athletics")
+	    end},
 	    {"fb",50,305},
 	    {"explore",185,190, function()
 		    switchScene("explore")

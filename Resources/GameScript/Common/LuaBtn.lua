@@ -189,6 +189,7 @@ function LuaBtn:new(path, file, x, y, params, group)
 
 	local press , moveOn   --press为是否按下，moveOn 为按钮按下后是否有移动 j
 	local lastX = 0  -- lastX 最后点击的坐标
+	local lastY = 0
 	
 	function this.layer:onTouch(type, x, y)
 		if this.state == DISABLE then  --禁 用状态直接返回
@@ -200,17 +201,22 @@ function LuaBtn:new(path, file, x, y, params, group)
 				press = false
 				moveOn = false
 				lastX = 0
+				lastY = 0
+				this:setState(NORMAL)
 				if group and group:getChooseBtn()  ~= this then
 					this:select(false)
 				end
 				return false
 		else
 			if type == CCTOUCHBEGAN then
+--				audio.playSound(IMG_PATH .. "sound/click.mp3")
 				if this:getRange():containsPoint(ccp(x,y)) then
 					press = true
 					moveOn = true
-					lastX = x
-
+--					lastX = x
+					lastX = this:getRange():getMinX()
+					lastY = this:getRange():getMinY()
+					
 					if not this.params["upSelect"] then  --抬起选中效果时不触发选中状态
 						this:setState(SELECTED)
 					end
@@ -219,12 +225,23 @@ function LuaBtn:new(path, file, x, y, params, group)
 				end
 			elseif type == CCTOUCHMOVED then
 				if this.params["upSelect"] then
-					if math.abs(x - lastX) > 25 or not this:getRange():containsPoint(ccp(x,y)) then
-						press = false
-						moveOn = false
-						return false
-					end
+						if math.abs(this:getRange():getMinX() - lastX) > 40 or 
+							math.abs(this:getRange():getMinY() - lastY) > 40 or
+							not this:getRange():containsPoint(ccp(x,y)) then
+								press = false
+								moveOn = false
+								return false
+						end
 				else
+					if math.abs(this:getRange():getMinX() - lastX) > 40 or 
+						math.abs(this:getRange():getMinY() - lastY) > 40 or
+						not this:getRange():containsPoint(ccp(x,y)) then
+							press = false
+							moveOn = false
+							this:setState(NORMAL)
+							return false
+					end
+					
 					if this:getRange():containsPoint(ccp(x,y)) then
 						if press then
 							moveOn = true
@@ -252,32 +269,36 @@ function LuaBtn:new(path, file, x, y, params, group)
 			elseif type == CCTOUCHENDED then
 				if this:getRange():containsPoint(ccp(x,y)) then
 					if press and moveOn then
-					--设置是否选中
-						if not this.params["selectable"] then
-							this:setState(NORMAL)
-						else
---							this.chosen = true
-							this:select(not this.chosen)
-						end
-						
 						--放开后执行回调
+						local result --callback执行的结果，默认返回nil 如果是反回false则不触发单选组的选中效果
 						if this.params["callback"] then
 							if not this.params["disableWhenChoose"] then
-								this.params["callback"](true)
+								result = this.params["callback"]()
 							else
 								if not this.chosen then
-									this.params["callback"](true)
+									result = this.params["callback"]()
 								end
 							end
 						end
 
-						if group then
-							group:chooseBtn(this)
-						end	
+						if result ~= false then	
+							--设置是否选中
+							if not this.params["selectable"] then
+								this:setState(NORMAL)
+							else
+	--							this.chosen = true
+								this:select(not this.chosen)
+							end
+							if group then
+								group:chooseBtn(this)
+							end	
+						else
+							this:setState(NORMAL)
+						end
 					end
 				else
 				end
-				press = false
+				press = fals
 				moveOn = false
 				lastX = 0
 			end

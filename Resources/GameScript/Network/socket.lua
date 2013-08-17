@@ -321,8 +321,9 @@ function SOCKET:callback(response)
 	
 	if not result then
 		MsgBox.create():flashShow("数据格式错误")
+		return
 	end
-	
+	dump(result)
 	if result.mode == "open" then
 		DATA_Chat:set(result)
 		audio.playMusic(SOUND.."home_bg.ogg")

@@ -9,7 +9,7 @@ collectgarbage("setstepmul" , 5000)
 
 
 -- [[ 包含各种 Layer ]]
-local ExporeLayer = require(SRC.."/Scene/explore/explorelayer")
+local ExporeLayer = require(SRC.."Scene/explore/explorelayer")
 
 require(SRC.."Scene/common/infolayer")
 
