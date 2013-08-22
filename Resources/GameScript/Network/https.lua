@@ -59,7 +59,7 @@ function HTTPS:send(mod  , data , param)
 		--[[解包数据]]
 		response = json.decode( response )
 
---		dump(response)
+		dump(response)
 
 		if response == nil then
 			if loading ~= nil then loading:remove() end 		-- 去掉 loading
@@ -72,7 +72,7 @@ function HTTPS:send(mod  , data , param)
 
 
 		--[[处理 code 不为 0 的情况]]
-		if response.code ~= 0 then
+		if  response.code and response.code ~= 0 then
 			if loading ~= nil then loading:remove() end 		-- 去掉 loading
 
 			--[[错误处理]]

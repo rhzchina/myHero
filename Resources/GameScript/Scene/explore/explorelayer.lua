@@ -2,12 +2,14 @@ local PATH = IMG_SCENE.."explore/"
 local CommEmbattle = require(SRC.."Scene/common/CommEmbattle")
 
 local ExploreLayer= {
+	data
 }
-function ExploreLayer:create()
+function ExploreLayer:create(data)
 	local this={}
 	setmetatable(this,self)
 	self.__index = self
 
+	this.data = data
 	local layer = newLayer()
 	local bg = newSprite(PATH.."explore_bg.png")
 	layer:addChild(bg)

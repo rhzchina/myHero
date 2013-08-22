@@ -2,9 +2,9 @@ local PATH = IMG_SCENE.."activity/"
 
 local ActivityLayer= {
 	layer,	
-	contentLayer
+	contentLayer,
 }
-function ActivityLayer:create()
+function ActivityLayer:create(data)
 	local this={}
 	setmetatable(this,self)
 	self.__index = self
@@ -12,13 +12,12 @@ function ActivityLayer:create()
 	this.layer = newLayer()
 	local bg = newSprite(IMG_COMMON.."main.png")
 	this.layer:addChild(bg)
-	
-	
-	this:loginGift()	
+
+	this:loginGift(data)	
     return this.layer
 end
 
-function ActivityLayer:loginGift()
+function ActivityLayer:loginGift(data, offset)
 	if self.contentLayer then
 		self.layer:removeChild(self.contentLayer, true)
 	end
@@ -37,8 +36,31 @@ function ActivityLayer:loginGift()
 		layer:setContentSize(bg:getContentSize())
 		layer:addChild(bg)
 		
-		local btn = Btn:new(IMG_BTN, {"get.png", "get_press.png"}, 290, 35, {
-			parent = scroll
+		local btn_img, lock
+		if data[i].checks == -1 then
+			btn_img = {"no_reach.png"}
+			lock = true
+		elseif data[i].checks == 0 then
+			btn_img = {"get.png", "get_press.png"}
+		elseif data[i].checks == 1 then
+			lock = true
+			btn_img = {"get_finish.png"}
+		end
+		
+		local btn = Btn:new(IMG_BTN, btn_img, 290, 35, {
+			parent = scroll,
+			callback = function()
+				if lock then
+					MsgBox.create():flashShow("不可领取")
+				else
+					HTTPS:send("Activity", {m = "Activity", a = "Activity", activity = "check", day = i }, {success_callback = function(gift, change)
+						MsgBox.create():flashShow("奖励已获得，请前往背包中查看")
+						DATA_Bag:insert(gift)
+						data[i] = change
+						self:loginGift(data, scroll:getOffsetY())			
+					end})							
+				end
+			end
 		})
 		layer:addChild(btn:getLayer())
 --		
@@ -55,6 +77,9 @@ function ActivityLayer:loginGift()
 		scroll:addChild(layer)
 	end	
 	scroll:alignCenter()
+	if offset then
+		scroll:setOffset(offset)
+	end
 	
 	
 	self.layer:addChild(self.contentLayer)

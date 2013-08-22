@@ -6,25 +6,29 @@ function DATA_Bag:set(data)
 	_data = data
 end
 
-function DATA_Bag:setByKey(first, second, third)
-	if third then
-		if not _data[first] then
-			_data[first] = {}
-		end
-		_data[first][second] = third
-	else	
-		_data[first] = second
+
+function DATA_Bag:setByKey(...)
+	local result = _data
+	for i = 1, arg["n"] do 
+		if i == arg["n"] - 1 then
+			result[arg[i]] = arg[i + 1]
+			break
+		else
+			if not result[arg[i]] then
+				result[arg[i]] = {}
+			end
+			result = result[arg[i]]
+		end 
 	end
-	print(first, second,third)
 end
 
 function DATA_Bag:delItem(first, second)
 	_data[first][second]  = nils
 end
 
-function DATA_Bag:insert(type, data)
+function DATA_Bag:insert(data)
 	for k, v in pairs(data) do
-		_data[type][k] = v
+		_data[v.type][k] = v
 	end
 end
 

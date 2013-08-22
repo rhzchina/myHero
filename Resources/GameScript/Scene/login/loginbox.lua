@@ -12,6 +12,8 @@ local M = {
 	password
 }
 
+local onAttachWithIME
+
 function M:create( ... )
 	local this = {}
 	setmetatable(this,self)
@@ -27,29 +29,26 @@ function M:create( ... )
 	this:createOptBox(START)
 --
 --	
---	this.layer:registerScriptTouchHandler( function()
---		if onAttachWithIME then
---			echoLog("Login" , "detachWithIME")
---
---			this.account:detachWithIME()
---			onAttachWithIME = false
---		else
---			echoLog("Login" , "attachWithIME")
---
---			this.account:attachWithIME()
---			onAttachWithIME = true
---		end
---
---		return false
---	end )
---	this.layer:setTouchEnabled( true )
---
---
---
-
+	this.layer:registerScriptTouchHandler( function()
+		if this.account then
+			if onAttachWithIME then
+				echoLog("Login" , "detachWithIME")
+				
+				this.account:detachWithIME()
+				onAttachWithIME = false
+			else
+				echoLog("Login" , "attachWithIME")
 	
---跳 过按钮
+				this.account:attachWithIME()
+				onAttachWithIME = true
+			end
+		end
 
+		return false
+	end )
+	this.layer:setTouchEnabled( true )
+--
+--跳 过按钮
 
 	local exit = Btn:new(IMG_SCENE.."fighting/",{"fighting_quit.png"},420,800,{
 		scale = true,
@@ -184,8 +183,7 @@ function M:accountInput()
 	accountLayer:addChild( self.account )
 
 
-	--[[绑定事件]]
-	local onAttachWithIME = true
+	onAttachWithIME = true
 	self.account:attachWithIME()
 --	
 end

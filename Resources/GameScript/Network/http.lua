@@ -101,7 +101,7 @@ function HTTP:call(mod , act , data , param)
 			param.error_callback( {code = "-999" , msg = "网络请求出错."} )
 			return false
 		end
-
+		
 		--[[解包数据]]
 		response = json.decode( response )
 

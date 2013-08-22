@@ -207,5 +207,31 @@ function M.Strong_resolve(kind, data, callback)
 	end
 	return true, data
 end
+
+function M.Activity_open(kind, data, callback)
+	if kind == 1 then
+	else
+		callback(data["exlplore"])
+	end	
+	return true, data
+end
+
+function M.Explore_init(kind, data, callback)
+	if kind == 1 then
+	else
+		dump(data)
+		callback(data)
+	end
+	return true, data
+end
+
+function M.Activity_check(kind, data, callback)
+	if kind == 1 then
+	else
+		dump(data)
+		callback(data["exlplore"]["check1"], data["exlplore"]["change"])
+	end	
+	return true,data
+end
 	
 return M

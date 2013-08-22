@@ -55,7 +55,9 @@ function HomeLayer:create()
 	local mid_btn = {
 	 	{"activity",185, 305,
 	 		function()
-		 		switchScene("activity")
+	 			HTTPS:send("Activity", {activity = "open", a = "Activity", m = "Activity"}, {success_callback = function(data)
+					switchScene("activity", data)
+				end})
 	 		end
 	 	},
     	{"king",185,420,function()
@@ -69,8 +71,10 @@ function HomeLayer:create()
 			    switchScene("athletics")
 	    end},
 	    {"fb",50,305},
-	    {"explore",185,190, function()
-		    switchScene("explore")
+		    {"explore",185,190, function()
+		    HTTPS:send("Explore", {m = "explore", a = "explore", explore = "init"}, {success_callback = function(data)
+			    switchScene("explore", data)
+		    end})
 	    end}
 	}
 
