@@ -220,7 +220,16 @@ function M.Explore_init(kind, data, callback)
 	if kind == 1 then
 	else
 		dump(data)
-		callback(data)
+		callback(data["exlplore"])
+	end
+	return true, data
+end
+
+function M.Explore_click(kind, data, callback)
+	if kind == 1 then
+	else
+		dump(data)
+		callback(data["exlplore"])
 	end
 	return true, data
 end

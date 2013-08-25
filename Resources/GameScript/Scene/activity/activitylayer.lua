@@ -45,6 +45,8 @@ function ActivityLayer:loginGift(data, offset)
 		elseif data[i].checks == 1 then
 			lock = true
 			btn_img = {"get_finish.png"}
+		elseif data[i].checks == 2 then
+			btn_img = {"sign.png", "sign_press.png"}
 		end
 		
 		local btn = Btn:new(IMG_BTN, btn_img, 290, 35, {
@@ -53,7 +55,7 @@ function ActivityLayer:loginGift(data, offset)
 				if lock then
 					MsgBox.create():flashShow("不可领取")
 				else
-					HTTPS:send("Activity", {m = "Activity", a = "Activity", activity = "check", day = i }, {success_callback = function(gift, change)
+					HTTPS:send("Activity", {m = "activity", a = "activity", activity = "check", day = i }, {success_callback = function(gift, change)
 						MsgBox.create():flashShow("奖励已获得，请前往背包中查看")
 						DATA_Bag:insert(gift)
 						data[i] = change

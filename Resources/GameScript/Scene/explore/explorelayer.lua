@@ -30,6 +30,12 @@ function ExploreLayer:create(data)
 	end
 	
 	local oneKey = Btn:new(PATH, {"onekey.png", "onekey_press.png"}, 120, 100, {
+		callback = function()
+			HTTPS:send("Explore", {m = "explore", a = "explore", explore = "click"}, {
+				success_callback = function()
+				end
+			})
+		end
 	})
 	layer:addChild(oneKey:getLayer())
 	
