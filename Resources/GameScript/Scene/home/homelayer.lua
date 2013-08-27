@@ -68,7 +68,9 @@ function HomeLayer:create()
 					end })
     		end},
 	    {"athletics",325,305, function()
-			    switchScene("athletics")
+			   HTTPS:send("Sports", {m = "sports", a = "sports", sports = "get"}, {success_callback = function(data)
+				    switchScene("athletics", data)
+			   end})
 	    end},
 	    {"fb",50,305},
 		    {"explore",185,190, function()

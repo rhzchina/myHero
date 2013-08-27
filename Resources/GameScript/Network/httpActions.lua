@@ -219,7 +219,7 @@ end
 function M.Explore_init(kind, data, callback)
 	if kind == 1 then
 	else
-		dump(data)
+			dump(data)
 		callback(data["exlplore"])
 	end
 	return true, data
@@ -241,6 +241,15 @@ function M.Activity_check(kind, data, callback)
 		callback(data["exlplore"]["check1"], data["exlplore"]["change"])
 	end	
 	return true,data
+end
+
+function M.Sports_get(kind, data, callback)
+	if kind == 1 then
+	else
+		dump(data)
+		callback()
+	end
+	return true, data
 end
 	
 return M

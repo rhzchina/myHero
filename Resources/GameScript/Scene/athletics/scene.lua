@@ -17,11 +17,11 @@ require(SRC.."Scene/common/infolayer")
 
 local M = {}
 
-function M:create()
+function M:create(data)
 	local scene = display.newScene("home")
 
 	---------------插入layer---------------------
-	scene:addChild(ActivityLayer:create(0,0))
+	scene:addChild(ActivityLayer:create(data))
 
 --	scene:addChild(LULayer:create(0,493))
 
