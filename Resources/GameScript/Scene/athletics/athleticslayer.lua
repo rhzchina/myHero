@@ -93,7 +93,7 @@ function AthleticsLayer:createContent()
 --	for k, v in pairs(self.data["data"]) do
 for i = 1, 5 do
 		local other = Btn:new(PATH, {"bg_green.png", "bg_blue.png"}, 0, 0, {
-			other = {{IMG_ICON.."hero/S_2301.png", 50, 90}},
+			other = {{IMG_COMMON.."icon_bg1.png", 53, 90},{IMG_ICON.."hero/S_2301.png", 53, 90}, {IMG_COMMON.."icon_border1.png", 53, 90}},
 			callback = function()
 			end
 		})

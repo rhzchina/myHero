@@ -21,7 +21,7 @@ function M:create(data)
 	local scene = display.newScene("home")
 
 	---------------插入layer---------------------
-	scene:addChild(ExporeLayer:create(data))
+	scene:addChild(ExporeLayer:create(data):getLayer())
 
 --	scene:addChild(LULayer:create(0,493))
 

@@ -2,6 +2,8 @@ local PATH = IMG_SCENE.."explore/"
 local CommEmbattle = require(SRC.."Scene/common/CommEmbattle")
 
 local ExploreLayer= {
+	layer,
+	contentLayer,
 	data
 }
 function ExploreLayer:create(data)
@@ -10,24 +12,13 @@ function ExploreLayer:create(data)
 	self.__index = self
 
 	this.data = data
-	local layer = newLayer()
+	this.layer = newLayer()
+	
 	local bg = newSprite(PATH.."explore_bg.png")
-	layer:addChild(bg)
+	this.layer:addChild(bg)
 	
-	local pos = {
-		{50, 450},	
-		{100, 200},	
-		{220, 360},	
-		{280, 620},	
-		{100, 650},	
-	}
-	
-	for i = 1, #pos do
-		local bg = {(i * 100 + 1)..".png", (i * 100 + 2)..".png" }
-		local btn = Btn:new(PATH, bg, pos[i][1], pos[i][2], {
-		})
-		layer:addChild(btn:getLayer())	
-	end
+	this:createContent()
+
 	
 	local oneKey = Btn:new(PATH, {"onekey.png", "onekey_press.png"}, 120, 100, {
 		callback = function()
@@ -37,13 +28,60 @@ function ExploreLayer:create(data)
 			})
 		end
 	})
-	layer:addChild(oneKey:getLayer())
+	this.layer:addChild(oneKey:getLayer())
 	
 	local set = Btn:new(PATH, {"set.png", "set_press.png"}, 280, 100, {
 	})
-	layer:addChild(set:getLayer())
+	this.layer:addChild(set:getLayer())
 	
 	
-    return layer
+    return this
 end
+
+function  ExploreLayer:getLayer()
+	return self.layer
+end
+
+function ExploreLayer:createContent()
+	if self.contentLayer then
+		self.layer:removeChild(self.contentLayer, true)
+	end
+	
+	self.contentLayer = newLayer()
+	
+	local pos = {
+		{100, 200},	
+		{240, 360},	
+		{50, 450},	
+		{280, 620},	
+		{100, 650},	
+	}
+	
+	dump(self.data)
+	for i = 1, #pos do
+		local bg 
+		if self.data[i].normal == 1 then
+			bg =  {(i * 100 + 1)..".png", (i * 100 + 2)..".png" }
+		else
+			bg =  {(i * 100 + 3)..".png"}
+		end
+		local btn = Btn:new(PATH, bg, pos[i][1], pos[i][2], {
+			other = {IMG_SCENE.."navigation/silver_bg.png", 70, -10},
+			text = {"1000", 18, ccc3(255, 255, 255), ccp(50, -80), 1},
+			callback = function()
+				if self.data[i].normal == 1 then
+					HTTPS:send("Explore", {m = "explore", a = "explore", explore = "execute", position = i}, {
+						success_callback = function()
+							
+						end
+					})
+				end
+			end
+		})
+		self.layer:addChild(btn:getLayer())	
+	end
+	self.layer:addChild(self.contentLayer)
+end
+
+
 return ExploreLayer
