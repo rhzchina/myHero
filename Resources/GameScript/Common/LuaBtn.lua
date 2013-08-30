@@ -131,7 +131,7 @@ function LuaBtn:new(path, file, x, y, params, group)
 				local text = newLabel(v[1], v[2], {color = v[3] })
 				
 				if v[5] then  --若存在则设置对齐方式，否则默认居中
-					setAnchPos(text,tx, (this.layer:getContentSize().height - text:getContentSize().height) / 2 + ty)
+					setAnchPos(text, tx, ty)
 				else
 					setAnchPos(text,(this.layer:getContentSize().width - text:getContentSize().width) / 2 + tx,
 							(this.layer:getContentSize().height - text:getContentSize().height) / 2 + ty)
@@ -140,7 +140,7 @@ function LuaBtn:new(path, file, x, y, params, group)
 --				if v[3] then --是否有颜色
 --					text:setColor(v[3])
 --				end
-				this.layer:addChild(text,10)
+				this.layer:addChild(text,v[6] or 10)
 			end
 		else
 			if this.params["text"][4] then
@@ -155,7 +155,7 @@ function LuaBtn:new(path, file, x, y, params, group)
 			
 			local text = newLabel(this.params["text"][1], this.params["text"][2], {color = this.params["text"][3] })
 			if this.params["text"][5] then  --若存在则设置对齐方式，否则默认居中
-				setAnchPos(text,tx, (this.layer:getContentSize().height - text:getContentSize().height) / 2 + ty)
+				setAnchPos(text,tx, ty)
 			else
 				setAnchPos(text,(this.layer:getContentSize().width - text:getContentSize().width) / 2 + tx,
 							(this.layer:getContentSize().height - text:getContentSize().height) / 2 + ty)
@@ -164,7 +164,7 @@ function LuaBtn:new(path, file, x, y, params, group)
 --			if this.params["text"][3] then --是否有颜色
 --				text:setColor(this.params["text"][3])
 --			end
-			this.layer:addChild(text,10)
+			this.layer:addChild(text,this.params["text"][6] or 10)
 		end
 	end
 

@@ -87,7 +87,9 @@ function M:createList(kind, tab, offset)
 					id = getBag("prop", item:getId(), "id")	,
 					cid = item:getId()
 				},{success_callback = function()
-					switchScene("bag",{tab = tab,offset = scroll:getOffset()})
+					switchScene("bag",{tab = tab,offset = scroll:getOffset()}, function()
+						MsgBox.create():flashShow("道具使用成功")
+					end)
 				end})
 				print(item:getId(),getBag("prop", item:getId(), "exps"))
 			end

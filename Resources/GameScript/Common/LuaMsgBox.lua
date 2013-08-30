@@ -45,7 +45,7 @@ function MsgBox:new()
 		-- 创建 对应UI布局
 		local function createLayout(type , args)
 			local content = nil
-			local textField = CCLabelTTF:create(store.text , "Arial" , 15)
+			local textField = CCLabelTTF:create(store.text , "Arial" , 20)
 			
 			if type == 0 then --Error
 				content = CCSprite:create(IMG_COMMON .. "prompt_bg.png")
@@ -119,7 +119,7 @@ function MsgBox:new()
 			content:setPosition( ccp( tempX , tempY ) )
 			
 			textField:setAnchorPoint( ccp( 0 , 1 ) )
-			textField:setColor( ccc3(0 , 0 , 0) ) 
+			textField:setColor( ccc3(255 , 255 , 255) ) 
 			textField:setPosition( ccp( ( content:getContentSize().width - textField:getContentSize().width ) / 2 , content:getContentSize().height / 1.5 ) )
 			return content,textField
 		end 

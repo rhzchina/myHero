@@ -10,7 +10,7 @@ function AthleticsLayer:create(data)
 	setmetatable(this,self)
 	self.__index = self
 
-	this.data = data
+	this.data = data or {}
 	this.layer = newLayer()
 	local bg = newSprite(IMG_COMMON.."main.jpg")
 	this.layer:addChild(bg)
@@ -90,10 +90,10 @@ function AthleticsLayer:createContent()
 	local scroll = ScrollView:new(10, 555, 380, 150, 20, true)
 	self.contentLayer:addChild(scroll:getLayer())
 	
---	for k, v in pairs(self.data["data"]) do
-for i = 1, 5 do
+	for k, v in pairs(self.data["data"]) do
 		local other = Btn:new(PATH, {"bg_green.png", "bg_blue.png"}, 0, 0, {
 			other = {{IMG_COMMON.."icon_bg1.png", 53, 90},{IMG_ICON.."hero/S_2301.png", 53, 90}, {IMG_COMMON.."icon_border1.png", 53, 90}},
+			text = {{"Lv "..v.lv, 20, ccc3(255,255,255), ccp(0, -45)}, {v.Name, 20, ccc3(255,255,255), ccp(0, -67)}},
 			callback = function()
 			end
 		})

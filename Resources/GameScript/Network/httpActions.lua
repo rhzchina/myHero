@@ -227,8 +227,10 @@ end
 function M.Explore_execute(kind, data, callback)
 	if kind == 1 then
 	else
-		dump(data)
-		callback()
+		if not data["exlplore"].msg then
+			DATA_User:setByKey("Money", data["exlplore"]["Money"])
+		end
+		callback(data["exlplore"])
 	end
 	return true, data
 end
@@ -236,6 +238,7 @@ end
 function M.Explore_click(kind, data, callback)
 	if kind == 1 then
 	else
+		DATA_User:setByKey("Money", data["Money"])
 		callback(data["exlplore"])
 	end
 	return true, data
@@ -252,8 +255,7 @@ end
 function M.Sports_get(kind, data, callback)
 	if kind == 1 then
 	else
-		dump(data)
-		callback()
+		callback(data)
 	end
 	return true, data
 end

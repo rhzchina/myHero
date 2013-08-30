@@ -19,7 +19,15 @@ function switchScene( name , temp_data , callback )
 	display.replaceScene( scene:create(temp_data) )
 
 	if type(callback) == "function" then
-		callback()
+		-- 必须延迟，不然会在替换场景之前执行
+		local handle
+		handle = CCDirector:sharedDirector():getScheduler():scheduleScriptFunc(function()
+			CCDirector:sharedDirector():getScheduler():unscheduleScriptEntry(handle)
+			handle = nil
+
+			callback()
+		end , 0.1 , false)
+		
 	end
 end
 
