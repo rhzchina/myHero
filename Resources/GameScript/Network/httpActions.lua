@@ -107,6 +107,7 @@ function M.Skill_selectline(type, data, callback)
 	if type == 1 then
 	else
 		local result = data
+		dump(result)
 		DATA_Dress:set(result["equipage"])
 		callback()
 	end
