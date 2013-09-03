@@ -2,6 +2,27 @@ local PATH = IMG_SCENE.."fighting/"
 local KNBar = require(SRC.."Common/KNBar")
 
 local HEROSTART, MONSTERSTART, SPACE = ccp(43,200), ccp(43,530), 40
+
+--上阵位置信息
+local position = {
+	{
+		{ccp(0, 0)},
+		{ccp(20, 200), ccp(320, 200)},
+		{ccp(0, 0), ccp(0, 0), ccp(0, 0)},
+		{ccp(0, 0), ccp(0, 0), ccp(0, 0), ccp(0, 0)},
+		{ccp(20, 210), ccp(175, 240), ccp(320, 210), ccp(20, 20), ccp(320, 20)},
+		{ccp(0, 0), ccp(0, 0), ccp(0, 0), ccp(0, 0), ccp(0, 0), ccp(0, 0),}
+	},  --我方英雄
+	{
+		{ccp(175, 480)},
+		{ccp(20, 480), ccp(320, 480)},
+		{ccp(20, 480), ccp(175, 680), ccp(320, 480)},
+		{ccp(20, 480), ccp(175, 450), ccp(320, 480), ccp(175, 680)},
+		{ccp(20, 480), ccp(175, 450), ccp(320, 480), ccp(20, 680), ccp(320, 650)},	
+		{ccp(20, 480), ccp(175, 450), ccp(320, 480), ccp(20, 680), ccp(175, 650), ccp(320, 680),}	
+	}   --怪物
+}
+
 local FightRole ={
 	layer,
 	x,
@@ -16,7 +37,7 @@ local FightRole ={
 	params	
 }
 
-function FightRole:new(group,id,pos,params)
+function FightRole:new(group,id,pos,total,params)
 	local this = {}
 	setmetatable(this,self)
 	self.__index = self
@@ -25,7 +46,8 @@ function FightRole:new(group,id,pos,params)
 	
 	this.params = params or {}
 	--战斗卡片背景
-	local bg = display.newSprite(PATH.."fight_back"..(pos % 4 + 1)..".png")
+--	local bg = display.newSprite(PATH.."fight_back"..(pos % 4 + 1)..".png")
+	local bg = display.newSprite(PATH.."test_bg.png")
 	setAnchPos(bg)
 	this.layer:setContentSize(bg:getContentSize())
 	this.layer:addChild(bg)
@@ -35,57 +57,60 @@ function FightRole:new(group,id,pos,params)
 	this.group = group
 	this.id = id
 	this.pos = pos
-	
-	if group == 1 then --我方
-		if pos > 2 then
-			this.x = HEROSTART.x + (this.width + SPACE) * (pos - 3)			
-			this.y = HEROSTART.y - this.height * 1.7 + SPACE
-		else
-			this.x = HEROSTART.x + (this.width + SPACE) * pos
-			this.y = HEROSTART.y
-		end
-	else  --对方
-		if pos > 2 then
-			this.x = MONSTERSTART.x + (this.width + SPACE) * (pos - 3)			
-			this.y = MONSTERSTART.y + this.height * 1.7 - SPACE	
-		else
-			this.x = MONSTERSTART.x + (this.width + SPACE) *  pos 
-			this.y = MONSTERSTART.y
-		end
-	end
+--	
+--	if group == 1 then --我方
+--		if pos > 2 then
+--			this.x = HEROSTART.x + (this.width + SPACE) * (pos - 3)			
+--			this.y = HEROSTART.y - this.height * 1.7 + SPACE
+--		else
+--			this.x = HEROSTART.x + (this.width + SPACE) * pos
+--			this.y = HEROSTART.y
+--		end
+--	else  --对方
+--		if pos > 2 then
+--			this.x = MONSTERSTART.x + (this.width + SPACE) * (pos - 3)			
+--			this.y = MONSTERSTART.y + this.height * 1.7 - SPACE	
+--		else
+--			this.x = MONSTERSTART.x + (this.width + SPACE) *  pos 
+--			this.y = MONSTERSTART.y
+--		end
+--	end
+	this.x = position[group][total][pos].x
+	this.y = position[group][total][pos].y
 	setAnchPos(this.layer, this.x,this.y)
 	
 	--英雄图标
-	local icon = display.newSprite(IMG_ICON.."hero/M_"..id..".png")
+--	local icon = display.newSprite(IMG_ICON.."hero/M_"..id..".png")
+	local icon = display.newSprite(PATH.."test_hero.png")
 	setAnchPos(icon,this.width / 2, this.height / 2, 0.5, 0.5)
 	this.layer:addChild(icon)
 	
-	--边框
-	local border = display.newSprite(PATH.."fight_border"..(pos % 4 + 1)..".png")
-	setAnchPos(border,this.width / 2, this.height / 2, 0.5, 0.5)
-	this.layer:addChild(border)
+--	--边框
+--	local border = display.newSprite(PATH.."fight_border"..(pos % 4 + 1)..".png")
+--	setAnchPos(border,this.width / 2, this.height / 2, 0.5, 0.5)
+--	this.layer:addChild(border)
 	
 --	this.hpText = newLabel(this.params["hp"].."/"..this.params["hp"],15)
 --	this.hpText:setColor(ccc3(255,0,0))
 --	setAnchPos(this.hpText,this.width / 2,0,0.5)
 --	this.layer:addChild(this.hpText,15)
 
-	--添加血条
-	local bgLayer = CCLayer:create()
-	local bg = display.newSprite(PATH.."bg.png")
-	setAnchPos(bg)
-	bgLayer:setContentSize(bg:getContentSize())
-	bgLayer:addChild(bg)
-	
-	this.hpProgress = CCProgressTimer:create(display.newSprite(PATH.."fore.png"))
-	setAnchPos(this.hpProgress)
-	this.hpProgress:setType(kCCProgressTimerTypeBar)
-	this.hpProgress:setBarChangeRate(CCPointMake(1, 0)) --动画效果值(0或1)
-	this.hpProgress:setMidpoint(CCPointMake(0 , 1))--设置进度方向 (0-100)
-	this.hpProgress:setPercentage(0)	--设置默认进度值
-	this.hpProgress:runAction(CCProgressTo:create(0.5,100))
-	bgLayer:addChild(this.hpProgress)
-	this.layer:addChild(bgLayer,5)	
+--	--添加血条
+--	local bgLayer = CCLayer:create()
+--	local bg = display.newSprite(PATH.."bg.png")
+--	setAnchPos(bg)
+--	bgLayer:setContentSize(bg:getContentSize())
+--	bgLayer:addChild(bg)
+--	
+--	this.hpProgress = CCProgressTimer:create(display.newSprite(PATH.."fore.png"))
+--	setAnchPos(this.hpProgress)
+--	this.hpProgress:setType(kCCProgressTimerTypeBar)
+--	this.hpProgress:setBarChangeRate(CCPointMake(1, 0)) --动画效果值(0或1)
+--	this.hpProgress:setMidpoint(CCPointMake(0 , 1))--设置进度方向 (0-100)
+--	this.hpProgress:setPercentage(0)	--设置默认进度值
+--	this.hpProgress:runAction(CCProgressTo:create(0.5,100))
+--	bgLayer:addChild(this.hpProgress)
+--	this.layer:addChild(bgLayer,5)	
 	
 	--点击事件
 	this.layer:setTouchEnabled(true)
@@ -114,7 +139,7 @@ end
 
 function FightRole:setHp(curHp)
 --	self.hpText:setString(curHp.."/"..self.params["hp"])
-	self.hpProgress:setPercentage(curHp / self.params["hp"] * 100)
+--	self.hpProgress:setPercentage(curHp / self.params["hp"] * 100)
 end
 
 function FightRole:getY()
