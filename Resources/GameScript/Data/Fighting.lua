@@ -91,6 +91,7 @@ function DATA_Fighting:nextStep()
 		end
 	end
 	print("当前第",turn,"关第",step,"步")
+	dump(_data["data"][turn][step])
 	return nil
 end
 
