@@ -6,19 +6,19 @@ local HEROSTART, MONSTERSTART, SPACE = ccp(43,200), ccp(43,530), 40
 --上阵位置信息
 local position = {
 	{
-		{ccp(0, 0)},
+		{ccp(175, 200)},
 		{ccp(20, 200), ccp(320, 200)},
-		{ccp(0, 0), ccp(0, 0), ccp(0, 0)},
-		{ccp(0, 0), ccp(0, 0), ccp(0, 0), ccp(0, 0)},
-		{ccp(20, 210), ccp(175, 240), ccp(320, 210), ccp(20, 20), ccp(320, 20)},
-		{ccp(0, 0), ccp(0, 0), ccp(0, 0), ccp(0, 0), ccp(0, 0), ccp(0, 0),}
+		{ccp(20, 200), ccp(175,20), ccp(320, 200)},
+		{ccp(20, 120), ccp(175,240), ccp(320, 120), ccp(175, 20)},
+		{ccp(20, 200), ccp(175, 240), ccp(320, 200), ccp(20, 20), ccp(320, 20)},
+		{ccp(20, 200), ccp(175, 240), ccp(320, 200), ccp(20, 20), ccp(175, 20), ccp(320, 20)},
 	},  --我方英雄
 	{
 		{ccp(175, 480)},
 		{ccp(20, 480), ccp(320, 480)},
-		{ccp(20, 480), ccp(175, 680), ccp(320, 480)},
-		{ccp(20, 480), ccp(175, 450), ccp(320, 480), ccp(175, 680)},
-		{ccp(20, 480), ccp(175, 450), ccp(320, 480), ccp(20, 680), ccp(320, 650)},	
+		{ccp(20, 480), ccp(175, 650), ccp(320, 480)},
+		{ccp(20, 510), ccp(175, 450), ccp(320, 510), ccp(175, 650)},
+		{ccp(20, 480), ccp(175, 450), ccp(320, 480), ccp(20, 680), ccp(320, 680)},	
 		{ccp(20, 480), ccp(175, 450), ccp(320, 480), ccp(20, 680), ccp(175, 650), ccp(320, 680),}	
 	}   --怪物
 }
@@ -204,8 +204,9 @@ function FightRole:doAction(type,role,callback,id)
 					end
 				end
 			))
-			array:addObject(CCScaleTo:create(0.1,0.8))			
-			array:addObject(CCScaleTo:create(0.1,1))
+			array:addObject(CCScaleTo:create(0.04,1.2))			
+			array:addObject(CCScaleTo:create(0.04,0.8))			
+			array:addObject(CCScaleTo:create(0.04,1))
 			self.layer:runAction(CCSequence:create(array))
 		end
 	elseif type == "skill" then
@@ -218,4 +219,4 @@ function FightRole:doAction(type,role,callback,id)
 		print("其它的",type)
 	end
 end
-return FightRole
+		return FightRole
