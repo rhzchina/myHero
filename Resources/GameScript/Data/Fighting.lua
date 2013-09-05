@@ -10,7 +10,7 @@ local step = 1 --第几步
 
 function DATA_Fighting:set(data)
 	_data = data
-	dump(data)
+--	dump(data)
 end
 
 function DATA_Fighting:getMonster()
@@ -91,7 +91,7 @@ function DATA_Fighting:nextStep()
 		end
 	end
 	print("当前第",turn,"关第",step,"步")
-	dump(_data["data"][turn][step])
+--	dump(_data["data"][turn][step])
 	return nil
 end
 
