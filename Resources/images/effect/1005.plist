@@ -4,96 +4,96 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>slash1.png</key>
+            <key>1005_1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{165,316},{112,52}}</string>
+                <string>{{0,642},{182,110}}</string>
                 <key>offset</key>
-                <string>{26,16}</string>
+                <string>{-149,-2}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{53,59},{112,52}}</string>
+                <string>{{0,187},{182,110}}</string>
                 <key>sourceSize</key>
-                <string>{166,202}</string>
+                <string>{480,480}</string>
             </dict>
-            <key>slash2.png</key>
+            <key>1005_2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{151,402},{142,74}}</string>
+                <string>{{0,144},{480,136}}</string>
                 <key>offset</key>
-                <string>{-8,-1}</string>
+                <string>{0,-2}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{4,65},{142,74}}</string>
+                <string>{{0,174},{480,136}}</string>
                 <key>sourceSize</key>
-                <string>{166,202}</string>
+                <string>{480,480}</string>
             </dict>
-            <key>slash3.png</key>
+            <key>1005_3.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{165,187},{128,118}}</string>
+                <string>{{0,280},{480,134}}</string>
                 <key>offset</key>
-                <string>{-12,-15}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{7,57},{128,118}}</string>
-                <key>sourceSize</key>
-                <string>{166,202}</string>
-            </dict>
-            <key>slash4.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{0,402},{96,150}}</string>
-                <key>offset</key>
-                <string>{-33,-10}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{2,36},{96,150}}</string>
-                <key>sourceSize</key>
-                <string>{166,202}</string>
-            </dict>
-            <key>slash5.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{145,0},{132,186}}</string>
-                <key>offset</key>
-                <string>{-17,-2}</string>
+                <string>{0,-3}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,10},{132,186}}</string>
+                <string>{{0,176},{480,134}}</string>
                 <key>sourceSize</key>
-                <string>{166,202}</string>
+                <string>{480,480}</string>
             </dict>
-            <key>slash6.png</key>
+            <key>1005_4.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{0,203},{164,198}}</string>
+                <string>{{0,0},{480,144}}</string>
                 <key>offset</key>
-                <string>{1,-1}</string>
+                <string>{0,-10}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{2,3},{164,198}}</string>
+                <string>{{0,178},{480,144}}</string>
                 <key>sourceSize</key>
-                <string>{166,202}</string>
+                <string>{480,480}</string>
             </dict>
-            <key>slash7.png</key>
+            <key>1005_5.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{0,0},{144,202}}</string>
+                <string>{{0,414},{480,100}}</string>
                 <key>offset</key>
-                <string>{-7,0}</string>
+                <string>{0,-4}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{4,0},{144,202}}</string>
+                <string>{{0,194},{480,100}}</string>
                 <key>sourceSize</key>
-                <string>{166,202}</string>
+                <string>{480,480}</string>
+            </dict>
+            <key>1005_6.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{0,514},{480,68}}</string>
+                <key>offset</key>
+                <string>{0,-9}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,215},{480,68}}</string>
+                <key>sourceSize</key>
+                <string>{480,480}</string>
+            </dict>
+            <key>1005_7.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{0,582},{480,60}}</string>
+                <key>offset</key>
+                <string>{0,-6}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,216},{480,60}}</string>
+                <key>sourceSize</key>
+                <string>{480,480}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -101,13 +101,13 @@
             <key>format</key>
             <integer>2</integer>
             <key>realTextureFileName</key>
-            <string>slash.png</string>
+            <string>1005.png</string>
             <key>size</key>
-            <string>{293,498}</string>
+            <string>{480,752}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:e38178aad9f2f84eac4c8487fb0a094c$</string>
+            <string>$TexturePacker:SmartUpdate:484dc6bdb845166551fdf8a1763b361c$</string>
             <key>textureFileName</key>
-            <string>slash.png</string>
+            <string>1005.png</string>
         </dict>
     </dict>
 </plist>

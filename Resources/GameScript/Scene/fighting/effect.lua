@@ -1,4 +1,13 @@
 local PATH = IMG_SCENE.."fighting/"
+local info = {
+          --num, time,
+	[1001] = {5},
+	[1002] = {6},
+	[1003] = {5},
+	[1004] = {8},
+	[1005] = {7},
+	[2001] = {6},
+}
 
 local Effect = {
 	layer,
@@ -21,29 +30,23 @@ function Effect:getLayer()
 end
 
 	
-function Effect:showByType(type,x,y,delay,params)
+function Effect:showByType(type,x,y,params)
 	local frames = CCArray:create()
-		if type == "slash" then
-			if not self.added[type] then 
-				print("slash添加")
-				self.added[type] = true
-				self.cache:addSpriteFramesWithFile(IMG_EFFECT.."slash.plist",IMG_EFFECT.."slash.png")
-			end
-			
-			for i = 1, 7 do
-				frames:addObject(self.cache:spriteFrameByName("slash"..i..".png"))
-			end	
-		elseif type == "11101" then
-			if not self.added[type] then 
-				print("atk_cut添加")
-				self.added[type] = true
---				self.cache:addSpriteFramesWithFile(IMG_EFFECT.."atk_cut.plist",IMG_EFFECT.."atk_cut.png")
-				self.cache:addSpriteFramesWithFile(IMG_EFFECT.."11201.plist",IMG_EFFECT.."11201.png")
-			end
-			for i = 1, 7 do 
-				frames:addObject(self.cache:spriteFrameByName(i..".png"))
-			end
-		end
+
+	--test code	
+    type = type  > 2001 and 2001 or type 
+    
+   --add effect 
+	if not self.added[type] then
+		print(type.."add complete")
+		self.added[type] = true
+		self.cache:addSpriteFramesWithFile(IMG_EFFECT..type..".plist",IMG_EFFECT..type..".png")
+	end
+	
+	for i = 1, info[type][1] do
+		frames:addObject(self.cache:spriteFrameByName(type.."_"..i..".png"))
+	end
+	
 	--创建精灵来播放动画
 	local sprite = newSprite()
 	local anchX, anchY = 0
@@ -66,7 +69,7 @@ function Effect:showByType(type,x,y,delay,params)
 	end
 	
 	--创建动画及动画完成后的回调 
-	local animation = CCAnimation:createWithSpriteFrames(frames,delay)
+	local animation = CCAnimation:createWithSpriteFrames(frames,0.5)
 	local animate = CCAnimate:create(animation)
 	frames:removeAllObjects()
 	frames:addObject(animate)

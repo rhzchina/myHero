@@ -84,6 +84,7 @@ local this = {}
 end
 
 function FightLayer:fightLogic()
+--dump(data:getAttacker())
 	self.group[data:getAttacker("group")][data:getAttacker("index")]:doAction(
 		data:getAttackType("type"),  --攻击类型
 		"adt",                  --角色状态，攻击:adt,被攻击beatt
@@ -117,9 +118,9 @@ function FightLayer:fightLogic()
 								data:clear(true)
 							end
 						end
-					end,data:getAttackType("Mode"))
+					end,data:getVictim(i, "res_id"))
 			end
-		end,data:getAttackType("Mode"))
+		end,data:getAttacker("res_id"))
 end
  
 

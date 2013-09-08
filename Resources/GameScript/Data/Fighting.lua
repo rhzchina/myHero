@@ -37,6 +37,8 @@ end
 --攻击者数据
 function DATA_Fighting:getAttacker(type)
 	if type then
+	dump(type)
+	dump(_data["data"][turn][step]["adt"])
 		return _data["data"][turn][step]["adt"][type]
 	else
 		return _data["data"][turn][step]["adt"]
