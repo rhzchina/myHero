@@ -69,7 +69,7 @@ function Effect:showByType(type,x,y,params)
 	end
 	
 	--创建动画及动画完成后的回调 
-	local animation = CCAnimation:createWithSpriteFrames(frames,0.5)
+	local animation = CCAnimation:createWithSpriteFrames(frames,0.05)
 	local animate = CCAnimate:create(animation)
 	frames:removeAllObjects()
 	frames:addObject(animate)

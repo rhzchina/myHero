@@ -153,29 +153,28 @@ function FightRole:doAction(type,role,callback,id)
 	if type == "atk" or type == "skill" then   --普通攻击
 		if role == "adt" then   --攻击者特效
 			if self.group == 1 then  --己方英雄
-				self.layer:setAnchorPoint(ccp(1,0))
+				self.layer:setAnchorPoint(ccp(0.5,0.5))
 				flipX = true
 				anchX = 0.5
 				anchY = 0
 				moveY = 30
 			else
-				self.layer:setAnchorPoint(ccp(0,1))
+				self.layer:setAnchorPoint(ccp(0.5,0.5))
 				flipY = true
 				anchX = 0.2 
 				anchY = 0.3
 				moveY = -30
 			end
-			array:addObject(CCMoveTo:create(0.05,ccp(self.x,self.y + moveY)))
+			array:addObject(CCMoveTo:create(0.1,ccp(self.x,self.y + moveY)))
 			array:addObject(CCRotateTo:create(0.1,5))  --攻击起手后仰
 			array:addObject(CCCallFunc:create(    --起手完成后开始播放特效
 				function() 
 					if self.params["effect"] then
-						self.params["effect"]:showByType(id ,self.x,self.y,
+						self.params["effect"]:showByType(1001 ,self.x,self.y,
 						{
 							callback = 
 							function()
 								self.layer:runAction(CCMoveTo:create(0.1,ccp(self.x,self.y)))
-								self.layer:runAction(CCScaleTo:create(0.2,1))
 								if callback then
 									callback()
 								end
@@ -187,10 +186,9 @@ function FightRole:doAction(type,role,callback,id)
 						})
 					end
 				 end))
-			array:addObject(CCRotateTo:create(0.05,-30))  --攻击旋转
+			array:addObject(CCRotateBy:create(0.3,-360))  --攻击旋转
 			array:addObject(CCRotateTo:create(0.05,0))    --回位
 			self.layer:runAction(CCSequence:create(array))
-			self.layer:runAction(CCScaleTo:create(0.1,1.05))
 		else --被攻击的人
 			self.layer:setAnchorPoint(ccp(0.5,0.5))
 			array:addObject(CCCallFunc:create(
