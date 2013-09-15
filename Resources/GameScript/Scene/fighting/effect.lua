@@ -34,8 +34,10 @@ function Effect:showByType(type,x,y,params)
 	local frames = CCArray:create()
 
 	--test code	
-    type = type  > 2001 and 2001 or type 
-    
+	if type == 0 or type > 200 then
+		type = 2001
+	end
+	
    --add effect 
 	if not self.added[type] then
 		print(type.."add complete")

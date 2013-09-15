@@ -42,7 +42,10 @@ function M:createMenu(state)
 			{"logout", 150, 5},
 			{"card", 20,610,true },
 			{"achieve", 170, 610, true},
-			{"message", 330, 610, true},
+			{"message", 330, 610, true,function() HTTPS:send("Mail", {mail = "open", a = "mail", m = "mail"}, {success_callback = function(data)
+					switchScene("mailbox")
+				end})
+				end},
 			{"record", 20, 400, true},
 			{"setting", 170, 400, true}	
 		}

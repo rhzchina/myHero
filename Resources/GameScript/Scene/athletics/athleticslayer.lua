@@ -52,12 +52,20 @@ function AthleticsLayer:create(data)
 	
 	local shop = Btn:new(IMG_BTN, {"fame_shop.png" ,"fame_shop_press.png"}, 50, 90, {
 		callback = function()
+			HTTPS:send("Exploreshop" ,{m="exlploreshop",a="exlploreshop",exlploreshop= "open"} ,{success_callback = 
+					function()
+						switchScene("prestigeShop")
+			end })
 		end
 	})
 	this.layer:addChild(shop:getLayer())
 	
 	local rank = Btn:new(IMG_BTN, {"rank_list.png" ,"rank_list_press.png"} ,280, 90, {
 		callback = function()
+			HTTPS:send("Ranking" ,{m="ranking",a="ranking",ranking = "prestige",page=0} ,{success_callback = 
+					function()
+						switchScene("randsSport",0)
+			end })
 		end
 	})
 	this.layer:addChild(rank:getLayer())

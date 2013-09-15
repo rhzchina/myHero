@@ -14,6 +14,9 @@ require(SRC.."Data/Embattle")
 require(SRC.."Data/Dress")
 require(SRC.."Data/Shop")
 require(SRC.."Data/Chat")
+require(SRC.."Data/Mail")
+require(SRC.."Data/Rands")
+require(SRC.."Data/PreShop")
 local M = {}
 
 --[[登录]]
@@ -261,4 +264,61 @@ function M.Sports_get(kind, data, callback)
 	return true, data
 end
 	
+function M.Mail_open(kind, data, callback)
+	if kind == 1 then
+	else
+		DATA_Mail:set(data["data"])
+		callback(data["data"])
+	end
+	return true, data
+end
+
+function M.Mail_send(kind, data, callback)
+	if kind == 1 then
+	else
+		--DATA_Mail:set(data["data"])
+		callback(data["data"])
+	end
+	return true, data
+end
+
+function M.Mail_delect(kind, data, callback)
+	if kind == 1 then
+	else
+		DATA_Mail:set(data["data"])
+		callback(data["data"])
+	end
+	return true, data
+end
+
+function M.Ranking_prestige(kind, data, callback)
+	if kind == 1 then
+	else		
+		DATA_Rands:set_prestige(data["data"])
+		DATA_Rands:set_top(data["top"])
+		callback(data["data"])
+	end
+	return true, data
+end
+
+function M.Exploreshop(kind, data, callback)
+	if kind == 1 then
+	else
+		if data["type"] == "open" then
+			--print("打开")
+			DATA_PreShop:set(data["exlploreshop"])
+		elseif data["type"] == "pay" then
+			--print("购买")
+			DATA_User:setkey("prestige", data["exlploreshop"]["prestige"])
+			--dump(DATA_Bag:get("skill"))
+			--dump(DATA_Bag:get("hero"))
+			--dump(DATA_Bag:get("equip"))
+			DATA_Bag:updata_hero(data["exlploreshop"]["type"],data["exlploreshop"]["add"])
+		end
+		
+		callback(data["data"])
+	end
+	return true, data
+end
+
 return M
