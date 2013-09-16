@@ -186,7 +186,7 @@ function FightRole:doAction(type,role,callback,id)
 						})
 					end
 				 end))
-			array:addObject(CCRotateBy:create(0.3,-360))  --攻击旋转
+			array:addObject(CCRotateBy:create(0.2,-360))  --攻击旋转
 			array:addObject(CCRotateTo:create(0.05,0))    --回位
 			self.layer:runAction(CCSequence:create(array))
 		else --被攻击的人
