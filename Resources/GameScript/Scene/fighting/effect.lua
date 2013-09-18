@@ -34,7 +34,7 @@ function Effect:showByType(type,x,y,params)
 	local frames = CCArray:create()
 
 	--test code	
-	if type == 0 or type > 200 then
+	if type == 0 or type > 2001 then
 		type = 2001
 	end
 	

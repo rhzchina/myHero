@@ -170,7 +170,7 @@ function FightRole:doAction(type,role,callback,id)
 			array:addObject(CCCallFunc:create(    --起手完成后开始播放特效
 				function() 
 					if self.params["effect"] then
-						self.params["effect"]:showByType(1001 ,self.x,self.y,
+						self.params["effect"]:showByType(id ,self.x,self.y,
 						{
 							callback = 
 							function()
