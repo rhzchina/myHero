@@ -73,3 +73,15 @@ function DATA_Bag:getByFilter(kind,filter)
 	end
 	return result
 end
+
+function DATA_Bag:updata_hero(types,data)
+	dump(data)
+	print(types)
+	if types == "hero" then
+		_data["hero"][data["cid"]] = data
+	elseif types == "skill" then
+		_data["skill"][data["id"]] = data
+	else
+		_data["equip"][data["cid"]] = data
+	end
+end

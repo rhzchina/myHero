@@ -1,12 +1,12 @@
 local PATH = IMG_SCENE.."fighting/"
 local info = {
-          --num, time,
-	[1001] = {5},
-	[1002] = {6},
-	[1003] = {5},
-	[1004] = {8},
-	[1005] = {7},
-	[2001] = {6},
+          --num, {ox, oy, fx, fy}
+	[1001] = {5, {{-30, 90, true}, {30, -90, false, true}}},
+	[1002] = {6, {{0, 0,}, {0, 0,}}},
+	[1003] = {5, {}},
+	[1004] = {8, {}},
+	[1005] = {7, {}},
+	[2001] = {6, {{0, 0}, {0, 0}}},
 }
 
 local Effect = {
@@ -31,8 +31,8 @@ end
 
 	
 function Effect:showByType(type,x,y,params)
+	local params = params or {}
 	local frames = CCArray:create()
-
 	--test code	
 	if type == 0 or type > 2001 then
 		type = 2001
@@ -51,24 +51,6 @@ function Effect:showByType(type,x,y,params)
 	
 	--创建精灵来播放动画
 	local sprite = newSprite()
-	local anchX, anchY = 0
-	if params then
-		if params.flipX then
-			sprite:setFlipX(true)
-		end
-		
-		if params.flipY then
-			sprite:setFlipY(true)
-		end
-		
-		if params.anchX then
-			anchX = params.anchX
-		end
-		
-		if params.anchY then
-			anchY = params.anchY
-		end
-	end
 	
 	--创建动画及动画完成后的回调 
 	local animation = CCAnimation:createWithSpriteFrames(frames,0.05)
@@ -90,7 +72,14 @@ function Effect:showByType(type,x,y,params)
 --			end
 		end))
 	sprite:runAction(CCSequence:create(frames))
-	setAnchPos(sprite,x,y,anchX,anchY)
+	
+	dump(info[type])
+	print(type, params.group)
+	setAnchPos(sprite, x + info[type][2][params.group][1], y + info[type][2][params.group][2], 0.5, 0.5)
+	
+	sprite:setFlipX(info[type][2][params.group][3])
+	sprite:setFlipY(info[type][2][params.group][4])
+	
 	self.layer:addChild(sprite)	
 end
 

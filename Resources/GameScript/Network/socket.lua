@@ -319,12 +319,6 @@ end
 function SOCKET:callback(response)
 	local result = json.decode(response)
 	
-	local scene = display.getRunningScene()
-	if loading then
-		scene:removeChild(loading, true)
-		loading = nil
-	end
-	
 	if not result then
 		MsgBox.create():flashShow("数据格式错误")
 		return
@@ -337,7 +331,9 @@ function SOCKET:callback(response)
 	elseif result.mode == "tall" then
 		DATA_Chat:addMsg("tall", result.add)
 		
+		local scene = display.getRunningScene()
 		if scene.name == "chat" then
+			scene:removeChild(loading, true)
 			scene:refresh()
 		end
 	end

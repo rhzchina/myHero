@@ -17,6 +17,8 @@ require(SRC.."Data/Chat")
 require(SRC.."Data/Mail")
 require(SRC.."Data/Rands")
 require(SRC.."Data/PreShop")
+require(SRC.."Data/Sports")
+require(SRC.."Data/Book")
 local M = {}
 
 --[[登录]]
@@ -259,11 +261,22 @@ end
 function M.Sports_get(kind, data, callback)
 	if kind == 1 then
 	else
+		DATA_Sports:set_data(data["data"])
+		DATA_Sports:set_time(data["time"])
+		DATA_Sports:set_record(data["record"])
 		callback(data)
 	end
 	return true, data
 end
 	
+function M.Sports_refresh(kind, data, callback)
+	if kind == 1 then
+	else
+		callback(data)
+	end
+	return true, data
+end
+
 function M.Mail_open(kind, data, callback)
 	if kind == 1 then
 	else
@@ -305,20 +318,36 @@ function M.Exploreshop(kind, data, callback)
 	if kind == 1 then
 	else
 		if data["type"] == "open" then
-			--print("打开")
 			DATA_PreShop:set(data["exlploreshop"])
 		elseif data["type"] == "pay" then
-			--print("购买")
 			DATA_User:setkey("prestige", data["exlploreshop"]["prestige"])
-			--dump(DATA_Bag:get("skill"))
-			--dump(DATA_Bag:get("hero"))
-			--dump(DATA_Bag:get("equip"))
 			DATA_Bag:updata_hero(data["exlploreshop"]["type"],data["exlploreshop"]["add"])
 		end
-		
 		callback(data["data"])
 	end
 	return true, data
+end
+
+function M.Duplicate_open(kind, data, callback)
+	if kind == 1 then
+	else		
+		dump(data)
+		callback(data["data"])
+	end
+	return true, data
+end
+
+function M.Book_open( type , data , callback )
+	if type == 1 then
+	else
+		if data["error"] then
+			print(data["error"])	
+		else
+			DATA_Book:set(data)
+			callback(data)
+		end
+	end
+	return true,data
 end
 
 return M

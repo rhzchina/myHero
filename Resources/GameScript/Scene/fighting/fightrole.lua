@@ -80,8 +80,8 @@ function FightRole:new(group,id,pos,total,params)
 	setAnchPos(this.layer, this.x,this.y)
 	
 	--英雄图标
---	local icon = display.newSprite(IMG_ICON.."hero/M_"..id..".png")
-	local icon = display.newSprite(PATH.."test_hero.png")
+	local icon = display.newSprite(IMG_ICON.."hero/M_"..id..".png")
+--	local icon = display.newSprite(PATH.."test_hero.png")
 	setAnchPos(icon,this.width / 2, this.height / 2, 0.5, 0.5)
 	this.layer:addChild(icon)
 	
@@ -170,7 +170,7 @@ function FightRole:doAction(type,role,callback,id)
 			array:addObject(CCCallFunc:create(    --起手完成后开始播放特效
 				function() 
 					if self.params["effect"] then
-						self.params["effect"]:showByType(id ,self.x,self.y,
+						self.params["effect"]:showByType(id ,self.x + self.width / 2,self.y + self.height / 2,
 						{
 							callback = 
 							function()
@@ -179,6 +179,7 @@ function FightRole:doAction(type,role,callback,id)
 									callback()
 								end
 							end,
+							group = self.group,
 							flipY = flipY,
 							flipX = flipX,
 							anchX = anchX,
@@ -194,10 +195,11 @@ function FightRole:doAction(type,role,callback,id)
 			array:addObject(CCCallFunc:create(
 				function()
 					if self.params["effect"] then
-						self.params["effect"]:showByType(id,self.x,self.y,{
+						self.params["effect"]:showByType(id,self.x + self.width / 2,self.y + self.height / 2,{
 							callback = callback,
 							anchX = 0.3,
-							anchY = 0.2
+							anchY = 0.2,
+							group = self.group
 						})
 					end
 				end

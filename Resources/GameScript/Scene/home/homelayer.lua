@@ -37,7 +37,14 @@ function HomeLayer:create()
     			switchScene("update")
     		end},
 	    {"athletics",200, function()
-			   switchScene("athletics")  
+			 local sport_data = DATA_Sports:get_data()
+			 if _G.next(sport_data) == nil then
+					HTTPS:send("Sports", {m = "sports", a = "sports", sports = "get"}, {success_callback = function(data)
+						switchScene("athletics", data)
+					end})
+			 else
+				switchScene("athletics")
+			  end 
 	    end},
 	    {"friend",290},
 	    {"menu",380, function() pushScene("menu") end}
@@ -68,13 +75,28 @@ function HomeLayer:create()
 					end })
     		end},
 	    {"athletics",325,305, function()
-			   HTTPS:send("Sports", {m = "sports", a = "sports", sports = "get"}, {success_callback = function(data)
-				    switchScene("athletics", data)
-			   end})
+			 local sport_data = DATA_Sports:get_data()
+			 if sport_data then
+				 if _G.next(sport_data) == nil then
+						HTTPS:send("Sports", {m = "sports", a = "sports", sports = "get"}, {success_callback = function(data)
+							switchScene("athletics", data)
+						end})
+				 else
+					switchScene("athletics")
+				  end
+			 else
+				switchScene("athletics")
+			 end
+			 
+			   
 	    end},
-	    {"fb",50,305},
+	    {"fb",50,305,function() 
+				HTTPS:send("Duplicate", {m = "duplicate", a = "duplicate", duplicate = "open"}, {success_callback = function(data)
+						switchScene("transcript")
+				end})
+		end},
 		    {"explore",185,190, function()
-		    HTTPS:send("Explore", {m = "explore", a = "explore", explore = "init"}, {success_callback = function(data)
+				HTTPS:send("Explore", {m = "explore", a = "explore", explore = "init"}, {success_callback = function(data)
 			    switchScene("explore", data)
 		    end})
 	    end}

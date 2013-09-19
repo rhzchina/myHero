@@ -10,7 +10,7 @@ local step = 1 --第几步
 
 function DATA_Fighting:set(data)
 	_data = data
---	dump(data)
+	dump(data)
 end
 
 function DATA_Fighting:getMonster()
@@ -37,8 +37,6 @@ end
 --攻击者数据
 function DATA_Fighting:getAttacker(type)
 	if type then
-	dump(type)
-	dump(_data["data"][turn][step]["adt"])
 		return _data["data"][turn][step]["adt"][type]
 	else
 		return _data["data"][turn][step]["adt"]
@@ -93,7 +91,6 @@ function DATA_Fighting:nextStep()
 		end
 	end
 	print("当前第",turn,"关第",step,"步")
---	dump(_data["data"][turn][step])
 	return nil
 end
 
