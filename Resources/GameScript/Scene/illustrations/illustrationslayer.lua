@@ -130,7 +130,7 @@ function Illustrlayer:createList(kind)
 			
 			if kind == 1 then
 				get_data["type"] = "hero"
-				get_data["path"] = "hero/s_"
+				get_data["path"] = "hero/S_"
 				get_data["info"] = "hero"
 			elseif kind == 2 then
 				get_data["type"] = "wuqi"

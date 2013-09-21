@@ -45,45 +45,27 @@ function FightRole:new(group,id,pos,total,params)
 	this.layer = CCLayer:create()
 	
 	this.params = params or {}
-	--战斗卡片背景
---	local bg = display.newSprite(PATH.."fight_back"..(pos % 4 + 1)..".png")
-	local bg = display.newSprite(PATH.."test_bg.png")
-	setAnchPos(bg)
-	this.layer:setContentSize(bg:getContentSize())
-	this.layer:addChild(bg)
 	
-	this.width = bg:getContentSize().width
-	this.height = bg:getContentSize().height
+	--战斗卡片背景
+	this.bg = display.newSprite(PATH.."test_bg.png")
+	setAnchPos(this.bg)
+	this.layer:setContentSize(this.bg:getContentSize())
+	this.layer:addChild(this.bg)
+	
+	this.width = this.bg:getContentSize().width
+	this.height = this.bg:getContentSize().height
 	this.group = group
 	this.id = id
 	this.pos = pos
---	
---	if group == 1 then --我方
---		if pos > 2 then
---			this.x = HEROSTART.x + (this.width + SPACE) * (pos - 3)			
---			this.y = HEROSTART.y - this.height * 1.7 + SPACE
---		else
---			this.x = HEROSTART.x + (this.width + SPACE) * pos
---			this.y = HEROSTART.y
---		end
---	else  --对方
---		if pos > 2 then
---			this.x = MONSTERSTART.x + (this.width + SPACE) * (pos - 3)			
---			this.y = MONSTERSTART.y + this.height * 1.7 - SPACE	
---		else
---			this.x = MONSTERSTART.x + (this.width + SPACE) *  pos 
---			this.y = MONSTERSTART.y
---		end
---	end
+
 	this.x = position[group][total][pos].x
 	this.y = position[group][total][pos].y
-	setAnchPos(this.layer, this.x,this.y)
+	setAnchPos(this.layer, this.x,this.y, 0.5, 0.5)
 	
 	--英雄图标
-	local icon = display.newSprite(IMG_ICON.."hero/M_"..id..".png")
---	local icon = display.newSprite(PATH.."test_hero.png")
-	setAnchPos(icon,this.width / 2, this.height / 2, 0.5, 0.5)
-	this.layer:addChild(icon)
+	this.icon = newSprite(IMG_ICON.."hero/M_"..id..".png")
+	setAnchPos(this.icon,this.width / 2, this.height / 2, 0.5, 0.5)
+	this.layer:addChild(this.icon)
 	
 --	--边框
 --	local border = display.newSprite(PATH.."fight_border"..(pos % 4 + 1)..".png")
@@ -113,7 +95,7 @@ function FightRole:new(group,id,pos,total,params)
 --	this.layer:addChild(bgLayer,5)	
 	
 	--点击事件
-	this.layer:setTouchEnabled(true)
+--	this.layer:setTouchEnabled(true)
 	this.layer:registerScriptTouchHandler(
 		function(type,x,y) 
 			if CCRectMake(this.x,this.y,this.width, this.height):containsPoint(ccp(x,y)) then
@@ -148,66 +130,35 @@ end
 
 --执行战斗动作 type攻击类型，role：是攻击者还是被攻击者,callback 回调， id,攻击效果的id
 function FightRole:doAction(type,role,callback,id)
-	local array = CCArray:create()
-	local flipX, flipY, anchX, anchY,moveY = false, false, 0, 0, 0 
+	local anchY,moveY =  0, 0 
 	if type == "atk" or type == "skill" then   --普通攻击
 		if role == "adt" then   --攻击者特效
-			if self.group == 1 then  --己方英雄
-				self.layer:setAnchorPoint(ccp(0.5,0.5))
-				flipX = true
-				anchX = 0.5
-				anchY = 0
-				moveY = 30
-			else
-				self.layer:setAnchorPoint(ccp(0.5,0.5))
-				flipY = true
-				anchX = 0.2 
-				anchY = 0.3
-				moveY = -30
-			end
-			array:addObject(CCMoveTo:create(0.1,ccp(self.x,self.y + moveY)))
-			array:addObject(CCRotateTo:create(0.1,5))  --攻击起手后仰
-			array:addObject(CCCallFunc:create(    --起手完成后开始播放特效
+			self:cardAct("adt",
 				function() 
 					if self.params["effect"] then
-						self.params["effect"]:showByType(id ,self.x + self.width / 2,self.y + self.height / 2,
+							self.params["effect"]:showByType(id ,self.x + self.width / 2,self.y + self.height / 2,
 						{
 							callback = 
 							function()
-								self.layer:runAction(CCMoveTo:create(0.1,ccp(self.x,self.y)))
+								self:act(id, nil, true)
 								if callback then
 									callback()
 								end
 							end,
 							group = self.group,
-							flipY = flipY,
-							flipX = flipX,
-							anchX = anchX,
-							anchY = anchY 
 						})
 					end
-				 end))
-			array:addObject(CCRotateBy:create(0.2,-360))  --攻击旋转
-			array:addObject(CCRotateTo:create(0.05,0))    --回位
-			self.layer:runAction(CCSequence:create(array))
+				 end, id)
 		else --被攻击的人
-			self.layer:setAnchorPoint(ccp(0.5,0.5))
-			array:addObject(CCCallFunc:create(
+			self:cardAct("beat",
 				function()
 					if self.params["effect"] then
 						self.params["effect"]:showByType(id,self.x + self.width / 2,self.y + self.height / 2,{
 							callback = callback,
-							anchX = 0.3,
-							anchY = 0.2,
 							group = self.group
 						})
 					end
-				end
-			))
-			array:addObject(CCScaleTo:create(0.04,1.2))			
-			array:addObject(CCScaleTo:create(0.04,0.8))			
-			array:addObject(CCScaleTo:create(0.04,1))
-			self.layer:runAction(CCSequence:create(array))
+				end, id)
 		end
 	elseif type == "skill" then
 		print("技能数据改")
@@ -219,4 +170,63 @@ function FightRole:doAction(type,role,callback,id)
 		print("其它的",type)
 	end
 end
-		return FightRole
+
+--卡牌的攻击表现
+function FightRole:cardAct(kind, callback, id)
+	local action
+	if kind == "adt" then
+		action = getSequence(CCMoveTo:create(0.1,ccp(self.x, self.y + (self.group == 1 and 30 or -30))),self:act(id, callback))
+			
+	else
+		action = getSequence(self:act(id, callback))
+	end
+	self.layer:runAction(action)
+end
+
+function FightRole:act(id,callback, finish)
+	local info = {
+		[1001] = "rotate", 
+		[1002] = "flip",
+		[1005] = "full",
+	}
+	local time
+	
+	if finish then
+		self.layer:runAction(CCMoveTo:create(0.1,ccp(self.x,self.y)))
+	end
+	if info[id] == "rotate" then
+		time = 0.2
+		if finish then
+		else
+			return CCCallFunc:create(callback),
+				 CCRotateBy:create(time, -360)	
+		end
+	elseif info[id] == "flip" then
+		time = 0.08
+		if finish then
+		else
+			return CCCallFunc:create(callback),
+				CCScaleTo:create(time, 0, 1),
+				CCScaleTo:create(time, 1, 1),
+				CCScaleTo:create(time, 0, 1),
+				CCScaleTo:create(time, 1, 1)
+		end
+	elseif info[id] == "full" then
+		if finish then
+			self.icon:setTexture(newSprite(IMG_ICON.."hero/M_"..self.id..".png"):getTexture())
+			self.bg:setVisible(true)	
+		else
+			self.icon:setTexture(newSprite(IMG_ICON.."hero/L_"..self.id..".png"):getTexture())
+			self.bg:setVisible(false)
+			return CCMoveTo:create(1, ccp(10, 425)), CCCallFunc:create(callback)
+		end
+	else
+		time = 0.04
+		return CCCallFunc:create(callback),
+			CCScaleTo:create(time, 1.2),
+			CCScaleTo:create(time, 0.8), 
+			CCScaleTo:create(time, 1)
+	end
+end
+
+return FightRole

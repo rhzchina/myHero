@@ -1,11 +1,11 @@
 local PATH = IMG_SCENE.."fighting/"
 local info = {
-          --num, {ox, oy, fx, fy}
+          --num, {ox, oy, fx, fy}, full
 	[1001] = {5, {{-30, 90, true}, {30, -90, false, true}}},
-	[1002] = {6, {{0, 0,}, {0, 0,}}},
+	[1002] = {6, {{0, 0,}, {0, -30,}}},
 	[1003] = {5, {}},
 	[1004] = {8, {}},
-	[1005] = {7, {}},
+	[1005] = {7, {}, true},
 	[2001] = {6, {{0, 0}, {0, 0}}},
 }
 
@@ -37,7 +37,6 @@ function Effect:showByType(type,x,y,params)
 	if type == 0 or type > 2001 then
 		type = 2001
 	end
-	
    --add effect 
 	if not self.added[type] then
 		print(type.."add complete")
@@ -73,12 +72,14 @@ function Effect:showByType(type,x,y,params)
 		end))
 	sprite:runAction(CCSequence:create(frames))
 	
-	dump(info[type])
-	print(type, params.group)
-	setAnchPos(sprite, x + info[type][2][params.group][1], y + info[type][2][params.group][2], 0.5, 0.5)
+	if info[type][3] then
+		setAnchPos(sprite, 240, 425, 0.5, 0.5)
+	else
+		setAnchPos(sprite, x + info[type][2][params.group][1], y + info[type][2][params.group][2], 0.5, 0.5)
 	
-	sprite:setFlipX(info[type][2][params.group][3])
-	sprite:setFlipY(info[type][2][params.group][4])
+		sprite:setFlipX(info[type][2][params.group][3])
+		sprite:setFlipY(info[type][2][params.group][4])
+	end
 	
 	self.layer:addChild(sprite)	
 end
