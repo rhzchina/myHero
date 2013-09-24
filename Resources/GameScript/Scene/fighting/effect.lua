@@ -1,12 +1,12 @@
 local PATH = IMG_SCENE.."fighting/"
 local info = {
           --num, {ox, oy, fx, fy}, full
-	[1001] = {5, {{-30, 90, true}, {30, -90, false, true}}},
-	[1002] = {6, {{0, 0,}, {0, -30,}}},
+	[1001] = {5, {{-30, 90, true}, {30, -90, false, true}}, false, 0.05},
+	[1002] = {6, {{0, 0,}, {0, -30,}}, false, 0.05},
 	[1003] = {5, {}},
 	[1004] = {8, {}},
-	[1005] = {7, {}, true},
-	[2001] = {6, {{0, 0}, {0, 0}}},
+	[1005] = {7, {}, true, 0.1},
+	[2001] = {6, {{0, 0}, {0, 0}}, false, 0.05},
 }
 
 local Effect = {
@@ -52,7 +52,7 @@ function Effect:showByType(type,x,y,params)
 	local sprite = newSprite()
 	
 	--创建动画及动画完成后的回调 
-	local animation = CCAnimation:createWithSpriteFrames(frames,0.05)
+	local animation = CCAnimation:createWithSpriteFrames(frames, info[type][4])
 	local animate = CCAnimate:create(animation)
 	frames:removeAllObjects()
 	frames:addObject(animate)

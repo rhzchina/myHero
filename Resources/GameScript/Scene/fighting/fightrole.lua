@@ -133,6 +133,7 @@ function FightRole:doAction(type,role,callback,id)
 	local anchY,moveY =  0, 0 
 	if type == "atk" or type == "skill" then   --普通攻击
 		if role == "adt" then   --攻击者特效
+--			id = 1005
 			self:cardAct("adt",
 				function() 
 					if self.params["effect"] then
@@ -140,7 +141,10 @@ function FightRole:doAction(type,role,callback,id)
 						{
 							callback = 
 							function()
-								self:act(id, nil, true)
+								local endAct = self:act(id, nil, true)
+								if endAct then
+									self.layer:runAction(endAct)
+								end
 								if callback then
 									callback()
 								end
@@ -175,7 +179,7 @@ end
 function FightRole:cardAct(kind, callback, id)
 	local action
 	if kind == "adt" then
-		action = getSequence(CCMoveTo:create(0.1,ccp(self.x, self.y + (self.group == 1 and 30 or -30))),self:act(id, callback))
+		action = getSequence(self:act(id, callback))
 			
 	else
 		action = getSequence(self:act(id, callback))
@@ -186,26 +190,43 @@ end
 function FightRole:act(id,callback, finish)
 	local info = {
 		[1001] = "rotate", 
-		[1002] = "flip",
+		[1002] = "scale",
 		[1005] = "full",
 	}
-	local time
+	
+	local prepare, time
 	
 	if finish then
-		self.layer:runAction(CCMoveTo:create(0.1,ccp(self.x,self.y)))
+		prepare = CCMoveTo:create(0.1,ccp(self.x,self.y))
+	else
+		prepare = CCMoveTo:create(0.1,ccp(self.x, self.y + (self.group == 1 and 30 or -30)))
 	end
+	
 	if info[id] == "rotate" then
 		time = 0.2
 		if finish then
+			return prepare
 		else
-			return CCCallFunc:create(callback),
+			return prepare, CCCallFunc:create(callback),
 				 CCRotateBy:create(time, -360)	
+		end
+	elseif info[id] == "scale" then
+		if finish then
+--			self.icon:setTexture(newSprite(IMG_ICON.."hero/M_"..self.id..".png"):getTexture())
+			self.icon:setScale(1)			
+			self.layer:runAction(getSequence(CCScaleTo:create(0.1, 0.8), CCScaleTo:create(0.1, 1)))
+		else
+--			self.icon:setTexture(newSprite(IMG_ICON.."hero/L_"..self.id..".png"):getTexture())
+			self.icon:runAction(CCScaleTo:create(0.1,1.8))
+--			self.icon:setScale(1.5)
+			return CCDelayTime:create(0.1), CCCallFunc:create(callback)
 		end
 	elseif info[id] == "flip" then
 		time = 0.08
 		if finish then
+			return prepare
 		else
-			return CCCallFunc:create(callback),
+			return prepare, CCCallFunc:create(callback),
 				CCScaleTo:create(time, 0, 1),
 				CCScaleTo:create(time, 1, 1),
 				CCScaleTo:create(time, 0, 1),
