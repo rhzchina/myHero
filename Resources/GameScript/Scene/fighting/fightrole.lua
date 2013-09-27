@@ -1,6 +1,6 @@
 local PATH = IMG_SCENE.."fighting/"
 local KNBar = require(SRC.."Common/KNBar")
-
+local timeChange = 1
 local HEROSTART, MONSTERSTART, SPACE = ccp(43,200), ccp(43,530), 40
 
 --上阵位置信息
@@ -141,7 +141,7 @@ function FightRole:doAction(type,role,callback,id)
 						{
 							callback = 
 							function()
-								local endAct = self:act(id, nil, true)
+								local endAct = self:act(id, nil, true, type == "skill")
 								if endAct then
 									self.layer:runAction(endAct)
 								end
@@ -187,14 +187,23 @@ function FightRole:cardAct(kind, callback, id)
 	self.layer:runAction(action)
 end
 
-function FightRole:act(id,callback, finish)
+function FightRole:act(id,callback, finish, noShake)
+	local timeInfo = {
+		["rotate"] = 0.2,
+		["scale"] = 0.1,
+		["flip"] = 0.08,
+		["full"] = 1,
+		["other"] = 0.04
+		
+	}
+	
 	local info = {
 		[1001] = "rotate", 
 		[1002] = "scale",
 		[1005] = "full",
 	}
 	
-	local prepare, time
+	local prepare
 	
 	if finish then
 		prepare = CCMoveTo:create(0.1,ccp(self.x,self.y))
@@ -202,8 +211,9 @@ function FightRole:act(id,callback, finish)
 		prepare = CCMoveTo:create(0.1,ccp(self.x, self.y + (self.group == 1 and 30 or -30)))
 	end
 	
+	local time = timeInfo[info[id] or "other"] / timeChange
+	
 	if info[id] == "rotate" then
-		time = 0.2
 		if finish then
 			return prepare
 		else
@@ -214,15 +224,14 @@ function FightRole:act(id,callback, finish)
 		if finish then
 --			self.icon:setTexture(newSprite(IMG_ICON.."hero/M_"..self.id..".png"):getTexture())
 			self.icon:setScale(1)			
-			self.layer:runAction(getSequence(CCScaleTo:create(0.1, 0.8), CCScaleTo:create(0.1, 1)))
+			self.layer:runAction(getSequence(CCScaleTo:create(time, 0.8), CCScaleTo:create(time, 1)))
 		else
 --			self.icon:setTexture(newSprite(IMG_ICON.."hero/L_"..self.id..".png"):getTexture())
-			self.icon:runAction(CCScaleTo:create(0.1,1.8))
+			self.icon:runAction(CCScaleTo:create(time,1.8))
 --			self.icon:setScale(1.5)
-			return CCDelayTime:create(0.1), CCCallFunc:create(callback)
+			return CCDelayTime:create(time), CCCallFunc:create(callback)
 		end
 	elseif info[id] == "flip" then
-		time = 0.08
 		if finish then
 			return prepare
 		else
@@ -239,14 +248,17 @@ function FightRole:act(id,callback, finish)
 		else
 			self.icon:setTexture(newSprite(IMG_ICON.."hero/L_"..self.id..".png"):getTexture())
 			self.bg:setVisible(false)
-			return CCMoveTo:create(1, ccp(10, 425)), CCCallFunc:create(callback)
+			return CCMoveTo:create(time, ccp(11, 425)), CCCallFunc:create(callback)
 		end
 	else
-		time = 0.04
-		return CCCallFunc:create(callback),
-			CCScaleTo:create(time, 1.2),
-			CCScaleTo:create(time, 0.8), 
-			CCScaleTo:create(time, 1)
+		if noShake then
+			return CCCallFunc:create(callback)
+		else
+			return CCCallFunc:create(callback),
+				CCScaleTo:create(time, 1.2),
+				CCScaleTo:create(time, 0.8), 
+				CCScaleTo:create(time, 1)
+		end
 	end
 end
 

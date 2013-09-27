@@ -1,12 +1,20 @@
 local PATH = IMG_SCENE.."fighting/"
+local SINGLE, ALL, FULL = 1, 2, 3   --特效类型，单体，全阵营， 全屏幕
+local timeChange = 1  --特效时间的控制
 local info = {
-          --num, {ox, oy, fx, fy}, full
-	[1001] = {5, {{-30, 90, true}, {30, -90, false, true}}, false, 0.05},
-	[1002] = {6, {{0, 0,}, {0, -30,}}, false, 0.05},
-	[1003] = {5, {}},
+          --num, {ox, oy, fx, fy}, type
+	[1001] = {5, {{-30, 90, true}, {30, -90, false, true}}, SINGLE, 0.05 / timeChange},
+	[1002] = {6, {{0, 0,}, {0, -30,}}, SINGLE, 0.08 / timeChange},
+	[1003] = {5, {0, 0}, {0, 0}, false, 0.1 / timeChange},
 	[1004] = {8, {}},
-	[1005] = {7, {}, true, 0.1},
-	[2001] = {6, {{0, 0}, {0, 0}}, false, 0.05},
+	[1005] = {14, {{0, 0},{0, 0}}, FULL, 0.1 / timeChange},
+	[2001] = {6, {{0, 0}, {0, 0}}, SINGLE, 0.08 / timeChange},
+	[2002] = {8, {{0, 0}, {0, 0}}, SINGLE, 0.1 / timeChange},
+	[2003] = {6, {{140, 0}, {140, 0}}, SINGLE, 0.1 / timeChange},
+	[2004] = {10, {{0, 0}, {0, 0}}, ALL, 0.1 / timeChange},
+	[2005] = {9, {{0, 0}, {0, 0}}, ALL, 0.1 / timeChange},
+	[2006] = {8, {{0, 0}, {0, 0}}, ALL, 0.1 / timeChange},
+	[2007] = {8, {{0, 0}, {0, 0}}, SINGLE, 0.1 / timeChange},
 }
 
 local Effect = {
@@ -34,8 +42,8 @@ function Effect:showByType(type,x,y,params)
 	local params = params or {}
 	local frames = CCArray:create()
 	--test code	
-	if type == 0 or type > 2001 then
-		type = 2001
+	if type == 0 or type == 2002 then
+				type =1005 
 	end
    --add effect 
 	if not self.added[type] then
@@ -72,7 +80,9 @@ function Effect:showByType(type,x,y,params)
 		end))
 	sprite:runAction(CCSequence:create(frames))
 	
-	if info[type][3] then
+	if info[type][3] == ALL then
+		setAnchPos(sprite, 240, y > 425  and 637 or 210, 0.5, 0.5)
+	elseif info[type][3] == FULL then
 		setAnchPos(sprite, 240, 425, 0.5, 0.5)
 	else
 		setAnchPos(sprite, x + info[type][2][params.group][1], y + info[type][2][params.group][2], 0.5, 0.5)

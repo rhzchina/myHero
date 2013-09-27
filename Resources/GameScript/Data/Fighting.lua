@@ -90,7 +90,10 @@ function DATA_Fighting:nextStep()
 			return _data["win"]
 		end
 	end
+	print("*****************************************")
 	print("当前第",turn,"关第",step,"步")
+	dump(_data["data"][turn][step])
+	print("*****************************************")
 	return nil
 end
 
