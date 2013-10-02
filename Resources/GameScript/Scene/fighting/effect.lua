@@ -1,20 +1,21 @@
 local PATH = IMG_SCENE.."fighting/"
-local SINGLE, ALL, FULL = 1, 2, 3   --特效类型，单体，全阵营， 全屏幕
+local SINGLE, FAR, ALL, FULL = 1, 2, 3, 4   --特效类型，单体，远程， 全阵营， 全屏幕
 local timeChange = 1  --特效时间的控制
 local info = {
           --num, {ox, oy, fx, fy}, type
-	[1001] = {5, {{-30, 90, true}, {30, -90, false, true}}, SINGLE, 0.05 / timeChange},
-	[1002] = {6, {{0, 0,}, {0, -30,}}, SINGLE, 0.08 / timeChange},
-	[1003] = {5, {0, 0}, {0, 0}, false, 0.1 / timeChange},
+	[1001] = {5, {{-30, 90, true}, {30, -90, false, true}}, SINGLE, 0.05 },
+	[1002] = {6, {{0, 0,}, {0, -30,}}, SINGLE, 0.08 },
+	[1003] = {1, {{0, 0}, {0, 0}}, FAR, 0.1},
 	[1004] = {8, {}},
-	[1005] = {14, {{0, 0},{0, 0}}, FULL, 0.1 / timeChange},
-	[2001] = {6, {{0, 0}, {0, 0}}, SINGLE, 0.08 / timeChange},
-	[2002] = {8, {{0, 0}, {0, 0}}, SINGLE, 0.1 / timeChange},
-	[2003] = {6, {{140, 0}, {140, 0}}, SINGLE, 0.1 / timeChange},
-	[2004] = {10, {{0, 0}, {0, 0}}, ALL, 0.1 / timeChange},
-	[2005] = {9, {{0, 0}, {0, 0}}, ALL, 0.1 / timeChange},
-	[2006] = {8, {{0, 0}, {0, 0}}, ALL, 0.1 / timeChange},
-	[2007] = {8, {{0, 0}, {0, 0}}, SINGLE, 0.1 / timeChange},
+	[1005] = {14, {{0, 0},{0, 0}}, FULL, 0.1},
+	[2001] = {6, {{0, 0}, {0, 0}}, SINGLE, 0.08},
+	[2002] = {8, {{0, 0}, {0, 0}}, SINGLE, 0.1},
+	[2003] = {6, {{140, 0}, {140, 0}}, SINGLE, 0.1},
+	[2004] = {10, {{0, 0}, {0, 0}}, ALL, 0.1},
+	[2005] = {9, {{0, 0}, {0, 0}}, ALL, 0.1},
+	[2006] = {8, {{0, 0}, {0, 0}}, ALL, 0.1},
+	[2007] = {8, {{0, 0}, {0, 0}}, SINGLE, 0.1},
+	["explode"] = {6, {{0,0}, {0,0}}, SINGLE, 0.1},
 }
 
 local Effect = {
@@ -43,8 +44,10 @@ function Effect:showByType(type,x,y,params)
 	local params = params or {}
 	local frames = CCArray:create()
 	--test code	
-	if type == 0 or type == 2002 then
-				type = 2005 
+	if type == 0 or type == 2001 then
+		type = "explode" 
+	elseif type == 1001 then
+		type = 1003
 	end
    --add effect 
 	if not self.added[type] then
@@ -61,10 +64,15 @@ function Effect:showByType(type,x,y,params)
 	local sprite = newSprite()
 	
 	--创建动画及动画完成后的回调 
-	local animation = CCAnimation:createWithSpriteFrames(frames, info[type][4])
+	local animation = CCAnimation:createWithSpriteFrames(frames, info[type][4] / timeChange)
 	local animate = CCAnimate:create(animation)
 	frames:removeAllObjects()
-	frames:addObject(animate)
+	
+	if info[type][3] == FAR then
+		frames:addObject(CCMoveTo:create(1, ccp(0, 0)))
+	else
+		frames:addObject(animate)
+	end
 	frames:addObject(CCCallFunc:create(
 		function() 
 			self.layer:removeChild(sprite,true)				
@@ -80,6 +88,10 @@ function Effect:showByType(type,x,y,params)
 --				MsgBox.getInstance():flashShow("赢的人是",winner)
 --			end
 		end))
+	
+	if info[type][3] == FAR then
+		sprite:runAction(CCRepeatForever:create(animate))
+	end
 	sprite:runAction(CCSequence:create(frames))
 	
 	if info[type][3] == ALL then

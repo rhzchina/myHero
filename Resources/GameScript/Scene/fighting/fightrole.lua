@@ -134,7 +134,6 @@ function FightRole:doAction(type,role,callback,id, hpChange, sId)
 	local anchY,moveY =  0, 0 
 	if type == "atk" or type == "skill" then   --普通攻击
 		if role == "adt" then   --攻击者特效
-			id = 1005
 			self:cardAct("adt",
 				function() 
 					if self.params["effect"] then
@@ -184,7 +183,6 @@ function FightRole:cardAct(kind, callback, id, hpChange)
 		action = getSequence(self:act(id, callback))
 			
 	else
-		id = 2005
 		 action = getSequence(self:act(id, callback, nil,  hpChange))
 	end
 	self.layer:runAction(action)
@@ -204,6 +202,8 @@ function FightRole:act(id,callback, finish, hpChange)
 		[1001] = {"rotate"}, 
 		[1002] = {"scale"},
 		[1005] = {"full"},
+		[2001] = {"other",0},
+		[2002] = {"other",0.2},
 		[2005] = {"other",0.55},
 		[2007] = {"other",0.2},
 	}
@@ -280,7 +280,7 @@ function FightRole:act(id,callback, finish, hpChange)
 				CCScaleTo:create(time, 0.8), 
 				CCScaleTo:create(time, 1)
 		else
-			return CCCallFunc:create(callback)
+			return CCCallFunc:create(callback), CCCallFunc:create(hpChange)
 		end
 	end
 end
