@@ -22,6 +22,7 @@ xpcall(function()
 	CCDirector:sharedDirector():setProjection(kCCDirectorProjection2D)
 
 	require(SRC.."Config/base")	-- 配置文件
+	require(SRC.."Config/SkillConfig")	-- 配置文件
 	require(SRC.."Common/CommonFunction")
 	-- 引入 quick 框架
 	require("framework/init")

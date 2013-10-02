@@ -223,3 +223,24 @@ end
 		content = msg
 	})
 end
+
+function getAnimation(name, num, params)
+	local cache = CCSpriteFrameCache:sharedSpriteFrameCache()
+	local array = CCArray:create()
+	params = params or {}
+	
+	for i = 1, num do
+		array:addObject(cache:spriteFrameByName(name..i..".png"))
+	end
+	
+	local animation = CCAnimation:createWithSpriteFrames(array, params.delay or 1)
+	local animate = CCAnimate:create(animation)
+	
+	return getSequence(animate, CCCallFunc:create(function()
+		if params.callback then
+			params.callback()
+		else
+			print("动画播放完成")
+		end
+	end)) 
+end

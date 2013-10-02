@@ -20,7 +20,8 @@ local info = {
 local Effect = {
 	layer,
 	cache = CCSpriteFrameCache:sharedSpriteFrameCache(),
-	added
+	added,
+	name
 }
 
 function Effect:new()
@@ -43,7 +44,7 @@ function Effect:showByType(type,x,y,params)
 	local frames = CCArray:create()
 	--test code	
 	if type == 0 or type == 2002 then
-				type =1005 
+				type = 2005 
 	end
    --add effect 
 	if not self.added[type] then
@@ -67,6 +68,7 @@ function Effect:showByType(type,x,y,params)
 	frames:addObject(CCCallFunc:create(
 		function() 
 			self.layer:removeChild(sprite,true)				
+			self.layer:removeChild(self.name, true)
 			if params and params["callback"] then
 				params.callback()
 			end
@@ -84,6 +86,10 @@ function Effect:showByType(type,x,y,params)
 		setAnchPos(sprite, 240, y > 425  and 637 or 210, 0.5, 0.5)
 	elseif info[type][3] == FULL then
 		setAnchPos(sprite, 240, 425, 0.5, 0.5)
+		if params.name then
+			self.name = createLabel({str = params.name, color = ccc3(0, 0, 0), size = 65, x = 210, y = 350, width = 400})
+			self.layer:addChild(self.name, 1)
+		end
 	else
 		setAnchPos(sprite, x + info[type][2][params.group][1], y + info[type][2][params.group][2], 0.5, 0.5)
 	

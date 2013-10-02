@@ -34,7 +34,8 @@ local FightRole ={
 	pos,
 --	hpText,
 	hpProgress,
-	params	
+	params,
+	temp
 }
 
 function FightRole:new(group,id,pos,total,params)
@@ -128,12 +129,12 @@ function FightRole:getY()
 	return self.y
 end
 
---执行战斗动作 type攻击类型，role：是攻击者还是被攻击者,callback 回调， id,攻击效果的id
-function FightRole:doAction(type,role,callback,id)
+--执行战斗动作 type攻击类型，role：是攻击者还是被攻击者,callback 回调， id,攻击效果的id, hpChange:掉血动画，sId：技能id
+function FightRole:doAction(type,role,callback,id, hpChange, sId)
 	local anchY,moveY =  0, 0 
 	if type == "atk" or type == "skill" then   --普通攻击
 		if role == "adt" then   --攻击者特效
---			id = 1005
+			id = 1005
 			self:cardAct("adt",
 				function() 
 					if self.params["effect"] then
@@ -141,7 +142,7 @@ function FightRole:doAction(type,role,callback,id)
 						{
 							callback = 
 							function()
-								local endAct = self:act(id, nil, true, type == "skill")
+								local endAct = self:act(id, nil, true)
 								if endAct then
 									self.layer:runAction(endAct)
 								end
@@ -149,6 +150,7 @@ function FightRole:doAction(type,role,callback,id)
 									callback()
 								end
 							end,
+							name = sId and SkillConfig[sId].name or nil,
 							group = self.group,
 						})
 					end
@@ -162,7 +164,7 @@ function FightRole:doAction(type,role,callback,id)
 							group = self.group
 						})
 					end
-				end, id)
+				end, id, hpChange)
 		end
 	elseif type == "skill" then
 		print("技能数据改")
@@ -176,31 +178,34 @@ function FightRole:doAction(type,role,callback,id)
 end
 
 --卡牌的攻击表现
-function FightRole:cardAct(kind, callback, id)
+function FightRole:cardAct(kind, callback, id, hpChange)
 	local action
 	if kind == "adt" then
 		action = getSequence(self:act(id, callback))
 			
 	else
-		action = getSequence(self:act(id, callback))
+		id = 2005
+		 action = getSequence(self:act(id, callback, nil,  hpChange))
 	end
 	self.layer:runAction(action)
 end
 
-function FightRole:act(id,callback, finish, noShake)
+function FightRole:act(id,callback, finish, hpChange)
 	local timeInfo = {
 		["rotate"] = 0.2,
 		["scale"] = 0.1,
 		["flip"] = 0.08,
-		["full"] = 1,
+		["full"] = 500,   --全屏攻击的数值以移动的速度为单位
 		["other"] = 0.04
 		
 	}
 	
 	local info = {
-		[1001] = "rotate", 
-		[1002] = "scale",
-		[1005] = "full",
+		[1001] = {"rotate"}, 
+		[1002] = {"scale"},
+		[1005] = {"full"},
+		[2005] = {"other",0.55},
+		[2007] = {"other",0.2},
 	}
 	
 	local prepare
@@ -211,16 +216,18 @@ function FightRole:act(id,callback, finish, noShake)
 		prepare = CCMoveTo:create(0.1,ccp(self.x, self.y + (self.group == 1 and 30 or -30)))
 	end
 	
-	local time = timeInfo[info[id] or "other"] / timeChange
+	local time = timeInfo[info[id] and info[id][1] or "other"] / timeChange
 	
-	if info[id] == "rotate" then
+	local kind = info[id] and info[id][1] or "other"
+	
+	if kind == "rotate" then
 		if finish then
 			return prepare
 		else
 			return prepare, CCCallFunc:create(callback),
 				 CCRotateBy:create(time, -360)	
 		end
-	elseif info[id] == "scale" then
+	elseif kind == "scale" then
 		if finish then
 --			self.icon:setTexture(newSprite(IMG_ICON.."hero/M_"..self.id..".png"):getTexture())
 			self.icon:setScale(1)			
@@ -231,7 +238,7 @@ function FightRole:act(id,callback, finish, noShake)
 --			self.icon:setScale(1.5)
 			return CCDelayTime:create(time), CCCallFunc:create(callback)
 		end
-	elseif info[id] == "flip" then
+	elseif kind == "flip" then
 		if finish then
 			return prepare
 		else
@@ -241,23 +248,39 @@ function FightRole:act(id,callback, finish, noShake)
 				CCScaleTo:create(time, 0, 1),
 				CCScaleTo:create(time, 1, 1)
 		end
-	elseif info[id] == "full" then
+	elseif kind == "full" then
+		time = math.sqrt(math.pow(425 - self.height / 2 - self.y, 2) + math.pow(10 - self.x, 2)) / time / timeChange
+		
+		
 		if finish then
-			self.icon:setTexture(newSprite(IMG_ICON.."hero/M_"..self.id..".png"):getTexture())
-			self.bg:setVisible(true)	
+			self.params.base:removeChild(self.temp, true)
+			self.params.parent:setVisible(true)
+			return prepare
 		else
-			self.icon:setTexture(newSprite(IMG_ICON.."hero/L_"..self.id..".png"):getTexture())
-			self.bg:setVisible(false)
-			return CCMoveTo:create(time, ccp(11, 425)), CCCallFunc:create(callback)
+--			self.icon:setTexture(newSprite(IMG_ICON.."hero/L_"..self.id..".png"):getTexture())
+--			self.bg:setVisible(false)
+			return prepare, getSpawn(CCCallFunc:create(function()
+					self.temp = newSprite(IMG_ICON.."hero/L_"..self.id..".png")
+					self.temp:setScaleX(self.width / self.temp:getContentSize().width)
+					self.temp:setScaleY(self.height/ self.temp:getContentSize().height)
+					setAnchPos(self.temp, self.x, self.y)
+					self.params.base:addChild(self.temp)		
+					self.params.parent:setVisible(false)
+					self.temp:runAction(getSpawn(
+						CCMoveTo:create(time, ccp(0, 400 - self.temp:getContentSize().height / 2)),
+						CCScaleTo:create(time, 0.9, 0.9)))
+				end)
+				), CCDelayTime:create(time), CCCallFunc:create(callback)
 		end
 	else
-		if noShake then
-			return CCCallFunc:create(callback)
-		else
-			return CCCallFunc:create(callback),
+		if info[id] and info[id][2] then
+			return CCCallFunc:create(callback), CCDelayTime:create(info[id] and info[id][2] or 0),
+				CCCallFunc:create(hpChange),			
 				CCScaleTo:create(time, 1.2),
 				CCScaleTo:create(time, 0.8), 
 				CCScaleTo:create(time, 1)
+		else
+			return CCCallFunc:create(callback)
 		end
 	end
 end

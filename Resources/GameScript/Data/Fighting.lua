@@ -45,6 +45,7 @@ end
 
 --被攻击者数据
 function DATA_Fighting:getVictim(index,type)
+print(index,type)
 	if table.nums(_data["data"][turn][step]["beatt"]) > 0 then
 		if type then
 			return _data["data"][turn][step]["beatt"][index][type]
@@ -77,6 +78,10 @@ function DATA_Fighting:clear(clearData)
 	end
 	step = 1
 	turn = 1
+end
+
+function DATA_Fighting:haveData()
+	return _data
 end
 
 function DATA_Fighting:nextStep()

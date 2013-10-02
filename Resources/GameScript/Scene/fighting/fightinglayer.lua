@@ -12,14 +12,12 @@ local FightLayer = {
 }
 
 function FightLayer:new()
-local this = {}	
+	local this = {}	
 	setmetatable(this,self)
 	self.__index = self
 	DATA_Fighting:getAttackType()
 	
 	this.layer = CCLayer:create()
-	this.roleLayer = CCLayer:create()
-	this.effect = Effect:new()
 	
 	this.group = {
 		{}, --我方上阵英雄
@@ -40,20 +38,47 @@ local this = {}
 		end})
 	this.layer:addChild(exit:getLayer())
 	
+	CCSpriteFrameCache:sharedSpriteFrameCache():addSpriteFramesWithFile(PATH.."fight.plist", PATH.."fight.png")
+	
+	local sprite = newSprite(nil, 240, 425, 0.5, 0.5)
+	
+	this.layer:addChild(sprite)
+	
+	audio.playMusic(SOUND.."fight_start.ogg")
+	sprite:runAction(getAnimation("fight_", 12, {delay = 0.08, callback = function()
+		sprite:runAction(getSequence(CCFadeOut:create(0.5), CCCallFunc:create(function()
+			this.layer:removeChild(sprite, true)	
+			CCSpriteFrameCache:sharedSpriteFrameCache():removeSpriteFramesFromFile(PATH.."fight.plist")
+			this:showFight()
+		end)))
+	
+	end}))
+
+--	this:showFight()
+	return this
+end
+
+function FightLayer:showFight()
+	if self.roleLayer then
+		self.layer:removeChild(self.roleLayer, true)
+	end
+	self.roleLayer = newLayer() 
+	self.effect = Effect:new()
+	
 	--初始化英雄
 	for i, v in pairs(data:getHero()) do
 --		this.group[1][i - 1] = FightRole:new(1, v["id"], i - 1,{hp = v["hp"],star = v["star"] ,effect = this.effect}) 
 --		this.roleLayer:addChild(this.group[1][i - 1]:getLayer())
-		this.group[1][i] = FightRole:new(1, v["id"], i , #data:getHero(),{hp = v["hp"],star = v["star"] ,effect = this.effect}) 
-		this.roleLayer:addChild(this.group[1][i]:getLayer())
+		self.group[1][i] = FightRole:new(1, v["id"], i , #data:getHero(),{hp = v["hp"],star = v["star"] ,effect = self.effect, parent = self.roleLayer, base = self.layer}) 
+		self.roleLayer:addChild(self.group[1][i]:getLayer())
 	end
 	
 	--初始化怪兽
 	for i,v in pairs(data:getMonster()) do
 --		this.group[2][i - 1] = FightRole:new(2, v["id"], i - 1,{hp = v["hp"],star = v["star"],effect = this.effect}) 
 --		this.roleLayer:addChild(this.group[2][i - 1]:getLayer())
-			this.group[2][i] = FightRole:new(2, v["id"], i , #data:getMonster(),{hp = v["hp"],star = v["star"],effect = this.effect}) 
-		this.roleLayer:addChild(this.group[2][i]:getLayer())
+		self.group[2][i] = FightRole:new(2, v["id"], i , #data:getMonster(),{hp = v["hp"],star = v["star"],effect = self.effect, parent = self.roleLayer, base = self.layer}) 
+		self.roleLayer:addChild(self.group[2][i]:getLayer())
 	end
 --	print("战斗开始")
 --		DATA_Fighting:getAttackType()
@@ -74,13 +99,11 @@ local this = {}
 --				print("战斗结束，胜利方是"..winner)
 --			end
 --		end,0.2,false)
-	this.layer:addChild(this.roleLayer)
-	this.layer:addChild(this.effect:getLayer())
+	self.layer:addChild(self.roleLayer)
+	self.layer:addChild(self.effect:getLayer())
 	
 	--战斗开始
-	
-	this:fightLogic()
-	return this
+	self:fightLogic()
 end
 
 function FightLayer:fightLogic()
@@ -98,11 +121,15 @@ function FightLayer:fightLogic()
 				else
 					str = ";"
 				end
-				self.effect:hpChange(data:getVictim(i, "type") or "normal",str,
-					data:getVictim(i,"chance"),
-					self.group[data:getVictim(i,"group")][data:getVictim(i,"index")]:getX(),
-					self.group[data:getVictim(i,"group")][data:getVictim(i,"index")]:getY()
-				)
+				local function showHp()
+					if data:haveData() then
+						self.effect:hpChange(data:getVictim(i, "type") or "normal",str,
+							data:getVictim(i,"chance"),
+							self.group[data:getVictim(i,"group")][data:getVictim(i,"index")]:getX(),
+							self.group[data:getVictim(i,"group")][data:getVictim(i,"index")]:getY()
+						)
+					end
+				end
 				self.group[data:getVictim(i,"group")][data:getVictim(i,"index")]:setHp(data:getVictim(i,"hp"))
 				--被攻击者动画	
 				self.group[data:getVictim(i,"group")][data:getVictim(i,"index")]:doAction(
@@ -118,9 +145,9 @@ function FightLayer:fightLogic()
 								data:clear(true)
 							end
 						end
-					end,data:getVictim(i, "res_id"))
+					end,data:getVictim(i, "res_id"), showHp)
 			end
-		end,data:getAttacker("res_id"))
+		end,data:getAttacker("res_id"), nil, data:getAttacker("s_id"))
 end
  
 
