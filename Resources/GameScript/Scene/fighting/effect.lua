@@ -5,8 +5,8 @@ local info = {
           --num, {ox, oy, fx, fy}, type
 	[1001] = {5, {{-30, 90, true}, {30, -90, false, true}}, SINGLE, 0.05 },
 	[1002] = {6, {{0, 0,}, {0, -30,}}, SINGLE, 0.08 },
-	[1003] = {1, {{0, 0}, {0, 0}}, FAR, 0.1},
-	[1004] = {8, {}},
+	[1003] = {1, {{0, 0}, {0, 0, false, true}}, FAR, 0.1},
+	[1004] = {1, {{0, 0}, {0, 0, false, true}}, FAR, 0.1},
 	[1005] = {14, {{0, 0},{0, 0}}, FULL, 0.1},
 	[2001] = {6, {{0, 0}, {0, 0}}, SINGLE, 0.08},
 	[2002] = {8, {{0, 0}, {0, 0}}, SINGLE, 0.1},
@@ -44,10 +44,8 @@ function Effect:showByType(type,x,y,params)
 	local params = params or {}
 	local frames = CCArray:create()
 	--test code	
-	if type == 0 or type == 2001 then
+	if type == 0 then
 		type = "explode" 
-	elseif type == 1001 then
-		type = 1003
 	end
    --add effect 
 	if not self.added[type] then
@@ -63,13 +61,35 @@ function Effect:showByType(type,x,y,params)
 	--创建精灵来播放动画
 	local sprite = newSprite()
 	
+	if info[type][3] == ALL then
+		setAnchPos(sprite, 240, y > 425  and 637 or 210, 0.5, 0.5)
+	elseif info[type][3] == FULL then
+		setAnchPos(sprite, 240, 425, 0.5, 0.5)
+		if params.name then
+			self.name = createLabel({str = params.name, color = ccc3(0, 0, 0), size = 65, x = 210, y = 350, width = 400})
+			self.layer:addChild(self.name, 1)
+		end
+	else
+		setAnchPos(sprite, x + info[type][2][params.group][1], y + info[type][2][params.group][2], 0.5, 0.5)
+	
+		sprite:setFlipX(info[type][2][params.group][3])
+		sprite:setFlipY(info[type][2][params.group][4])
+	end
+	
 	--创建动画及动画完成后的回调 
 	local animation = CCAnimation:createWithSpriteFrames(frames, info[type][4] / timeChange)
 	local animate = CCAnimate:create(animation)
 	frames:removeAllObjects()
 	
 	if info[type][3] == FAR then
-		frames:addObject(CCMoveTo:create(1, ccp(0, 0)))
+		local time = math.sqrt(math.pow(params.target[1].x + params.width / 2 - x,2) + math.pow(params.target[1].y + params.height / 2 - y,2)) / 800 / timeChange
+		local rotate = math.deg(math.atan((params.target[1].y  - y) / (params.target[1].x - x)))
+		if x == params.target[1].x + params.width / 2 then  
+			rotate = 0 
+		end
+		sprite:setRotation(rotate)
+		
+		frames:addObject(CCMoveTo:create(time, ccp(params.target[1].x + params.width / 2, params.target[1].y + params.height / 2)))
 	else
 		frames:addObject(animate)
 	end
@@ -94,20 +114,7 @@ function Effect:showByType(type,x,y,params)
 	end
 	sprite:runAction(CCSequence:create(frames))
 	
-	if info[type][3] == ALL then
-		setAnchPos(sprite, 240, y > 425  and 637 or 210, 0.5, 0.5)
-	elseif info[type][3] == FULL then
-		setAnchPos(sprite, 240, 425, 0.5, 0.5)
-		if params.name then
-			self.name = createLabel({str = params.name, color = ccc3(0, 0, 0), size = 65, x = 210, y = 350, width = 400})
-			self.layer:addChild(self.name, 1)
-		end
-	else
-		setAnchPos(sprite, x + info[type][2][params.group][1], y + info[type][2][params.group][2], 0.5, 0.5)
 	
-		sprite:setFlipX(info[type][2][params.group][3])
-		sprite:setFlipY(info[type][2][params.group][4])
-	end
 	
 	self.layer:addChild(sprite)	
 end

@@ -130,40 +130,49 @@ function FightRole:getY()
 end
 
 --执行战斗动作 type攻击类型，role：是攻击者还是被攻击者,callback 回调， id,攻击效果的id, hpChange:掉血动画，sId：技能id
-function FightRole:doAction(type,role,callback,id, hpChange, sId)
-	local anchY,moveY =  0, 0 
+--function FightRole:doAction(type,role,callback,id, hpChange, sId)
+function FightRole:doAction(type, role, params)
+	params = params or {}
+	
 	if type == "atk" or type == "skill" then   --普通攻击
 		if role == "adt" then   --攻击者特效
+			local target = {}
+			for i = 1, #params.target do
+				target[i] = position[params.target[i][1]][self.group == 1 and #DATA_Fighting:getMonster() or #DATA_Fighting:getHero()][params.target[i][2]]
+			end
 			self:cardAct("adt",
 				function() 
 					if self.params["effect"] then
-							self.params["effect"]:showByType(id ,self.x + self.width / 2,self.y + self.height / 2,
+							self.params["effect"]:showByType(params.res_id ,self.x + self.width / 2,self.y + self.height / 2,
 						{
 							callback = 
 							function()
-								local endAct = self:act(id, nil, true)
+								local endAct = self:act(params.res_id, nil, true)
 								if endAct then
 									self.layer:runAction(endAct)
 								end
-								if callback then
-									callback()
+								if params.callback then
+									params.callback()
 								end
 							end,
-							name = sId and SkillConfig[sId].name or nil,
+							name = params.skill_id and SkillConfig[params.skill_id].name or nil,
 							group = self.group,
+							target =  target,
+							width = self.width,
+							height = self.height
 						})
 					end
-				 end, id)
+				 end, params.res_id)
 		else --被攻击的人
 			self:cardAct("beat",
 				function()
 					if self.params["effect"] then
-						self.params["effect"]:showByType(id,self.x + self.width / 2,self.y + self.height / 2,{
-							callback = callback,
+						self.params["effect"]:showByType(params.res_id,self.x + self.width / 2,self.y + self.height / 2,{
+							callback = params.callback,
 							group = self.group
 						})
 					end
-				end, id, hpChange)
+				end, params.res_id, params.hpChange)
 		end
 	elseif type == "skill" then
 		print("技能数据改")
@@ -179,12 +188,14 @@ end
 --卡牌的攻击表现
 function FightRole:cardAct(kind, callback, id, hpChange)
 	local action
+	print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
 	if kind == "adt" then
 		action = getSequence(self:act(id, callback))
 			
 	else
 		 action = getSequence(self:act(id, callback, nil,  hpChange))
 	end
+	print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
 	self.layer:runAction(action)
 end
 
@@ -201,6 +212,8 @@ function FightRole:act(id,callback, finish, hpChange)
 	local info = {
 		[1001] = {"rotate"}, 
 		[1002] = {"scale"},
+		[1003] = {"flip"},
+		[1004] = {"flip"},
 		[1005] = {"full"},
 		[2001] = {"other",0},
 		[2002] = {"other",0.2},
@@ -275,12 +288,12 @@ function FightRole:act(id,callback, finish, hpChange)
 	else
 		if info[id] and info[id][2] then
 			return CCCallFunc:create(callback), CCDelayTime:create(info[id] and info[id][2] or 0),
-				CCCallFunc:create(hpChange),			
+				hpChange and CCCallFunc:create(hpChange) or nil,			
 				CCScaleTo:create(time, 1.2),
 				CCScaleTo:create(time, 0.8), 
 				CCScaleTo:create(time, 1)
 		else
-			return CCCallFunc:create(callback), CCCallFunc:create(hpChange)
+			return CCCallFunc:create(callback), hpChange and CCCallFunc:create(hpChange) or nil
 		end
 	end
 end

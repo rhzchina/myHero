@@ -108,46 +108,65 @@ end
 
 function FightLayer:fightLogic()
 --dump(data:getAttacker())
+local targetList = {}
+for i = 1, data:getVictimCount() do
+	targetList[i] = {}
+	targetList[i][1] = data:getVictim(i, "group")
+	targetList[i][2] = data:getVictim(i, "index")
+end
 	self.group[data:getAttacker("group")][data:getAttacker("index")]:doAction(
 		data:getAttackType("type"),  --攻击类型
 		"adt",                  --角色状态，攻击:adt,被攻击beatt
-		function()              --回调,这里当攻击动画开始后，回调 函数为被 攻击者动画，找合适的时间播放 
-			--掉血动画
-			local num = data:getVictimCount()
-			local str
-			for i = 1, num do
-				if data:getVictim(i,"type") == "blood" then
-					str = ":"
-				else
-					str = ";"
-				end
-				local function showHp()
-					if data:haveData() then
-						self.effect:hpChange(data:getVictim(i, "type") or "normal",str,
-							data:getVictim(i,"chance"),
-							self.group[data:getVictim(i,"group")][data:getVictim(i,"index")]:getX(),
-							self.group[data:getVictim(i,"group")][data:getVictim(i,"index")]:getY()
-						)
-					end
-				end
-				self.group[data:getVictim(i,"group")][data:getVictim(i,"index")]:setHp(data:getVictim(i,"hp"))
-				--被攻击者动画	
-				self.group[data:getVictim(i,"group")][data:getVictim(i,"index")]:doAction(
-					data:getAttackType("type"),
-					"beatt",
-					function()
-					    if i == num then	
-							local winner = data:nextStep()
-							if not winner then
-								self:fightLogic()
-							else
-								self.layer:addChild(Result:new(winner,data:getHero(),data:getResult("guanka")):getLayer())	
-								data:clear(true)
+		{	
+			callback = 
+				function()              --回调,这里当攻击动画开始后，回调 函数为被 攻击者动画，找合适的时间播放 
+					--掉血动画
+					local num = data:getVictimCount()
+					local str
+					for i = 1, num do
+						if data:getVictim(i,"type") == "blood" then
+							str = ":"
+						else
+							str = ";"
+						end
+						local function showHp()
+							if data:haveData() then
+								--掉血动画	
+								self.effect:hpChange(data:getVictim(i, "type") or "normal",str,
+									data:getVictim(i,"chance"),
+									 self.group[data:getVictim(i,"group")][data:getVictim(i,"index")]:getX(),
+									self.group[data:getVictim(i,"group")][data:getVictim(i,"index")]:getY()
+								)
+								--设置当前血量
+								self.group[data:getVictim(i,"group")][data:getVictim(i,"index")]:setHp(data:getVictim(i,"hp"))
 							end
 						end
-					end,data:getVictim(i, "res_id"), showHp)
-			end
-		end,data:getAttacker("res_id"), nil, data:getAttacker("s_id"))
+						--被攻击者动画	
+						self.group[data:getVictim(i,"group")][data:getVictim(i,"index")]:doAction(
+							data:getAttackType("type"),
+							"beatt",
+							{
+								callback = 
+									function()
+									    if i == num then	
+											local winner = data:nextStep()
+											if not winner then
+												self:fightLogic()
+											else
+												self.layer:addChild(Result:new(winner,data:getHero(),data:getResult("guanka")):getLayer())	
+												data:clear(true)
+											end
+										end
+									end,
+								res_id = data:getVictim(i, "res_id"),
+								hpChange =  showHp
+							})
+					end
+				end,
+				target = targetList,
+				res_id = data:getAttacker("res_id"),
+				skill_id =  data:getAttacker("s_id")
+		})
 end
  
 
