@@ -1,5 +1,5 @@
 local PATH = IMG_SCENE.."detail/"
-local CardInfo = require(SRC.."Scene/common/CardInfo")
+local CardInfo = requires(SRC.."Scene/common/CardInfo")
 local CardDetail = {
 	layer,
 	contentLayer,

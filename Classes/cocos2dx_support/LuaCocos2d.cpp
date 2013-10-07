@@ -22,6 +22,7 @@ TOLUA_API int  tolua_Cocos2d_open (lua_State* tolua_S);
 
 #include "network/CCNetwork.h"
 
+#include "UpdataRes/UpdataRes.h"
 // using namespace std;
 // using namespace cocos2d;
 // using namespace cocos2d::extra;
@@ -493,7 +494,7 @@ static void tolua_reg_types (lua_State* tolua_S)
 
  tolua_usertype(tolua_S,"LuaSocket");
  tolua_usertype(tolua_S,"AnimatePacker");
-
+ tolua_usertype(tolua_S,"UpdataRes");
 
  tolua_usertype(tolua_S,"CCNetwork");
  tolua_usertype(tolua_S,"CCHTTPRequest");
@@ -56086,6 +56087,381 @@ tolua_lerror:
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: getInstance of class  UpdataRes */
+#ifndef TOLUA_DISABLE_tolua_Cocos2d_UpdataRes_getInstance00
+static int tolua_Cocos2d_UpdataRes_getInstance00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+	tolua_Error tolua_err;
+	if (
+		!tolua_isusertable(tolua_S,1,"UpdataRes",0,&tolua_err) ||
+		!tolua_isnoobj(tolua_S,2,&tolua_err)
+		)
+		goto tolua_lerror;
+	else
+#endif
+	{
+		{
+			class UpdataRes* tolua_ret = (class UpdataRes*)  UpdataRes::getInstance();
+			tolua_pushusertype(tolua_S,(void*)tolua_ret,"UpdataRes");
+		}
+	}
+	return 1;
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+	tolua_error(tolua_S,"#ferror in function 'getInstance'.",&tolua_err);
+	return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: loadDown of class  UpdataRes */
+#ifndef TOLUA_DISABLE_tolua_Cocos2d_UpdataRes_loadDown00
+static int tolua_Cocos2d_UpdataRes_loadDown00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+	tolua_Error tolua_err;
+	if (
+		!tolua_isusertype(tolua_S,1,"UpdataRes",0,&tolua_err) ||
+		!tolua_isstring(tolua_S,2,0,&tolua_err) ||
+		!tolua_isstring(tolua_S,3,0,&tolua_err) ||
+		!tolua_isstring(tolua_S,4,0,&tolua_err) ||
+		!toluafix_isfunction(tolua_S,5,"LUA_FUNCTION",0,&tolua_err)||
+		!tolua_isnoobj(tolua_S,6,&tolua_err)
+		)
+		goto tolua_lerror;
+	else
+#endif
+	{
+		UpdataRes* self = (UpdataRes*)  tolua_tousertype(tolua_S,1,0);
+		const char* url = ((const char*)  tolua_tostring(tolua_S,2,0));
+		const char* path = ((const char*)  tolua_tostring(tolua_S,3,0));
+		const char* name = ((const char*)  tolua_tostring(tolua_S,4,0));
+		LUA_FUNCTION _logout_callback = toluafix_ref_function(tolua_S,5,0);
+#ifndef TOLUA_RELEASE
+		if (!self) tolua_error(tolua_S,"invalid 'self' in function 'loadDown'", NULL);
+#endif
+		{
+			self->loadDown(url,path,name,_logout_callback);
+		}
+	}
+	return 0;
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+	tolua_error(tolua_S,"#ferror in function 'loadDown'.",&tolua_err);
+	return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: loadSchedule of class  UpdataRes */
+#ifndef TOLUA_DISABLE_tolua_Cocos2d_UpdataRes_loadSchedule00
+static int tolua_Cocos2d_UpdataRes_loadSchedule00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+	tolua_Error tolua_err;
+	if (
+		!tolua_isusertype(tolua_S,1,"UpdataRes",0,&tolua_err) ||
+		!tolua_isnoobj(tolua_S,2,&tolua_err)
+		)
+		goto tolua_lerror;
+	else
+#endif
+	{
+		UpdataRes* self = (UpdataRes*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+		if (!self) tolua_error(tolua_S,"invalid 'self' in function 'loadSchedule'", NULL);
+#endif
+		{
+			int tolua_ret = (int)  self->loadSchedule();
+			tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+		}
+	}
+	return 1;
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+	tolua_error(tolua_S,"#ferror in function 'loadSchedule'.",&tolua_err);
+	return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: get_type of class  UpdataRes */
+#ifndef TOLUA_DISABLE_tolua_Cocos2d_UpdataRes_get_type00
+static int tolua_Cocos2d_UpdataRes_get_type00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+	tolua_Error tolua_err;
+	if (
+		!tolua_isusertype(tolua_S,1,"UpdataRes",0,&tolua_err) ||
+		!tolua_isnoobj(tolua_S,2,&tolua_err)
+		)
+		goto tolua_lerror;
+	else
+#endif
+	{
+		UpdataRes* self = (UpdataRes*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+		if (!self) tolua_error(tolua_S,"invalid 'self' in function 'get_type'", NULL);
+#endif
+		{
+			int tolua_ret = (int)  self->get_type();
+			tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+		}
+	}
+	return 1;
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+	tolua_error(tolua_S,"#ferror in function 'get_type'.",&tolua_err);
+	return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+
+/* method: copydata of class  UpdataRes */
+#ifndef TOLUA_DISABLE_tolua_Cocos2d_UpdataRes_copydata00
+static int tolua_Cocos2d_UpdataRes_copydata00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+	tolua_Error tolua_err;
+	if (
+		!tolua_isusertype(tolua_S,1,"UpdataRes",0,&tolua_err) ||
+		!tolua_isstring(tolua_S,2,0,&tolua_err) ||
+		!tolua_isstring(tolua_S,3,0,&tolua_err) ||
+		// !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
+		(tolua_isvaluenil(tolua_S,4,&tolua_err) || !toluafix_isfunction(tolua_S,4,"LUA_FUNCTION",0,&tolua_err)) ||
+		!tolua_isnoobj(tolua_S,5,&tolua_err)
+		)
+		goto tolua_lerror;
+	else
+#endif
+	{
+		UpdataRes* self = (UpdataRes*)  tolua_tousertype(tolua_S,1,0);
+		const char* assets = ((const char*)  tolua_tostring(tolua_S,2,0));
+		const char* sdcard = ((const char*)  tolua_tostring(tolua_S,3,0));
+		// int callbackHandler = ((int)  tolua_tonumber(tolua_S,4,0));
+		LUA_FUNCTION funcID = (toluafix_ref_function(tolua_S,4,0));
+#ifndef TOLUA_RELEASE
+		if (!self) tolua_error(tolua_S,"invalid 'self' in function 'copydata'", NULL);
+#endif
+		{
+			self->copydata(assets,sdcard,funcID);
+		}
+	}
+	return 0;
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+	tolua_error(tolua_S,"#ferror in function 'copydata'.",&tolua_err);
+	return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: get_copy of class  UpdataRes */
+#ifndef TOLUA_DISABLE_tolua_Cocos2d_UpdataRes_get_copy00
+static int tolua_Cocos2d_UpdataRes_get_copy00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+	tolua_Error tolua_err;
+	if (
+		!tolua_isusertype(tolua_S,1,"UpdataRes",0,&tolua_err) ||
+		!tolua_isnoobj(tolua_S,2,&tolua_err)
+		)
+		goto tolua_lerror;
+	else
+#endif
+	{
+		UpdataRes* self = (UpdataRes*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+		if (!self) tolua_error(tolua_S,"invalid 'self' in function 'get_copy'", NULL);
+#endif
+		{
+			int tolua_ret = (int)  self->get_copy();
+			tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+		}
+	}
+	return 1;
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+	tolua_error(tolua_S,"#ferror in function 'get_copy'.",&tolua_err);
+	return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: deleData of class  UpdataRes */
+#ifndef TOLUA_DISABLE_tolua_Cocos2d_UpdataRes_deleData00
+static int tolua_Cocos2d_UpdataRes_deleData00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+	tolua_Error tolua_err;
+	if (
+		!tolua_isusertype(tolua_S,1,"UpdataRes",0,&tolua_err) ||
+		!tolua_isstring(tolua_S,2,0,&tolua_err) ||
+		!tolua_isstring(tolua_S,3,0,&tolua_err) ||
+		!tolua_isnoobj(tolua_S,4,&tolua_err)
+		)
+		goto tolua_lerror;
+	else
+#endif
+	{
+		UpdataRes* self = (UpdataRes*)  tolua_tousertype(tolua_S,1,0);
+		const char* str = ((const char*)  tolua_tostring(tolua_S,2,0));
+		const char* bools = ((const char*)  tolua_tostring(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+		if (!self) tolua_error(tolua_S,"invalid 'self' in function 'deleData'", NULL);
+#endif
+		{
+			self->deleData(str,bools);
+		}
+	}
+	return 0;
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+	tolua_error(tolua_S,"#ferror in function 'deleData'.",&tolua_err);
+	return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: get_dele of class  UpdataRes */
+#ifndef TOLUA_DISABLE_tolua_Cocos2d_UpdataRes_get_dele00
+static int tolua_Cocos2d_UpdataRes_get_dele00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+	tolua_Error tolua_err;
+	if (
+		!tolua_isusertype(tolua_S,1,"UpdataRes",0,&tolua_err) ||
+		!tolua_isnoobj(tolua_S,2,&tolua_err)
+		)
+		goto tolua_lerror;
+	else
+#endif
+	{
+		UpdataRes* self = (UpdataRes*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+		if (!self) tolua_error(tolua_S,"invalid 'self' in function 'get_dele'", NULL);
+#endif
+		{
+			int tolua_ret = (int)  self->get_dele();
+			tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+		}
+	}
+	return 1;
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+	tolua_error(tolua_S,"#ferror in function 'get_dele'.",&tolua_err);
+	return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+/* method: openUrl of class  UpdataRes */
+#ifndef TOLUA_DISABLE_tolua_Cocos2d_UpdataRes_openUrl00
+static int tolua_Cocos2d_UpdataRes_openUrl00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+	tolua_Error tolua_err;
+	if (
+		!tolua_isusertype(tolua_S,1,"UpdataRes",0,&tolua_err) ||
+		!tolua_isstring(tolua_S,2,0,&tolua_err) ||
+		!tolua_isnoobj(tolua_S,3,&tolua_err)
+		)
+		goto tolua_lerror;
+	else
+#endif
+	{
+		UpdataRes* self = (UpdataRes*)  tolua_tousertype(tolua_S,1,0);
+		const char* url = ((const char*)  tolua_tostring(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+		if (!self) tolua_error(tolua_S,"invalid 'self' in function 'openUrl'", NULL);
+#endif
+		{
+			self->openUrl(url);
+		}
+	}
+	return 0;
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+	tolua_error(tolua_S,"#ferror in function 'openUrl'.",&tolua_err);
+	return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: DeviceId of class  UpdataRes */
+#ifndef TOLUA_DISABLE_tolua_Cocos2d_UpdataRes_DeviceId00
+static int tolua_Cocos2d_UpdataRes_DeviceId00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+	tolua_Error tolua_err;
+	if (
+		!tolua_isusertype(tolua_S,1,"UpdataRes",0,&tolua_err) ||
+		!tolua_isnoobj(tolua_S,2,&tolua_err)
+		)
+		goto tolua_lerror;
+	else
+#endif
+	{
+		UpdataRes* self = (UpdataRes*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+		if (!self) tolua_error(tolua_S,"invalid 'self' in function 'DeviceId'", NULL);
+#endif
+		{
+			char* tolua_ret = (char*)  self->DeviceId();
+			tolua_pushstring(tolua_S,(const char*)tolua_ret);
+		}
+	}
+	return 1;
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+	tolua_error(tolua_S,"#ferror in function 'DeviceId'.",&tolua_err);
+	return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: play of class  UpdataRes */
+#ifndef TOLUA_DISABLE_tolua_Cocos2d_UpdataRes_play00
+static int tolua_Cocos2d_UpdataRes_play00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+	tolua_Error tolua_err;
+	if (
+		!tolua_isusertype(tolua_S,1,"UpdataRes",0,&tolua_err) ||
+		!tolua_isstring(tolua_S,2,0,&tolua_err) ||
+		!tolua_isstring(tolua_S,3,0,&tolua_err) ||
+		!tolua_isstring(tolua_S,4,0,&tolua_err) ||
+		!tolua_isstring(tolua_S,5,0,&tolua_err) ||
+		!tolua_isstring(tolua_S,6,0,&tolua_err) ||
+		!tolua_isnoobj(tolua_S,7,&tolua_err)
+		)
+		goto tolua_lerror;
+	else
+#endif
+	{
+		UpdataRes* self = (UpdataRes*)  tolua_tousertype(tolua_S,1,0);
+		const char* order_form = ((const char*)  tolua_tostring(tolua_S,2,0));
+		const char* price = ((const char*)  tolua_tostring(tolua_S,3,0));
+		const char* pass_type = ((const char*)  tolua_tostring(tolua_S,4,0));
+		const char* num_value = ((const char*)  tolua_tostring(tolua_S,5,0));
+		const char* url = ((const char*)  tolua_tostring(tolua_S,6,0));
+#ifndef TOLUA_RELEASE
+		if (!self) tolua_error(tolua_S,"invalid 'self' in function 'play'", NULL);
+#endif
+		{
+			self->play(order_form,price,pass_type,num_value,url);
+		}
+	}
+	return 0;
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+	tolua_error(tolua_S,"#ferror in function 'play'.",&tolua_err);
+	return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 
 /* Open function */
 TOLUA_API int tolua_Cocos2d_open (lua_State* tolua_S)
@@ -58754,6 +59130,20 @@ TOLUA_API int tolua_Cocos2d_open (lua_State* tolua_S)
 		tolua_function(tolua_S,"createHTTPRequestLua",tolua_cocos2dx_extra_luabinding_CCNetwork_createHTTPRequestLua00);
 	tolua_endmodule(tolua_S);
 
+	tolua_cclass(tolua_S,"UpdataRes","UpdataRes","CCObject",NULL);
+	tolua_beginmodule(tolua_S,"UpdataRes");
+	tolua_function(tolua_S,"getInstance",tolua_Cocos2d_UpdataRes_getInstance00);
+	tolua_function(tolua_S,"loadDown",tolua_Cocos2d_UpdataRes_loadDown00);
+	tolua_function(tolua_S,"loadSchedule",tolua_Cocos2d_UpdataRes_loadSchedule00);
+	tolua_function(tolua_S,"get_type",tolua_Cocos2d_UpdataRes_get_type00);
+	tolua_function(tolua_S,"copydata",tolua_Cocos2d_UpdataRes_copydata00);
+	tolua_function(tolua_S,"get_copy",tolua_Cocos2d_UpdataRes_get_copy00);
+	tolua_function(tolua_S,"deleData",tolua_Cocos2d_UpdataRes_deleData00);
+	tolua_function(tolua_S,"get_dele",tolua_Cocos2d_UpdataRes_get_dele00);
+	tolua_function(tolua_S,"openUrl",tolua_Cocos2d_UpdataRes_openUrl00);
+	tolua_function(tolua_S,"DeviceId",tolua_Cocos2d_UpdataRes_DeviceId00);
+	 tolua_function(tolua_S,"play",tolua_Cocos2d_UpdataRes_play00);
+	tolua_endmodule(tolua_S);
 	//自定义调用的功能函数
 	tolua_function(tolua_S,"specialCall",tolua_cocos2dx_specialCall00);
  return 1;

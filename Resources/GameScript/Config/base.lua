@@ -13,17 +13,18 @@ CONFIG_SCREEN_HEIGHT = 854
 HOST_TYPE = "domain" 
 CONFIG_HOST = "http://ztczs.com:3325/"
 CONFIG_HTTP_URL = "http://ztczs.com:3325/"
+CONFIG_UPDATA_URL = "http://ztczs.com:2001"
 CONFIG_SOCKET_HOST = "ztczs.com"
 CONFIG_SOCKET_PORT = 6999
 	--资源路径
 
-SOUND = "sounds/"
-IMG = "images/"
+SOUND = IMG_PATH.."sounds/"
+IMG = IMG_PATH.."images/"
 IMG_BTN = IMG.."btn/"
 IMG_TEXT = IMG.."text/"
 IMG_SCENE = IMG.."scene/"
 IMG_COMMON = IMG.."common/"
 IMG_ICON = IMG.."icon/"
 IMG_EFFECT = IMG.."effect/"
-CONFIG_PATH = "GameScript/Config/"
+CONFIG_PATH = IMG_PATH.."GameScript/Config/"
 FONT = "方正胖娃简体"

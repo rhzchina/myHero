@@ -1,5 +1,5 @@
 local PATH = IMG_SCENE.."fighting/"
-local KNBar = require(SRC.."Common/KNBar")
+local KNBar = requires(SRC.."Common/KNBar")
 local timeChange = 1
 local HEROSTART, MONSTERSTART, SPACE = ccp(43,200), ccp(43,530), 40
 
@@ -35,6 +35,7 @@ local FightRole ={
 --	hpText,
 	hpProgress,
 	params,
+	lvLayer,
 	temp
 }
 
@@ -46,9 +47,10 @@ function FightRole:new(group,id,pos,total,params)
 	this.layer = CCLayer:create()
 	
 	this.params = params or {}
+	dump(params)
 	
 	--战斗卡片背景
-	this.bg = display.newSprite(PATH.."test_bg.png")
+	this.bg = newSprite(PATH.."test_bg.png")
 	setAnchPos(this.bg)
 	this.layer:setContentSize(this.bg:getContentSize())
 	this.layer:addChild(this.bg)
@@ -62,11 +64,7 @@ function FightRole:new(group,id,pos,total,params)
 	this.x = position[group][total][pos].x
 	this.y = position[group][total][pos].y
 	setAnchPos(this.layer, this.x,this.y, 0.5, 0.5)
-	
-	--英雄图标
-	this.icon = newSprite(IMG_ICON.."hero/M_"..id..".png")
-	setAnchPos(this.icon,this.width / 2, this.height / 2, 0.5, 0.5)
-	this.layer:addChild(this.icon)
+
 	
 --	--边框
 --	local border = display.newSprite(PATH.."fight_border"..(pos % 4 + 1)..".png")
@@ -84,17 +82,38 @@ function FightRole:new(group,id,pos,total,params)
 --	setAnchPos(bg)
 --	bgLayer:setContentSize(bg:getContentSize())
 --	bgLayer:addChild(bg)
---	
---	this.hpProgress = CCProgressTimer:create(display.newSprite(PATH.."fore.png"))
---	setAnchPos(this.hpProgress)
---	this.hpProgress:setType(kCCProgressTimerTypeBar)
---	this.hpProgress:setBarChangeRate(CCPointMake(1, 0)) --动画效果值(0或1)
---	this.hpProgress:setMidpoint(CCPointMake(0 , 1))--设置进度方向 (0-100)
---	this.hpProgress:setPercentage(0)	--设置默认进度值
---	this.hpProgress:runAction(CCProgressTo:create(0.5,100))
+	
+	this.hpProgress = CCProgressTimer:create(display.newSprite(PATH.."fore.png"))
+	setAnchPos(this.hpProgress, this.width / 2 + 2, 13, 0.5)
+	this.hpProgress:setType(kCCProgressTimerTypeBar)
+	this.hpProgress:setBarChangeRate(CCPointMake(1, 0)) --动画效果值(0或1)
+	this.hpProgress:setMidpoint(CCPointMake(0 , 1))--设置进度方向 (0-100)
+	this.hpProgress:setPercentage(0)	--设置默认进度值
+	this.hpProgress:runAction(CCProgressTo:create(0.5,100))
 --	bgLayer:addChild(this.hpProgress)
 --	this.layer:addChild(bgLayer,5)	
+	this.layer:addChild(this.hpProgress)
+
 	
+	--英雄图标
+	this.icon = newSprite(IMG_ICON.."hero/M_"..id..".png")
+	setAnchPos(this.icon,this.width / 2, this.height / 2, 0.5, 0.5)
+	this.layer:addChild(this.icon)
+	
+	this.lvLayer = newLayer()	
+	local levelBg = newSprite(PATH.."level_bg.png")
+	
+	this.lvLayer:setContentSize(levelBg:getContentSize())
+	setAnchPos(this.lvLayer, 15, 5)
+	local levelBg = newSprite(PATH.."level_bg.png")
+	this.lvLayer:addChild(levelBg)
+	
+	levelBg = createLabel({str = params.lv, color = ccc3(255, 0, 0), size = 18})
+	setAnchPos(levelBg, 20, 15, 0.5)
+	levelBg:setTag(102)
+	this.lvLayer:addChild(levelBg)
+	
+	this.layer:addChild(this.lvLayer)
 	--点击事件
 --	this.layer:setTouchEnabled(true)
 	this.layer:registerScriptTouchHandler(
@@ -109,6 +128,7 @@ function FightRole:new(group,id,pos,total,params)
 			return true
 		end)
 	
+	
 	return this
 end
 
@@ -122,7 +142,15 @@ end
 
 function FightRole:setHp(curHp)
 --	self.hpText:setString(curHp.."/"..self.params["hp"])
---	self.hpProgress:setPercentage(curHp / self.params["hp"] * 100)
+	self.hpProgress:setPercentage(curHp / self.params["hp"] * 100)
+	if curHp <= 0 then
+		transition.playSprites(self.layer, "tintTo", {
+			r = 80,
+			g = 80,
+			b = 80,
+			time = 0.3
+		})
+	end
 end
 
 function FightRole:getY()
@@ -155,7 +183,7 @@ function FightRole:doAction(type, role, params)
 									params.callback()
 								end
 							end,
-							name = params.skill_id and SkillConfig[params.skill_id].name or nil,
+							name = params.skill_id and SkillConfig[params.skill_id..""].name or nil,
 							group = self.group,
 							target =  target,
 							width = self.width,
@@ -218,7 +246,9 @@ function FightRole:act(id,callback, finish, hpChange)
 		[2001] = {"other",0},
 		[2002] = {"other",0.2},
 		[2005] = {"other",0.55},
+		[2006] = {"other",0.4},
 		[2007] = {"other",0.2},
+		[2008] = {"other",0.5},
 	}
 	
 	local prepare
@@ -244,9 +274,11 @@ function FightRole:act(id,callback, finish, hpChange)
 		if finish then
 --			self.icon:setTexture(newSprite(IMG_ICON.."hero/M_"..self.id..".png"):getTexture())
 			self.icon:setScale(1)			
+			self.lvLayer:setVisible(true)
 			self.layer:runAction(getSequence(CCScaleTo:create(time, 0.8), CCScaleTo:create(time, 1)))
 		else
 --			self.icon:setTexture(newSprite(IMG_ICON.."hero/L_"..self.id..".png"):getTexture())
+			self.lvLayer:setVisible(false)
 			self.icon:runAction(CCScaleTo:create(time,1.8))
 --			self.icon:setScale(1.5)
 			return CCDelayTime:create(time), CCCallFunc:create(callback)

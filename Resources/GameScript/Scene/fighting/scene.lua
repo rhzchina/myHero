@@ -10,7 +10,7 @@ collectgarbage("setstepmul" , 5000)
 
 
 -- [[ 包含各种 Layer ]]
-local FightingLayer = require(SRC.."Scene/fighting/fightinglayer")
+local FightingLayer = requires(SRC.."Scene/fighting/fightinglayer")
 
 
 

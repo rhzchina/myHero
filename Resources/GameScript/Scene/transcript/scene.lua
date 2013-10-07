@@ -10,7 +10,7 @@ collectgarbage("setstepmul" , 5000)
 
 
 -- [[ 包含各种 Layer ]]
-local update = require(SRC.."Scene/transcript/transcriptlayer")
+local update = requires(SRC.."Scene/transcript/transcriptlayer")
 
 
 
@@ -21,7 +21,7 @@ function M:create(data)
 
 	---------------插入layer---------------------
 	scene:addChild(update:new(data):getLayer())
-	--scene:addChild(InfoLayer:create(true):getLayer())
+	scene:addChild(InfoLayer:create(false):getLayer())
 --	scene:addChild(BTLuaLayer())
 	---------------------------------------------
 

@@ -9,9 +9,9 @@ collectgarbage("setstepmul" , 5000)
 
 
 -- [[ 包含各种 Layer ]]
-local ActivityLayer = require(SRC.."Scene/activity/activitylayer")
+local ActivityLayer = requires(SRC.."Scene/activity/activitylayer")
 
-require(SRC.."Scene/common/infolayer")
+requires(SRC.."Scene/common/infolayer")
 
 
 

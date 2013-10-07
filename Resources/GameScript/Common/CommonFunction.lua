@@ -112,6 +112,7 @@ function newSprite(path, x, y, anchX, anchY)
 		sp = CCSprite:create()
 	end
 	setAnchPos(sp, x, y, anchX, anchY)
+	sp:setTag(102)
 	return sp
 end
 

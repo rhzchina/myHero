@@ -10,7 +10,7 @@ collectgarbage("setstepmul" , 5000)
 
 
 -- [[ 包含各种 Layer ]]
-local chat = require(SRC.."Scene/chat/chatlayer")
+local chat = requires(SRC.."Scene/chat/chatlayer")
 
 
 

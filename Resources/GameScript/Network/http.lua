@@ -7,11 +7,11 @@ http 通信接口
 -- 该接口是全局变量
 HTTP = {}
 
-local httpActions = require(SRC.."Network/httpActions")
-local json = require(SRC.."Network/dkjson")
-local KNLoading = require(SRC.."Common/KNLoading")
+local httpActions = requires(SRC.."Network/httpActions")
+local json = requires(SRC.."Network/dkjson")
+local KNLoading = requires(SRC.."Common/KNLoading")
 
-require(SRC.."Data/Session")
+requires(SRC.."Data/Session")
 
 
 --[[

@@ -1,5 +1,5 @@
 local PATH = IMG_SCENE.."explore/"
-local CommEmbattle = require(SRC.."Scene/common/CommEmbattle")
+local CommEmbattle = requires(SRC.."Scene/common/CommEmbattle")
 
 local ExploreLayer= {
 	layer,

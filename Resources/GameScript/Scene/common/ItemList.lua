@@ -1,4 +1,4 @@
-local Item = require(SRC.."Scene/common/ItemInfo")
+local Item = requires(SRC.."Scene/common/ItemInfo")
 local ItemList = {
 	layer,
 	scroll,
@@ -45,7 +45,7 @@ function ItemList:new(params)
 	this.scroll:alignCenter()
 	itemLayer:addChild(this.scroll:getLayer())
 	
-	local okBtn = Btn:new(IMG_BTN,{"ok.png", "ok_press.png"}, 200, 95, {
+	local okBtn = Btn:new(IMG_BTN,{"ok.png", "ok_press.png"}, 50, 95, {
 		priority = -131,
 		callback = function()
 			this.params.okCallback()
@@ -54,7 +54,7 @@ function ItemList:new(params)
 	})
 	itemLayer:addChild(okBtn:getLayer())
 	
-	local cancelBtn = Btn:new(IMG_BTN,{"cancel.png", "cancel_press.png"}, 350, 95, {
+	local cancelBtn = Btn:new(IMG_BTN,{"cancel.png", "cancel_press.png"}, 290, 95, {
 		priority = -131,
 		callback = function()
 			this.layer:removeFromParentAndCleanup(true)	

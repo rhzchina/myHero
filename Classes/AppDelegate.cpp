@@ -49,13 +49,13 @@ bool AppDelegate::applicationDidFinishLaunching()
     CCScriptEngineManager::sharedManager()->setScriptEngine(pEngine);
 	std::string dirPath = "GameScript";
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-    CCString* pstrFileContent = CCString::createWithContentsOfFile((dirPath + "/GameCanvasLua.lua").c_str());
+    CCString* pstrFileContent = CCString::createWithContentsOfFile((dirPath + "/initialization.lua").c_str());
     if (pstrFileContent)
     {
         pEngine->executeString(pstrFileContent->getCString());
     }
 #else
-    std::string path = CCFileUtils::sharedFileUtils()->fullPathFromRelativePath((dirPath + "/GameCanvasLua.lua").c_str());
+    std::string path = CCFileUtils::sharedFileUtils()->fullPathFromRelativePath((dirPath + "/initialization.lua").c_str());
     pEngine->addSearchPath(path.substr(0, path.find_last_of("/")).c_str());
     pEngine->executeScriptFile(path.c_str());
 #endif

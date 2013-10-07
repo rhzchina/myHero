@@ -10,7 +10,6 @@ function CardInfo:new(x,y,params)
 	self.__index = self
 	this.params = params or {}
 	this.layer = newLayer()
-	
 	local bg
 	if this.params.type == "hero" then
 		bg = newSprite(PATH..params.type.."_card_bg.png")
@@ -44,7 +43,7 @@ function CardInfo:new(x,y,params)
 		end
 		
 		local exp = Progress:new(IMG_COMMON, {"progress_bg.png", "progress_blue.png"}, 50, 55, {
-			cur = 50,
+			cur = getBag(this.params.type,this.params.cid,"cur"),
 			leftIcon = {"circle_box.png", 10, 12}
 		})
 		this.layer:addChild(exp:getLayer())

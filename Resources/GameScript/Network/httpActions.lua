@@ -5,20 +5,22 @@
 ]]
 
 --[[包含所有 DATA]]
-require(SRC.."Data/Session")
-require(SRC.."Data/User")
-require(SRC.."Data/Mission")
-require(SRC.."Data/Fighting")
-require(SRC.."Data/Bag")
-require(SRC.."Data/Embattle")
-require(SRC.."Data/Dress")
-require(SRC.."Data/Shop")
-require(SRC.."Data/Chat")
-require(SRC.."Data/Mail")
-require(SRC.."Data/Rands")
-require(SRC.."Data/PreShop")
-require(SRC.."Data/Sports")
-require(SRC.."Data/Book")
+requires(SRC.."Data/Session")
+requires(SRC.."Data/User")
+requires(SRC.."Data/Mission")
+requires(SRC.."Data/Fighting")
+requires(SRC.."Data/Bag")
+requires(SRC.."Data/Embattle")
+requires(SRC.."Data/Dress")
+requires(SRC.."Data/Shop")
+requires(SRC.."Data/Chat")
+requires(SRC.."Data/Mail")
+requires(SRC.."Data/Rands")
+requires(SRC.."Data/PreShop")
+requires(SRC.."Data/Sports")
+requires(SRC.."Data/Book")
+requires(SRC.."Data/Transcript")
+requires(SRC.."Data/Set")
 local M = {}
 
 --[[登录]]
@@ -53,6 +55,9 @@ function M.Battle_up( type , data , callback )
 			DATA_Embattle:set(data["battle"])
 			DATA_Dress:set(data["equip"])
 			DATA_Bag:setByKey("skill",data["skill"]["cid"],data["skill"])
+			
+			DATA_User:setkey("icon_id", data["icon_id"])
+			DATA_User:setkey("icon_start", data["icon_start"])
 			callback()
 		end
 	end
@@ -70,6 +75,16 @@ function M.Battle_replace( type , data , callback )
 --			DATA_Bag:setByKey("skill",data["skill"]["cid"],data["skill"])
 			callback()
 		end
+	end
+	return true,data
+end
+
+function M.Battle_seticon( type , data , callback )
+	if type == 1 then
+	else
+		DATA_User:setkey("icon_id", data["icon_id"])
+		DATA_User:setkey("icon_start", data["icon_start"])
+		callback()
 	end
 	return true,data
 end
@@ -295,6 +310,8 @@ function M.Mail_send(kind, data, callback)
 	return true, data
 end
 
+
+
 function M.Mail_delect(kind, data, callback)
 	if kind == 1 then
 	else
@@ -307,6 +324,16 @@ end
 function M.Ranking_prestige(kind, data, callback)
 	if kind == 1 then
 	else		
+		DATA_Rands:set_prestige(data["data"])
+		DATA_Rands:set_top(data["top"])
+		callback(data["data"])
+	end
+	return true, data
+end
+
+function M.Ranking_duplicate(kind, data, callback)
+	if kind == 1 then
+	else	
 		DATA_Rands:set_prestige(data["data"])
 		DATA_Rands:set_top(data["top"])
 		callback(data["data"])
@@ -331,8 +358,35 @@ end
 function M.Duplicate_open(kind, data, callback)
 	if kind == 1 then
 	else		
-		dump(data)
+		DATA_Transcript:set(data["duplicate"])
 		callback(data["data"])
+	end
+	return true, data
+end
+
+function M.Duplicate_reset(kind, data, callback)
+	if kind == 1 then
+	else		
+		callback(data["data"])
+	end
+	return true, data
+end
+
+function M.Duplicate_emigrated(kind, data, callback)
+	if kind == 1 then
+	else		
+		callback(data["duplicate"])
+	end
+	return true, data
+end
+
+function M.Duplicate_reset(kind, data, callback)
+	if kind == 1 then
+	else
+		dump(data)
+		DATA_Transcript:set_index(data["duplicate"],data.index)
+		
+		callback(data)
 	end
 	return true, data
 end
@@ -344,6 +398,19 @@ function M.Book_open( type , data , callback )
 			print(data["error"])	
 		else
 			DATA_Book:set(data)
+			callback(data)
+		end
+	end
+	return true,data
+end
+
+function M.Book_setting( type , data , callback )
+	if type == 1 then
+	else
+		if data["error"] then
+			print(data["error"])	
+		else
+			DATA_Set:set(data)
 			callback(data)
 		end
 	end

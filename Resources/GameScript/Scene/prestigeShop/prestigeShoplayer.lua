@@ -1,5 +1,5 @@
 local PATH = IMG_SCENE.."preshop/"
-local info_layer = require(SRC.."Scene/prestigeShop/InfoLayer")
+local info_layer = requires(SRC.."Scene/prestigeShop/InfoLayer")
 
 local Shoplayer = {
 	layer

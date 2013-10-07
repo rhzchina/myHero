@@ -1,9 +1,9 @@
 
 HTTPS = {}
 
-local httpActions = require(SRC.."Network/httpActions")
-local json = require(SRC.."Network/dkjson")
-local KNLoading = require(SRC.."Common/KNLoading")
+local httpActions = requires(SRC.."Network/httpActions")
+local json = requires(SRC.."Network/dkjson")
+local KNLoading = requires(SRC.."Common/KNLoading")
 
 function HTTPS:send(mod  , data , param)
 	local func = mod

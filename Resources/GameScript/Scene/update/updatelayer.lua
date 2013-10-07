@@ -1,7 +1,7 @@
 local PATH = IMG_SCENE.."update/"
-local Card = require(SRC.."Scene/common/CardInfo")
-local List = require(SRC.."Scene/common/ItemList")
-local Pages = require(SRC.."Scene/common/ItemsPage")
+local Card = requires(SRC.."Scene/common/CardInfo")
+local List = requires(SRC.."Scene/common/ItemList")
+local Pages = requires(SRC.."Scene/common/ItemsPage")
 
 local UpdateLayer = {
 	layer,

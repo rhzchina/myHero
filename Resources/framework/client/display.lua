@@ -1010,7 +1010,6 @@ end
 --[[ 描边文字 strokeSize 则为不描边]]
 function display.strokeLabel(str , x , y , fontSize , fontColor , strokeSize , strokeColor , param)
     param = param or {}
-
     local node = display.newNode()
 
     if fontSize == nil then fontSize = 0 end

@@ -1,4 +1,4 @@
-local taskinfo = require(SRC.."Scene/roost/taskInfo")
+local taskinfo = requires(SRC.."Scene/roost/taskInfo")
 
 local roostLayer = {
 	layer,

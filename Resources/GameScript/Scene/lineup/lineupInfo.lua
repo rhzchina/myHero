@@ -1,6 +1,6 @@
 local PATH = IMG_SCENE.."embattle/"
-local CardInfo = require(SRC.."Scene/common/CardInfo")
-local ItemList = require(SRC.."Scene/common/ItemList")
+local CardInfo = requires(SRC.."Scene/common/CardInfo")
+local ItemList = requires(SRC.."Scene/common/ItemList")
 
 local lineuinfoplayer = {
 	layer,
@@ -145,10 +145,15 @@ if _G.next (data)  ~= nil then
 --		card_bar:setIsShowText(false)
 --		this.layer:addChild(card_bar)
 
-
-		local text_desc = newLabel(getBag("hero", this.gid, "exps") , 30)
-		setAnchPos(text_desc,30,133)
-		this.layer:addChild(text_desc )
+		local hero_data_arry = requires(CONFIG_PATH.."HeroConfig")
+		local hero_data = hero_data_arry[getBag("hero", this.gid, "id")]
+		
+		local text, line = createLabel({noFont = true, str = hero_data["desc"], size = 34, width = 410, color = ccc3(191,207,18)})
+	
+		setAnchPos(text,30,165 - (line * 34))
+	
+		this.layer:addChild(text)
+		
 	end
 
 --	this.layer:setTouchEnabled(true)

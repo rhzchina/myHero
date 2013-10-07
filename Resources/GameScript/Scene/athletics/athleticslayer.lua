@@ -70,11 +70,26 @@ function AthleticsLayer:createRecord()
 				local bg = newSprite(PATH.."result_bg.png")
 				layers[ temp_line ]:addChild(bg)
 				
+				local win = newSprite(PATH.."win.png")
+				setAnchPos(win, 20, (114 - 41)/2)
+				layers[ temp_line ]:addChild(win)
+				
+				layers[ temp_line ]:addChild(newLabel("你对"..v.name.."发起\n了挑战你胜利了", 24, {x = 130, y = (114 - 50)/2, color = ccc3(255, 0, 0)}))
+				local lost_view = Btn:new(IMG_BTN, {"look.png", "look_press.png"}, 380, (114 - 50)/2, {
+	
+				})
+				layers[ temp_line ]:addChild(lost_view:getLayer())
+			
+				
+			elseif tonumber(v.type) == 1 then
+				local bg = newSprite(PATH.."result_bg.png")
+				layers[ temp_line ]:addChild(bg)
+				
 				local lost = newSprite(PATH.."lost.png")
 				setAnchPos(lost, 20, (114 - 41)/2)
 				layers[ temp_line ]:addChild(lost)
 				
-				layers[ temp_line ]:addChild(newLabel("你对"..v.name.."发起\n了挑战你获胜了", 24, {x = 130, y = (114 - 50)/2, color = ccc3(255, 0, 0)}))
+				layers[ temp_line ]:addChild(newLabel("你对"..v.name.."发起\n了挑战你失败了", 24, {x = 130, y = (114 - 50)/2, color = ccc3(255, 0, 0)}))
 				local lost_view = Btn:new(IMG_BTN, {"look.png", "look_press.png"}, 380, (114 - 4)/2, {
 	
 				})
@@ -96,19 +111,6 @@ function AthleticsLayer:createRecord()
 					end
 				})
 				layers[ temp_line ]:addChild(revenge:getLayer())
-			elseif tonumber(v.type) == 1 then
-				local bg = newSprite(PATH.."result_bg.png")
-				layers[ temp_line ]:addChild(bg)
-				
-				local win = newSprite(PATH.."win.png")
-				setAnchPos(win, 20, (114 - 41)/2)
-				layers[ temp_line ]:addChild(win)
-				
-				layers[ temp_line ]:addChild(newLabel("你对"..v.name.."发起\n了挑战你失败了", 24, {x = 130, y = (114 - 50)/2, color = ccc3(255, 0, 0)}))
-				local lost_view = Btn:new(IMG_BTN, {"look.png", "look_press.png"}, 380, (114 - 50)/2, {
-	
-				})
-				layers[ temp_line ]:addChild(lost_view:getLayer())
 			end
 			
 			temp_line = temp_line + 1
@@ -120,18 +122,18 @@ function AthleticsLayer:createRecord()
 		
 		local other_layer = nil
 		other_layer = display.newLayer()
-		other_layer:setContentSize( CCSizeMake(480 , 114) )
-		other_layer:addChild(newLabel("我的声望:"..DATA_User:get("prestige"), 24, {x = 50, y = 60, color = ccc3(0, 0, 0)}))
-		other_layer:addChild(newLabel("我的排名:"..time_data.top, 24, {x = 250, y = 60, color = ccc3(0, 0, 0)}))
+		other_layer:setContentSize( CCSizeMake(480 , 234) )
+		other_layer:addChild(newLabel("我的声望:"..DATA_User:get("prestige"), 24, {x = 50, y = 190, color = ccc3(0, 0, 0)}))
+		other_layer:addChild(newLabel("我的排名:"..time_data.top, 24, {x = 250, y = 190, color = ccc3(0, 0, 0)}))
 		if tonumber(time_data.istime) == 0 then
-			other_layer:addChild(newLabel("冷却时间:0", 24, {x = 50, y = 10, color = ccc3(0, 0, 0)}))
+			other_layer:addChild(newLabel("冷却时间:0", 24, {x = 50, y = 140, color = ccc3(0, 0, 0)}))
 		else
-			other_layer:addChild(newLabel("冷却时间:"..tonumber(time_data.time), 24, {x = 50, y = 10, color = ccc3(0, 0, 0)}))
+			other_layer:addChild(newLabel("冷却时间:"..tonumber(time_data.time), 24, {x = 50, y = 140, color = ccc3(0, 0, 0)}))
 		end
 		
-		other_layer:addChild(newLabel("今日剩余挑战次数:"..time_data.challenge_num, 24, {x = 50, y = -40, color = ccc3(0, 0, 0)}))
+		other_layer:addChild(newLabel("今日剩余挑战次数:"..time_data.challenge_num, 24, {x = 50, y = 90, color = ccc3(0, 0, 0)}))
 		
-		local shop = Btn:new(IMG_BTN, {"fame_shop.png" ,"fame_shop_press.png"}, 50, -110, {
+		local shop = Btn:new(IMG_BTN, {"fame_shop.png" ,"fame_shop_press.png"}, 50, 20, {
 			callback = function()
 				HTTPS:send("Exploreshop" ,{m="exlploreshop",a="exlploreshop",exlploreshop= "open"} ,{success_callback = 
 						function()
@@ -141,11 +143,11 @@ function AthleticsLayer:createRecord()
 		})
 		other_layer:addChild(shop:getLayer())
 		
-		local rank = Btn:new(IMG_BTN, {"rank_list.png" ,"rank_list_press.png"} ,280, -110, {
+		local rank = Btn:new(IMG_BTN, {"rank_list.png" ,"rank_list_press.png"} ,280, 20, {
 			callback = function()
 				HTTPS:send("Ranking" ,{m="ranking",a="ranking",ranking = "prestige",page=0} ,{success_callback = 
 						function()
-							switchScene("randsSport",0)
+							switchScene("randsSport",{page=0,type="sport"})
 				end })
 			end
 		})
@@ -178,7 +180,7 @@ function AthleticsLayer:createRecord()
 			callback = function()
 				HTTPS:send("Ranking" ,{m="ranking",a="ranking",ranking = "prestige",page=0} ,{success_callback = 
 						function()
-							switchScene("randsSport",0)
+							switchScene("randsSport",{page=0,type="sport"})
 				end })
 			end
 		})
@@ -202,8 +204,9 @@ function AthleticsLayer:createContent()
 	local hero_data = DATA_Sports:get_data()
 	if hero_data then
 		for k, v in pairs(hero_data) do
+			dump(v)
 			local other = Btn:new(PATH, {"bg_green.png", "bg_blue.png"}, 0, 0, {
-				other = {{IMG_COMMON.."icon_bg1.png", 53, 90},{IMG_ICON.."hero/S_2301.png", 53, 90}, {IMG_COMMON.."icon_border1.png", 53, 90}},
+				other = {{IMG_COMMON.."icon_bg"..v.icon_start..".png", 53, 90},{IMG_ICON.."hero/S_"..v.icon_id..".png", 53, 90}, {IMG_COMMON.."icon_border"..v.icon_start..".png", 53, 90}},
 				text = {{"Lv "..v.lv, 20, ccc3(255,255,255), ccp(0, -45)}, {v.Name, 20, ccc3(255,255,255), ccp(0, -67)}},
 				callback = function()
 					HTTPS:send("Fighting",

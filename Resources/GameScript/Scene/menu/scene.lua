@@ -10,7 +10,7 @@ collectgarbage("setstepmul" , 5000)
 
 
 -- [[ 包含各种 Layer ]]
-local Menu = require(SRC.."Scene/menu/menulayer")
+local Menu = requires(SRC.."Scene/menu/menulayer")
 
 
 

@@ -74,6 +74,7 @@ function ItemInfo:isSelect()
 end
 
 function ItemInfo:createLayout(kind, cid)
+	
 	if self.params.type == "bag" then
 		local text = newLabel("名称:"..DATA_Bag:get(kind,cid,"name"),20,{x = 150, y = 80, color = ccc3(0,0,0)})
 		self.layer:addChild(text)
@@ -93,11 +94,65 @@ function ItemInfo:createLayout(kind, cid)
 			self.layer:addChild(text)
 		end
 	else
+		
 		local text = newLabel(DATA_Bag:get(kind,cid,"name"),20,{x = 130, y = 70,noFont = true, color = ccc3(0,0,0)})
 		self.layer:addChild(text)
 		
 		text = newLabel("Lv "..DATA_Bag:get(kind,cid,"lev"),20,{x = 250, y = 70, noFont = true, color = ccc3(0,0,0)})
 		self.layer:addChild(text)
+		if kind == "hero" then
+			text = newLabel("血："..DATA_Bag:get(kind,cid,"hp").."  攻："..DATA_Bag:get(kind,cid,"att").."  防御："..DATA_Bag:get(kind,cid,"defe"),20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
+			self.layer:addChild(text)
+		elseif kind == "equip" then
+			local id = DATA_Bag:get(kind,cid,"id")
+			if tonumber(id) >= 6000 and tonumber(id) < 7000 then
+				text = newLabel("攻："..DATA_Bag:get(kind,cid,"att_i"),20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
+				self.layer:addChild(text)
+			elseif tonumber(id) >= 7000 and tonumber(id) < 8000 then
+				text = newLabel("血："..DATA_Bag:get(kind,cid,"hp_i"),20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
+				self.layer:addChild(text)
+			elseif tonumber(id) >= 5000 and tonumber(id) < 6000 then
+				text = newLabel("防："..DATA_Bag:get(kind,cid,"def_i"),20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
+				self.layer:addChild(text)
+			end
+		
+		elseif kind == "skill" then
+			local id = DATA_Bag:get(kind,cid,"id")
+			if tonumber(id) >= 11000 and tonumber(id) < 12000 then
+				text = newLabel("单体攻击：",20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
+				self.layer:addChild(text)
+			elseif tonumber(id) >= 12000 and tonumber(id) < 13000 then
+				text = newLabel("随机攻击2张卡牌：",20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
+				self.layer:addChild(text)
+			elseif tonumber(id) >= 13000 and tonumber(id) < 14000 then
+				text = newLabel("随机攻击3张卡牌：",20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
+				self.layer:addChild(text)
+			elseif tonumber(id) >= 14000 and tonumber(id) < 15000 then
+				text = newLabel("全体攻击：",20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
+				self.layer:addChild(text)
+			elseif tonumber(id) >= 21000 and tonumber(id) < 22000 then
+				text = newLabel("防御值：",20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
+				self.layer:addChild(text)
+			elseif tonumber(id) >= 22000 and tonumber(id) < 23000 then
+				text = newLabel("防御%：",20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
+				self.layer:addChild(text)
+			elseif tonumber(id) >= 31000 and tonumber(id) < 32000 then
+				text = newLabel("全体回血：",20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
+				self.layer:addChild(text)
+			elseif tonumber(id) >= 32000 and tonumber(id) < 33000 then
+				text = newLabel("自身回血：",20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
+				self.layer:addChild(text)
+			elseif tonumber(id) >= 33000 and tonumber(id) < 34000 then
+				text = newLabel("随机回血1个英雄：",20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
+				self.layer:addChild(text)
+			elseif tonumber(id) >= 34000 and tonumber(id) < 35000 then
+				text = newLabel("随机回血2个英雄：",20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
+				self.layer:addChild(text)
+			elseif tonumber(id) >= 35000 and tonumber(id) < 36000 then
+				text = newLabel("随机回血2个英雄：",20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
+				self.layer:addChild(text)
+			end
+		end
 		
 		self.checkBox = CheckBox:new(400, 60, {
 			path = IMG_COMMON,

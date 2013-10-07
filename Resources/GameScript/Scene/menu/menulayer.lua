@@ -39,7 +39,7 @@ function M:createMenu(state)
 		
 		local opt = {
 			{"menu_back", 300, 5, false, function() popScene() end},
-			{"logout", 150, 5},
+			{"logout", 150, 5,false,function() SOCKET:call("CLOSE") switchScene("login") end},
 			{"card", 20,610,true ,function() 
 				HTTPS:send("Book", {book = "open", a = "book", m = "book"}, {success_callback = function(data)
 					switchScene("illustrations") 
@@ -52,7 +52,11 @@ function M:createMenu(state)
 				end},
 			{"record", 20, 400, true,function() MsgBox.create():flashShow("功能尚未开发") end},
 			{"help", 170, 400, true,function() switchScene("help") end},
-			{"setting", 330, 400, true,function() switchScene("setting") end}	
+			{"setting", 330, 400, true,function() 
+			HTTPS:send("Book", {book = "setting", a = "book", m = "book"}, {success_callback = function(data)
+					switchScene("setting")
+				end})
+			 end}	
 		}
 		
 		for i = 1, #opt do 

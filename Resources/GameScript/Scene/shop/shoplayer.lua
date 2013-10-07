@@ -1,5 +1,5 @@
-local ITEM = require(SRC.."Scene/shop/shopitem")
-local Detail = require(SRC.."Scene/common/CardDetail")
+local ITEM = requires(SRC.."Scene/shop/shopitem")
+local Detail = requires(SRC.."Scene/common/CardDetail")
 local PATH = IMG_SCENE.."shop/"
 
 local M = {

@@ -7,12 +7,12 @@
 ---- 该接口是全局变量
 --SOCKET = {}
 --
---local socketActions = require(SRC.."Network/socketActions")--require("GameLuaScript/Network/socketActions")
-----local commonActions = require(SRC.."Network/commonActions")--require("GameLuaScript/Network/commonActions")
-local json = require(SRC.."Network/dkjson")-- require("GameLuaScript/Network/dkjson")
+--local socketActions = requires(SRC.."Network/socketActions")--requires("GameLuaScript/Network/socketActions")
+----local commonActions = requires(SRC.."Network/commonActions")--requires("GameLuaScript/Network/commonActions")
+local json = requires(SRC.."Network/dkjson")-- requires("GameLuaScript/Network/dkjson")
 
-local KNLoading = require(SRC.."Common/KNLoading")
---local KNLoading = require(SRC.."Common/KNLoading")--require("GameLuaScript/Common/KNLoading")
+local KNLoading = requires(SRC.."Common/KNLoading")
+--local KNLoading = requires(SRC.."Common/KNLoading")--requires("GameLuaScript/Common/KNLoading")
 --
 --
 --local sockets = {}
@@ -323,10 +323,10 @@ function SOCKET:callback(response)
 		MsgBox.create():flashShow("数据格式错误")
 		return
 	end
---	dump(result)
+	--dump(result)
 	if result.mode == "open" then
 		DATA_Chat:set(result)
-		audio.playMusic(SOUND.."home_bg.ogg")
+		--audio.playMusic(SOUND.."home_bg.ogg")
 		switchScene("home")
 	elseif result.mode == "tall" then
 		DATA_Chat:addMsg("tall", result.add)

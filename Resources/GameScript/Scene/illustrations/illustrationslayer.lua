@@ -1,5 +1,5 @@
 local PATH = CONFIG_PATH
-local Detail = require(SRC.."Scene/common/CardDetail")
+local Detail = requires(SRC.."Scene/common/CardDetail")
 
 local Illustrlayer = {
 	layer,
@@ -15,7 +15,7 @@ function Illustrlayer:new(data)
 	local params = data or {}
 	this.layer = newLayer()
 	
-	local bg = newSprite("images/common/menu_bg.png")
+	local bg = newSprite(IMG_PATH.."images/common/menu_bg.png")
 	this.layer:addChild(bg)
 	
 	local title = newSprite(IMG_TEXT.."card.png")
@@ -65,11 +65,11 @@ function Illustrlayer:createList(kind)
 	local temp_line = 1
 	local temp_count = 0
 	if kind == 1 then
-		data = require(PATH.."HeroConfig")
+		data = requires(PATH.."HeroConfig")
 		local book_data = DATA_Book:get()
 		temp = book_data["hero"]
 	elseif kind == 2 then
-		data = require(PATH.."ArmConfig")
+		data = requires(PATH.."ArmConfig")
 		local arm_data = {}
 		local index = 1
 		local book_data = DATA_Book:get()
@@ -81,7 +81,7 @@ function Illustrlayer:createList(kind)
 		end
 		temp = arm_data
 	elseif kind == 3 then
-		data = require(PATH.."ArmourConfig")
+		data = requires(PATH.."ArmourConfig")
 		local arm_data = {}
 		local index = 1
 		local book_data = DATA_Book:get()
@@ -93,7 +93,7 @@ function Illustrlayer:createList(kind)
 		end
 		temp = arm_data
 	elseif kind == 4 then
-		data = require(PATH.."OrnamentConfig")
+		data = requires(PATH.."OrnamentConfig")
 		local arm_data = {}
 		local index = 1
 		local book_data = DATA_Book:get()
@@ -105,7 +105,7 @@ function Illustrlayer:createList(kind)
 		end
 		temp = arm_data
 	elseif kind == 5 then
-		data = require(PATH.."SkillConfig")
+		data = requires(PATH.."SkillConfig")
 		local book_data = DATA_Book:get()
 		temp = book_data["skill"]
 	end

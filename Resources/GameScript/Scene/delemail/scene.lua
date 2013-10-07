@@ -10,7 +10,7 @@ collectgarbage("setstepmul" , 5000)
 
 
 -- [[ 包含各种 Layer ]]
-local update = require(SRC.."Scene/delemail/delemaillayer")
+local update = requires(SRC.."Scene/delemail/delemaillayer")
 
 
 

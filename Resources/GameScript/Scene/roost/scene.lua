@@ -8,7 +8,7 @@ collectgarbage("setstepmul" , 5000)
 
 
 -- [[ 包含各种 Layer ]]
-local roostLayer = require(SRC.."Scene/roost/roostLayer")
+local roostLayer = requires(SRC.."Scene/roost/roostLayer")
 
 
 local M = {}

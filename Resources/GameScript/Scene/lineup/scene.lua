@@ -10,7 +10,7 @@ collectgarbage("setstepmul" , 5000)
 
 
 -- [[ 包含各种 Layer ]]
-local lineup = require(SRC.."Scene/lineup/lineuplayer")
+local lineup = requires(SRC.."Scene/lineup/lineuplayer")
 
 
 

@@ -34,6 +34,7 @@ local audio = {}
 
 local sharedEngine = SimpleAudioEngine:sharedEngine()
 local isEnabled    = true
+local isEffect = true
 
 --[[--
 
@@ -52,6 +53,7 @@ Enable audio sharedEngine. (default is enabled)
 function audio.enable()
     isEnabled = true
 end
+
 
 --[[--
 
@@ -145,7 +147,7 @@ Preload background music
 function audio.preloadMusic(filename)
     if not isEnabled then return end
     if DEBUG > 1 then
-        echoInfo("audio.preloadMusic() - filename: %s", tostring(filename))
+        -- echoInfo("audio.preloadMusic() - filename: %s", tostring(filename))
     end
     sharedEngine:preloadBackgroundMusic(filename)
 end
@@ -171,7 +173,7 @@ function audio.playMusic(filename, isLoop)
 
     audio.stopMusic(true)
     if DEBUG > 1 then
-        echoInfo("audio.playMusic() - filename: %s, isLoop: %s", tostring(filename), tostring(isLoop))
+        -- echoInfo("audio.playMusic() - filename: %s, isLoop: %s", tostring(filename), tostring(isLoop))
     end
     sharedEngine:playBackgroundMusic(filename, isLoop)
 end
@@ -293,10 +295,12 @@ Play sound effect
 
 ]]
 function audio.playSound(filename, isLoop)
-    if not isEnabled then return end
+	-- 9100不播放音效
+	if device.infos and device.infos.device and string.lower(device.infos.device) == "gt-i9100" then return end
+    if not isEffect then return end
     if type(isLoop) ~= "boolean" then isLoop = false end
     if DEBUG > 1 then
-        echoInfo("audio.playSound() - filename: %s, isLoop: %s", tostring(filename), tostring(isLoop))
+        -- echoInfo("audio.playSound() - filename: %s, isLoop: %s", tostring(filename), tostring(isLoop))
     end
     return sharedEngine:playEffect(filename, isLoop)
 end
@@ -316,7 +320,7 @@ Pause playing sound effect
 
 ]]
 function audio.pauseSound(handle)
-    if not isEnabled then return end
+    if not isEffect then return end
     sharedEngine:pauseEffect(handle)
 end
 audio.pauseEffect = audio.pauseSound
@@ -331,7 +335,7 @@ Pause all playing sound effect
 
 ]]
 function audio.pauseAllSounds()
-    if not isEnabled then return end
+    if not isEffect then return end
     sharedEngine:pauseAllEffects()
 end
 audio.pauseAllEffects = audio.pauseAllSounds
@@ -350,7 +354,7 @@ Resume paused sound effect
 
 ]]
 function audio.resumeSound(handle)
-    if not isEnabled then return end
+    if not isEffect then return end
     sharedEngine:resumeEffect(handle)
 end
 audio.resumeEffect = audio.resumeSound
@@ -365,7 +369,7 @@ Resume all paused sound effects
 
 ]]
 function audio.resumeAllSounds(handle)
-    if not isEnabled then return end
+    if not isEffect then return end
     sharedEngine:resumeAllEffects()
 end
 audio.resumeAllEffects = audio.resumeAllSounds
@@ -384,7 +388,7 @@ Stop playing sound effect
 
 ]]
 function audio.stopSound(handle)
-    if not isEnabled then return end
+    if not isEffect then return end
     sharedEngine:stopEffect(handle)
 end
 audio.stopEffect = audio.stopSound
@@ -399,7 +403,7 @@ Stop all playing sound effects
 
 ]]
 function audio.stopAllSounds()
-    if not isEnabled then return end
+    if not isEffect then return end
     sharedEngine:stopAllEffects()
 end
 audio.stopAllEffects = audio.stopAllSounds
@@ -418,9 +422,9 @@ Preload a sound effect
 
 ]]
 function audio.preloadSound(filename)
-    if not isEnabled then return end
+    if not isEffect then return end
     if DEBUG > 1 then
-        echoInfo("audio.preloadSound() - filename: %s", tostring(filename))
+        -- echoInfo("audio.preloadSound() - filename: %s", tostring(filename))
     end
     sharedEngine:preloadEffect(filename)
 end
@@ -444,5 +448,16 @@ function audio.unloadSound(filename)
     sharedEngine:unloadEffect(filename)
 end
 audio.unloadEffect = audio.unloadSound
+
+
+--音效设置
+function audio.setIsEffect( ispaly )
+	isEffect = ispaly
+end
+--音效状态
+function audio.getIsEffect()
+    return isEffect
+end
+
 
 return audio

@@ -1,5 +1,5 @@
-local ITEM = require(SRC.."Scene/common/ItemInfo")
-local Detail = require(SRC.."Scene/common/CardDetail")
+local ITEM = requires(SRC.."Scene/common/ItemInfo")
+local Detail = requires(SRC.."Scene/common/CardDetail")
 
 local M = {
 	layer,

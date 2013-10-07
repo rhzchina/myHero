@@ -1,7 +1,7 @@
 local PATH = IMG_SCENE.."fighting/"
-local FightRole = require(SRC.."Scene/fighting/fightrole")
-local Effect = require(SRC.."Scene/fighting/effect")
-local Result = require(SRC.."Scene/common/FightResult")
+local FightRole = requires(SRC.."Scene/fighting/fightrole")
+local Effect = requires(SRC.."Scene/fighting/effect")
+local Result = requires(SRC.."Scene/common/FightResult")
 local data = DATA_Fighting
 local FightLayer = {
 	layer,
@@ -69,7 +69,7 @@ function FightLayer:showFight()
 	for i, v in pairs(data:getHero()) do
 --		this.group[1][i - 1] = FightRole:new(1, v["id"], i - 1,{hp = v["hp"],star = v["star"] ,effect = this.effect}) 
 --		this.roleLayer:addChild(this.group[1][i - 1]:getLayer())
-		self.group[1][i] = FightRole:new(1, v["id"], i , #data:getHero(),{hp = v["hp"],star = v["star"] ,effect = self.effect, parent = self.roleLayer, base = self.layer}) 
+		self.group[1][i] = FightRole:new(1, v["id"], i , #data:getHero(),{hp = v["hp"],star = v["star"] ,lv = v["lv"], effect = self.effect, parent = self.roleLayer, base = self.layer}) 
 		self.roleLayer:addChild(self.group[1][i]:getLayer())
 	end
 	
@@ -77,7 +77,7 @@ function FightLayer:showFight()
 	for i,v in pairs(data:getMonster()) do
 --		this.group[2][i - 1] = FightRole:new(2, v["id"], i - 1,{hp = v["hp"],star = v["star"],effect = this.effect}) 
 --		this.roleLayer:addChild(this.group[2][i - 1]:getLayer())
-		self.group[2][i] = FightRole:new(2, v["id"], i , #data:getMonster(),{hp = v["hp"],star = v["star"],effect = self.effect, parent = self.roleLayer, base = self.layer}) 
+		self.group[2][i] = FightRole:new(2, v["id"], i , #data:getMonster(),{hp = v["hp"],star = v["star"], lv = v["lv"], effect = self.effect, parent = self.roleLayer, base = self.layer}) 
 		self.roleLayer:addChild(self.group[2][i]:getLayer())
 	end
 --	print("战斗开始")
@@ -103,11 +103,13 @@ function FightLayer:showFight()
 	self.layer:addChild(self.effect:getLayer())
 	
 	--战斗开始
-	self:fightLogic()
+	self.layer:runAction(getSequence(CCDelayTime:create(0.5), CCCallFunc:create(function()
+		self:fightLogic()
+	end)))
 end
 
 function FightLayer:fightLogic()
---dump(data:getAttacker())
+--dump(data:getAttacker(ss)
 local targetList = {}
 for i = 1, data:getVictimCount() do
 	targetList[i] = {}

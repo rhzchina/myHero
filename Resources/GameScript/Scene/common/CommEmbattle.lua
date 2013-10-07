@@ -1,4 +1,4 @@
-local Detail = require(SRC.."Scene/common/CardDetail")
+local Detail = requires(SRC.."Scene/common/CardDetail")
 local CommEmbattle = {
 	layer,
 	scroll
@@ -42,7 +42,15 @@ function CommEmbattle:new(x, y, width, params)
 			front = front,
 			other = other,
 			callback = function()
-				this.params.parent:addChild(Detail:new("hero", cid):getLayer(),1)
+				if DATA_Dress:isLegal() then
+					switchScene("lineup",i)
+	    		else
+	    			HTTPS:send("Skill" , 
+		    		{m="skill",a="skill",skill = "selectline"} ,
+		    		{success_callback = function()
+						switchScene("lineup",i)
+					end })
+	    		end
 			end
 		})
 		if not cid then

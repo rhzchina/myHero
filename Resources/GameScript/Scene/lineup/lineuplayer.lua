@@ -1,19 +1,20 @@
 local PATH = IMG_SCENE.."embattle/"
-local ItemList = require(SRC.."Scene/common/ItemList")
+local ItemList = requires(SRC.."Scene/common/ItemList")
 
-local Detail = require(SRC.."Scene/common/CardDetail")
-local CommEmbattle = require(SRC.."Scene/common/CommEmbattle")
+local Detail = requires(SRC.."Scene/common/CardDetail")
+local CommEmbattle = requires(SRC.."Scene/common/CommEmbattle")
 local lineuplayer = {
 	layer,
+	params
 }
 
 function lineuplayer:new(data)
 	local this = {}
 	setmetatable(this,self)
 	self.__index  = self
-
+	this.params = params or {}
 	local size = DATA_Embattle:getLen() 
-
+	dump(data)
 	local num --阵容的个数
 	if size < 3 then
 		num = 3
@@ -44,7 +45,7 @@ function lineuplayer:new(data)
 
 
 	---[[英雄信息滑块]]
-	local infolayer = require(SRC.."Scene/lineup/lineupInfo")
+	local infolayer = requires(SRC.."Scene/lineup/lineupInfo")
 	local ksv = ScrollView:new(15,100,450,550,0,true,1)
 	local card_x = 56
 	local card_y = 680
@@ -120,6 +121,8 @@ function lineuplayer:new(data)
 		ksv:addChild(infos:getLayer(),infos)
 		card_x = card_x + 480
 	end
+	
+	
 	this.layer:addChild(ksv:getLayer())
 
 

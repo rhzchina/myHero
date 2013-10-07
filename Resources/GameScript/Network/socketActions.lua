@@ -13,7 +13,7 @@ function M.open(type, data, callback)
 	if type == 1 then
 	else
 		print("已返回..")	
-		dump(data)
+		--dump(data)
 	end
 	return true, data
 end

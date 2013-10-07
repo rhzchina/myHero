@@ -13,8 +13,8 @@ function HelpLayer:new(data)
 	
 	local params = data or {}
 	this.layer = newLayer()
-	this.help_data = require(CONFIG_PATH.."help")
-	local bg = newSprite("images/common/menu_bg.png")
+	this.help_data = requires(CONFIG_PATH.."help")
+	local bg = newSprite(IMG_PATH.."images/common/menu_bg.png")
 	this.layer:addChild(bg)
 	
 	local title = newSprite(IMG_TEXT.."help.png")

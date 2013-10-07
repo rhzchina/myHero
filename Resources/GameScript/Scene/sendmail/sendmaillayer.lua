@@ -14,7 +14,7 @@ function sendMailLayer:new(data)
 	local params = data or {}
 	this.layer = newLayer()
 	
-	local bg = newSprite("images/common/menu_bg.png")
+	local bg = newSprite(IMG_PATH.."images/common/menu_bg.png")
 	this.layer:addChild(bg)
 	
 	local title = newSprite(PATH.."title.png")

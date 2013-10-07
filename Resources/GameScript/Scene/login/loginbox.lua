@@ -60,7 +60,7 @@ function M:create( ... )
 		end})
 	this.layer:addChild(exit:getLayer())
 	
-	audio.playMusic(SOUND.."login_bg.ogg")
+	--audio.playMusic(SOUND.."login_bg.ogg")
 	
 	return this.layer
 end
