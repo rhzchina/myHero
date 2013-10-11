@@ -25,7 +25,10 @@ function M:create( ... )
 	setAnchPos(bg, 0, 0)
 	this.layer:addChild(bg)
 	
-	
+	--print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+	--local shur_id = 100101 %10 
+	--print(shur_id)
+	--print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 	this:createOptBox(START)
 --
 --	
@@ -173,7 +176,7 @@ function M:accountInput()
 	
 	--[[创建输入框]]
 	self.account = CCTextFieldTTF:textFieldWithPlaceHolder("Open ID" , "Thonburi" , 48);
-	self.account:setString("wq")
+	self.account:setString("")
 	--[[设置颜色]]
 	self.account:setColor( ccc3(255 , 255 , 0) )
 	self.account:setColorSpaceHolder( ccc3(255 , 255 , 0) )

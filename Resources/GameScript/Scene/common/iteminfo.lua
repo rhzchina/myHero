@@ -119,37 +119,37 @@ function ItemInfo:createLayout(kind, cid)
 		elseif kind == "skill" then
 			local id = DATA_Bag:get(kind,cid,"id")
 			if tonumber(id) >= 11000 and tonumber(id) < 12000 then
-				text = newLabel("单体攻击：",20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
+				text = newLabel("攻："..DATA_Bag:get(kind,cid,"att"),20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
 				self.layer:addChild(text)
 			elseif tonumber(id) >= 12000 and tonumber(id) < 13000 then
-				text = newLabel("随机攻击2张卡牌：",20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
+				text = newLabel("攻："..DATA_Bag:get(kind,cid,"att"),20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
 				self.layer:addChild(text)
 			elseif tonumber(id) >= 13000 and tonumber(id) < 14000 then
-				text = newLabel("随机攻击3张卡牌：",20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
+				text = newLabel("攻："..DATA_Bag:get(kind,cid,"att"),20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
 				self.layer:addChild(text)
 			elseif tonumber(id) >= 14000 and tonumber(id) < 15000 then
-				text = newLabel("全体攻击：",20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
+				text = newLabel("攻："..DATA_Bag:get(kind,cid,"att"),20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
 				self.layer:addChild(text)
 			elseif tonumber(id) >= 21000 and tonumber(id) < 22000 then
-				text = newLabel("防御值：",20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
+				text = newLabel("防："..DATA_Bag:get(kind,cid,"defe"),20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
 				self.layer:addChild(text)
 			elseif tonumber(id) >= 22000 and tonumber(id) < 23000 then
-				text = newLabel("防御%：",20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
+				text = newLabel("防："..DATA_Bag:get(kind,cid,"chance").."%",20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
 				self.layer:addChild(text)
 			elseif tonumber(id) >= 31000 and tonumber(id) < 32000 then
-				text = newLabel("全体回血：",20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
+				text = newLabel("血："..DATA_Bag:get(kind,cid,"hp"),20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
 				self.layer:addChild(text)
 			elseif tonumber(id) >= 32000 and tonumber(id) < 33000 then
-				text = newLabel("自身回血：",20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
+				text = newLabel("血："..DATA_Bag:get(kind,cid,"hp"),20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
 				self.layer:addChild(text)
 			elseif tonumber(id) >= 33000 and tonumber(id) < 34000 then
-				text = newLabel("随机回血1个英雄：",20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
+				text = newLabel("血："..DATA_Bag:get(kind,cid,"hp"),20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
 				self.layer:addChild(text)
 			elseif tonumber(id) >= 34000 and tonumber(id) < 35000 then
-				text = newLabel("随机回血2个英雄：",20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
+				text = newLabel("血："..DATA_Bag:get(kind,cid,"hp"),20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
 				self.layer:addChild(text)
 			elseif tonumber(id) >= 35000 and tonumber(id) < 36000 then
-				text = newLabel("随机回血2个英雄：",20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
+				text = newLabel("血："..DATA_Bag:get(kind,cid,"hp"),20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
 				self.layer:addChild(text)
 			end
 		end

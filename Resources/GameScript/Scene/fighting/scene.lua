@@ -16,11 +16,10 @@ local FightingLayer = requires(SRC.."Scene/fighting/fightinglayer")
 
 local M = {}
 
-function M:create()
+function M:create(temp)
 	local scene = display.newScene("fighting")
-
 	---------------插入layer---------------------
-	scene:addChild(FightingLayer:new():getLayer())
+	scene:addChild(FightingLayer:new(temp):getLayer())
 	---------------------------------------------
 
 	return scene

@@ -24,6 +24,13 @@ xpcall(function()
 
 	requires(SRC.."Config/base")	-- 配置文件
 	requires(SRC.."Config/SkillConfig")	-- 配置文件
+	requires(SRC.."Config/HeroConfig")	-- 配置文件
+	requires(SRC.."Config/ArmConfig")	-- 配置文件
+	requires(SRC.."Config/ArmourConfig")	-- 配置文件
+	requires(SRC.."Config/OrnamentConfig")	-- 配置文件
+	requires(SRC.."Config/SHurdleConfig")
+	requires(SRC.."Config/BHurdleConfig")
+	
 	requires(SRC.."Common/CommonFunction")
 	-- 引入 quick 框架
 	requires("framework/init")

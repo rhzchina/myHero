@@ -7,18 +7,18 @@ local FightLayer = {
 	layer,
 	group,
 	roleLayer,     --对战双方卡片所在层
-	effect   --特效层
-	
+	effect ,  --特效层
+	temp
 }
 
-function FightLayer:new()
+function FightLayer:new(temp)
 	local this = {}	
 	setmetatable(this,self)
 	self.__index = self
 	DATA_Fighting:getAttackType()
 	
 	this.layer = CCLayer:create()
-	
+	this.temp = temp
 	this.group = {
 		{}, --我方上阵英雄
 		{}  --敌方
@@ -155,7 +155,7 @@ end
 											if not winner then
 												self:fightLogic()
 											else
-												self.layer:addChild(Result:new(winner,data:getHero(),data:getResult("guanka")):getLayer())	
+												self.layer:addChild(Result:new(self.temp,winner,data:getHero(),data:getResult("guanka")):getLayer())	
 												data:clear(true)
 											end
 										end

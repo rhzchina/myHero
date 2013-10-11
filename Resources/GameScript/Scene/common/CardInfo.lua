@@ -63,7 +63,7 @@ function CardInfo:new(x,y,params)
 		this.layer:addChild(proText)
 		
 		local str = getBag(this.params.type, this.params.cid, "name")
-		local height = string.len(str) / 3 * 30 
+		local height = string.len(str) / 3 * 25 
 		proText = newLabel(str, 25, {x = 25, y = 190 + (proBg:getContentSize().height - height ) / 2, dimensions = CCSizeMake(30,height)})
 		this.layer:addChild(proText)
 	end

@@ -1,9 +1,9 @@
 local FightResult = {
 	layer,
-	contentLayer
+	contentLayer,
 }
 
-function FightResult:new(result, hero, gift)
+function FightResult:new(type_scene,result, hero, gift)
 	local this = {}
 	setmetatable(this,self)
 	self.__index = self
@@ -30,9 +30,9 @@ function FightResult:new(result, hero, gift)
 	setAnchPos(silver,230,530)
 	this.contentLayer:addChild(silver)
 	
-	local result = newSprite(IMG_COMMON.."s.png")	
-	setAnchPos(result,330,520)
-	this.contentLayer:addChild(result)
+	local result_sprite = newSprite(IMG_COMMON.."s.png")	
+	setAnchPos(result_sprite,330,520)
+	this.contentLayer:addChild(result_sprite)
 	
 	local x, y = 60, 400
 	for i = 1, table.nums(hero) do
@@ -55,7 +55,25 @@ function FightResult:new(result, hero, gift)
 	this.contentLayer:setTouchEnabled(true)
 	this.contentLayer:registerScriptTouchHandler(function(type, x, y)
 		if type == CCTOUCHBEGAN then
-			switchScene("roost")
+			if type_scene == "task" then
+				switchScene("roost")
+			elseif type_scene == "sport" then
+				switchScene("athletics")
+			elseif type_scene == "copy" then
+				if result == 1 then
+					HTTPS:send("Duplicate", {m = "duplicate", a = "duplicate", duplicate = "open"}, {success_callback = function(data)
+						switchScene("transcript",{type = 1})
+					end})
+				else
+					local task_data = gift["tast"]
+					temp = {}
+					temp.type_id = task_data.cur_id
+					temp.cur_layer = task_data.cur_layer
+					switchScene("transcript",{type = 2,temp = temp})
+				end
+				
+			end
+			
 		end
 	end,false,-131,false)
 	

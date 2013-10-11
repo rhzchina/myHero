@@ -47,7 +47,7 @@ function FightRole:new(group,id,pos,total,params)
 	this.layer = CCLayer:create()
 	
 	this.params = params or {}
-	dump(params)
+	--dump(params)
 	
 	--战斗卡片背景
 	this.bg = newSprite(PATH.."test_bg.png")
@@ -203,27 +203,27 @@ function FightRole:doAction(type, role, params)
 				end, params.res_id, params.hpChange)
 		end
 	elseif type == "skill" then
-		print("技能数据改")
+		--print("技能数据改")
 		if role == "adt" then
 				
 		else
 		end
 	else
-		print("其它的",type)
+		--print("其它的",type)
 	end
 end
 
 --卡牌的攻击表现
 function FightRole:cardAct(kind, callback, id, hpChange)
 	local action
-	print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+	--print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
 	if kind == "adt" then
 		action = getSequence(self:act(id, callback))
 			
 	else
 		 action = getSequence(self:act(id, callback, nil,  hpChange))
 	end
-	print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+	--print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
 	self.layer:runAction(action)
 end
 

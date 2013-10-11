@@ -18,8 +18,12 @@ function TranscriptLayer:new(data)
 	
 	local params = data or {}
 	this.layer = newLayer()
+	if data.type == 1 then
+		this:create_big()
+	else	
+		this:create_small(data.temp)
+	end
 	
-	this:create_big()
 	
 	return this
 end
@@ -520,10 +524,7 @@ function TranscriptLayer:show_map(cur_layer,type_id,is_fight,max_layer,is_quick)
 		end
 		
 		local one_layer = Btn:new(IMG_BTN, {"comnon_bnt.png", "comnon_bnt_press.png"}, 20, 90,{text = {"进入第"..(cur_layer + 1 ).."层", 24, ccc3(205, 133, 63), ccp(0, 0)},callback = function()
-				print("~~~~~~~~~~~~~~~~~~~~~~")
-				print(self.old_layer)
-				print(cur_layer)
-				print("~~~~~~~~~~~~~~~~~~~~~~")
+				
 				if cur_layer >= 100 then
 
 				else
@@ -552,10 +553,7 @@ function TranscriptLayer:show_map(cur_layer,type_id,is_fight,max_layer,is_quick)
 		end
 		
 		local other_layer = Btn:new(IMG_BTN, {"comnon_bnt.png", "comnon_bnt_press.png"}, 240, 90,{text = {"进入第"..(max_the_layer -  1).."层", 24, ccc3(205, 133, 63), ccp(0, 0)},callback = function()
-					print("~~~~~~~~~~~~~~~~~~~~~~")
-					print(self.old_layer)
-					print(cur_layer)
-					print("~~~~~~~~~~~~~~~~~~~~~~")
+					
 					if cur_layer >= 100 then
 					
 					else
@@ -634,9 +632,6 @@ function TranscriptLayer:show_map(cur_layer,type_id,is_fight,max_layer,is_quick)
 			end
 		end
 		
-		
-		
-		
 	else
 		if cur_layer %2 == 0 then
 			local bg = newSprite(PATH..type_id.."/tow.png")
@@ -655,7 +650,6 @@ function TranscriptLayer:show_map(cur_layer,type_id,is_fight,max_layer,is_quick)
 			
 			local title_desc = display.strokeLabel(cur_layer +1 ,126 ,110 + bg:getContentSize().height,16,ccc3(255,255,255),nil,nil,{align = 0})
 			self.show_layer:addChild(title_desc)
-			
 			
 			local hero_bg = newSprite(IMG_COMMON.."icon_bg"..DATA_User:get("icon_start")..".png")
 			hero_bg:setScaleX(0.7)
@@ -715,10 +709,6 @@ function TranscriptLayer:show_map(cur_layer,type_id,is_fight,max_layer,is_quick)
 		
 		
 		local one_layer = Btn:new(IMG_BTN, {"comnon_bnt.png", "comnon_bnt_press.png"}, 0, 90,{text = {"进入第"..(cur_layer + 1).."层", 24, ccc3(205, 133, 63), ccp(0, 0)},callback = function()
-				print("~~~~~~~~~~~~~~~~~~~~~~")
-				print(self.old_layer)
-				print(cur_layer)
-				print("~~~~~~~~~~~~~~~~~~~~~~")
 				if cur_layer >= 100 then
 				
 				else
@@ -745,12 +735,7 @@ function TranscriptLayer:show_map(cur_layer,type_id,is_fight,max_layer,is_quick)
 			end			
 		end
 		
-			local other_layer = Btn:new(IMG_BTN, {"comnon_bnt.png", "comnon_bnt_press.png"}, 240, 90,{text = {"进入第"..(max_the_layer - 1).."层", 24, ccc3(205, 133, 63), ccp(0, 0)},callback = function()
-					print("~~~~~~~~~~~~~~~~~~~~~~")
-					print(self.old_layer)
-					print(cur_layer)
-					print("~~~~~~~~~~~~~~~~~~~~~~")
-					
+			local other_layer = Btn:new(IMG_BTN, {"comnon_bnt.png", "comnon_bnt_press.png"}, 240, 90,{text = {"进入第"..(max_the_layer - 1).."层", 24, ccc3(205, 133, 63), ccp(0, 0)},callback = function()					
 					if cur_layer >= 100 then
 					
 					else
@@ -803,7 +788,7 @@ function TranscriptLayer:show_map(cur_layer,type_id,is_fight,max_layer,is_quick)
 									 type_id = type_id, 
 									 layer = cur_layer },{success_callback= function()
 										self.old_layer = cur_layer
-										switchScene("fighting")
+										switchScene("fighting","copy")
 									 end
 									 })
 			end
@@ -820,7 +805,7 @@ function TranscriptLayer:show_map(cur_layer,type_id,is_fight,max_layer,is_quick)
 									 type_id = type_id, 
 									 layer = cur_layer},{success_callback= function()
 										self.old_layer = cur_layer
-										switchScene("fighting")
+										switchScene("fighting","copy")
 									 end
 									 })
 		end

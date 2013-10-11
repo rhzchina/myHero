@@ -39,9 +39,28 @@ function CardDetail:new(kind,cid,params)
 	
 	intro = newLabel("简介", 20, {x = 350, y = 596, noFont = true, color = ccc3(0, 0, 0)})
 	this.contentLayer:addChild(intro)
+	--dump(DATA_Bag:get(kind,cid))
+	if kind == "hero" then
+		--dump(HeroConfig[DATA_Bag:get(kind,cid,"id")])
+		intro = newLabel(HeroConfig[DATA_Bag:get(kind,cid,"id")].desc, 25, {x = 290, y = 385,color = ccc3(0,0,0),dimensions = CCSizeMake(150, 200), noFont = true})
+		this.contentLayer:addChild(intro)
+	elseif kind == "equip" then
+		local id = DATA_Bag:get(kind,cid,"id")
+		if tonumber(id) >= 6000 and tonumber(id) < 7000 then
+			intro = newLabel(ArmConfig[DATA_Bag:get(kind,cid,"id")].desc, 25, {x = 290, y = 385,color = ccc3(0,0,0),dimensions = CCSizeMake(150, 200), noFont = true})
+			this.contentLayer:addChild(intro)
+		elseif tonumber(id) >= 7000 and tonumber(id) < 8000 then
+			intro = newLabel(OrnamentConfig[DATA_Bag:get(kind,cid,"id")].desc, 25, {x = 290, y = 385,color = ccc3(0,0,0),dimensions = CCSizeMake(150, 200), noFont = true})
+			this.contentLayer:addChild(intro)
+		elseif tonumber(id) >= 5000 and tonumber(id) < 6000 then
+			intro = newLabel(ArmourConfig[DATA_Bag:get(kind,cid,"id")].desc, 25, {x = 290, y = 385,color = ccc3(0,0,0),dimensions = CCSizeMake(150, 200), noFont = true})
+			this.contentLayer:addChild(intro)
+		end
+	elseif kind == "skill" then
+		intro = newLabel(SkillConfig[DATA_Bag:get(kind,cid,"id")].desc, 25, {x = 290, y = 385,color = ccc3(0,0,0),dimensions = CCSizeMake(150, 200), noFont = true})
+		this.contentLayer:addChild(intro)
+	end
 	
-	intro = newLabel("困苦进顶替顶替栽顶替茜茜茜村茜枯堙苛塔顶地", 20, {x = 290, y = 250,dimensions = CCSizeMake(150, 200), noFont = true})
-	this.contentLayer:addChild(intro)
 
 	
 	local btn = Btn:new(IMG_BTN,{"btn_bg.png", "btn_bg_press.png"}, 130, 190, {

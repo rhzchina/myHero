@@ -12,8 +12,8 @@ function roostLayer:new(ksv,data,p_x,p_y)
 	this.layer:addChild(bg)
 	this.layer:setContentSize(bg:getContentSize())
 	
-
-	local text_name = newLabel(data["name"].."     执行 "..data["in_num"].."/"..data["num"], 22)
+	--dump(data)
+	local text_name = newLabel(SHurdleConfig[data.id].name.."     执行 "..data["in_num"].."/"..data["num"], 22)
 	setAnchPos(text_name,125,135)
 	this.layer:addChild(text_name)
 
@@ -54,18 +54,43 @@ function roostLayer:new(ksv,data,p_x,p_y)
 	this.layer:addChild(text_qi)
 
 	---描述
-	local text_desc = newLabel(data["descs"], 25, {x = 5, y = 15, dimensions = CCSizeMake(375,50)})
-	this.layer:addChild(text_desc)
-
-	--技能
-	--[[local img_qi = newSprite("image/scene/home/qi.png")
-	setAnchPos(img_qi,240,225)
-	this.layer:addChild(img_qi)
-]]
-
-	--[[战斗]]
-	--local group = RadioGroup:new()
-	local fight
+	--local text_desc = newLabel(data["descs"], 25, {x = 5, y = 15, dimensions = CCSizeMake(375,50)})
+	--this.layer:addChild(text_desc)
+	
+	local des = Label:new(SHurdleConfig[data.id].desc, 22, 320,5)
+	setAnchPos(des, 18, 10)
+	this.layer:addChild(des)
+	
+	if tonumber(data.marked) == 0 then
+		local img_qi = newSprite(IMG_COMMON.."icon_empty.png")
+		setAnchPos(img_qi,20,70)
+		this.layer:addChild(img_qi)
+	else
+		local img_qi = newSprite(IMG_COMMON.."icon_bg1.png")
+		setAnchPos(img_qi,20,70)
+		this.layer:addChild(img_qi)
+	
+		local img_qi = newSprite(IMG_COMMON.."icon_border1.png")
+		setAnchPos(img_qi,20,70)
+		this.layer:addChild(img_qi)
+		
+		local img_qi = newSprite(IMG_ICON .. "hero/S_"..SHurdleConfig[data.id].hero_icon..".png")
+		setAnchPos(img_qi,20,70)
+		this.layer:addChild(img_qi)
+		
+		local img_qi = newSprite(IMG_COMMON.."icon_bg1.png")
+		setAnchPos(img_qi,370,70)
+		this.layer:addChild(img_qi)
+		
+		local img_qi = newSprite(IMG_ICON .. "equip/S_"..SHurdleConfig[data.id].goods_icon..".png")
+		setAnchPos(img_qi,375,70)
+		this.layer:addChild(img_qi)
+		
+		local img_qi = newSprite(IMG_COMMON.."icon_border1.png")
+		setAnchPos(img_qi,370,70)
+		this.layer:addChild(img_qi)
+		
+		local fight
 	    fight = Btn:new(IMG_BTN,{"fight_normal.png","fight_press.png"},377,10,
 	    		{
 					--parent = ksv,
@@ -82,12 +107,15 @@ function roostLayer:new(ksv,data,p_x,p_y)
 	    						 type = "task",
 	    						 bHurdle = math.floor(data["id"] / 100), 
 	    						 sHurdle = data["id"]},{success_callback= function()
-	    						 	switchScene("fighting")
+	    						 	switchScene("fighting","task")
 	    						 end
 	    						 })
 	    				 end
 	    		 })
 		this.layer:addChild(fight:getLayer())
+	end
+	
+	
 
 return this
 end

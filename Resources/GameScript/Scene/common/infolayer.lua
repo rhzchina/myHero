@@ -63,7 +63,7 @@ function InfoLayer:create(hideTop)
 		{"fb",
 			function()
 				HTTPS:send("Duplicate", {m = "duplicate", a = "duplicate", duplicate = "open"}, {success_callback = function(data)
-						switchScene("transcript")
+						switchScene("transcript",{type = 1})
 				end})
 			end
 		},

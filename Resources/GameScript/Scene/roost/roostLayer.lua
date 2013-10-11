@@ -67,10 +67,8 @@ function roostLayer:new(x,y)
     		{
     			callback=
     				function()
-    				
-    					
     						if bsv:getCurIndex() < #DATA_Mission:get("bHurdle") then
-    						bsv:setIndex(bsv:getCurIndex() + 1, true) 
+								bsv:setIndex(bsv:getCurIndex() + 1, true) 
     					end
     				 end
     		 })
@@ -87,7 +85,7 @@ function roostLayer:createMission(level)
 	end
 	self.contentLayer = newLayer()
 	
-	local des = Label:new(DATA_Mission:get("bHurdle",level, "exps"), 22, 440,18)
+	local des = Label:new(DATA_Mission:get("bHurdle",level, "exps"), 22, 420,18)
 	setAnchPos(des, 18, 562)
 	self.contentLayer:addChild(des)
 

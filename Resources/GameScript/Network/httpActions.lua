@@ -55,9 +55,14 @@ function M.Battle_up( type , data , callback )
 			DATA_Embattle:set(data["battle"])
 			DATA_Dress:set(data["equip"])
 			DATA_Bag:setByKey("skill",data["skill"]["cid"],data["skill"])
+			if data["icon_id"] then
+				DATA_User:setkey("icon_id", data["icon_id"])
+			end
 			
-			DATA_User:setkey("icon_id", data["icon_id"])
-			DATA_User:setkey("icon_start", data["icon_start"])
+			if data["icon_start"] then
+				DATA_User:setkey("icon_start", data["icon_start"])
+			end
+			
 			callback()
 		end
 	end
@@ -127,7 +132,6 @@ function M.Skill_selectline(type, data, callback)
 	if type == 1 then
 	else
 		local result = data
-		dump(result)
 		DATA_Dress:set(result["equipage"])
 		callback()
 	end
@@ -147,7 +151,48 @@ end
 function M.Fighting_start(type,data,callback)
 	if type == 1 then
 	else
-		DATA_Fighting:set(data["start"])
+		if data["type"] == 1 then
+			--任务
+			local temp = data["start"]["gameover"]["guanka"]
+			
+			if temp then
+				
+				--更新用户数据
+				if temp["user"].lv then
+					DATA_User:setkey("lv", temp["user"].lv)
+				end
+				
+				if temp["user"].Money then
+					DATA_User:setkey("Money", temp["user"].Money)
+				end 
+				
+				if temp["user"].energy then
+					DATA_User:setkey("energy", temp["user"].energy)
+				end 
+				
+				if temp["user"].Gold then
+					DATA_User:setkey("Gold", temp["user"].Gold)
+				end 
+				--更新关卡数据				
+				if temp["hurdle"] then
+					if temp["hurdle"].hurdle_id then
+						local bhur_id = math.floor(temp["hurdle"].cur_bHurdle / 1000) %10
+						local shur_id = temp["hurdle"].hurdle_id %10 
+						DATA_Mission:set_small_key(bhur_id,shur_id,"marked",temp["hurdle"].s_marked)
+					end
+				end
+				
+			end
+			
+			DATA_Fighting:set(data["start"])
+		elseif data["type"] == 2 then
+			--竞技
+			DATA_Fighting:set(data["start"])
+		elseif data["type"] == 3 then
+			--副本
+			DATA_Fighting:set(data["start"])
+		end
+		
 		callback()
 	end
 	return true,data

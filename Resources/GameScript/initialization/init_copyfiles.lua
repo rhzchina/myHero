@@ -578,7 +578,7 @@ function initCopyLayer:go()
 		CCDirector:sharedDirector():getScheduler():unscheduleScriptEntry(handle)
 		handle = nil
 
-		requires( "GameScript/GameCanvasLua")
+		requires(IMG_PATH.."GameScript/GameCanvasLua")
 	end , 0.01 , false)
 	
 end
@@ -604,7 +604,7 @@ function initCopyLayer:showTips(msg)
 		self.tipsLayer = nil
 	end
 
-	self.tipsLayer = CCSprite:create("images/common/prompt_bg.png")
+	self.tipsLayer = CCSprite:create(IMG_PATH.."images/common/prompt_bg.png")
 	INIT_FUNCTION.setAnchPos(self.tipsLayer , INIT_FUNCTION.cx , INIT_FUNCTION.cy , 0.5)
 
 	local textField = CCLabelTTF:create(msg , "Thonburi" , 20)

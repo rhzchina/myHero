@@ -93,7 +93,7 @@ function HomeLayer:create()
 	    end},
 	    {"fb",50,305,function() 
 				HTTPS:send("Duplicate", {m = "duplicate", a = "duplicate", duplicate = "open"}, {success_callback = function(data)
-						switchScene("transcript")
+						switchScene("transcript",{type = 1})
 				end})
 		end},
 		    {"explore",185,190, function()

@@ -105,7 +105,7 @@ function AthleticsLayer:createRecord()
 	    						 type = "sports",
 	    						 s_id = v.sid, 
 	    						 },{success_callback= function()
-	    						 	switchScene("fighting")
+	    						 	switchScene("fighting","sport")
 	    						 end
 	    						 })
 					end
@@ -216,7 +216,7 @@ function AthleticsLayer:createContent()
 									 type = "sports",
 									 s_id = v.Id, 
 									 },{success_callback= function()
-										switchScene("fighting")
+										switchScene("fighting","sport")
 									 end
 									 })
 				end

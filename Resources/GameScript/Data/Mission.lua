@@ -6,12 +6,17 @@ function DATA_Mission:set(data)
 	_data = data
 end
 
-function DATA_Mission:setByKey(first, second, third)
+function DATA_Mission:setByKey(first, second, third,four)
 	if not _data then
 		_data = {}
 	end
 	
-	if third then
+	if four then
+		if not _data[first] then
+			_data[first] = {}
+		end
+		_data[first][second][third]= four
+	elseif third then
 		if not _data[first] then
 			_data[first] = {}
 		end
@@ -19,8 +24,12 @@ function DATA_Mission:setByKey(first, second, third)
 	else
 		_data[first] = second
 	end
+	
 end
 
+function DATA_Mission:set_small_key(first ,second,key, data)
+	_data["sHurdle"][first][second][key] = data
+end
 
 function DATA_Mission:get(...)
 	local result = _data

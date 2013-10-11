@@ -7,15 +7,54 @@
             <key>1004_1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{0,0},{38,101}}</string>
+                <string>{{120,0},{106,96}}</string>
                 <key>offset</key>
-                <string>{1,-7}</string>
+                <string>{-6,0}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{10,21},{106,96}}</string>
+                <key>sourceSize</key>
+                <string>{138,138}</string>
+            </dict>
+            <key>1004_2.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{0,120},{110,116}}</string>
+                <key>offset</key>
+                <string>{3,2}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{62,34},{38,101}}</string>
+                <string>{{17,9},{110,116}}</string>
                 <key>sourceSize</key>
-                <string>{160,155}</string>
+                <string>{138,138}</string>
+            </dict>
+            <key>1004_3.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{0,0},{120,120}}</string>
+                <key>offset</key>
+                <string>{3,-1}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{12,10},{120,120}}</string>
+                <key>sourceSize</key>
+                <string>{138,138}</string>
+            </dict>
+            <key>1004_4.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{110,120},{110,100}}</string>
+                <key>offset</key>
+                <string>{5,1}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{19,18},{110,100}}</string>
+                <key>sourceSize</key>
+                <string>{138,138}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -25,9 +64,9 @@
             <key>realTextureFileName</key>
             <string>1004.png</string>
             <key>size</key>
-            <string>{38,101}</string>
+            <string>{216,236}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:e20aa774c43eb3f941aeb592fd3bff39$</string>
+            <string>$TexturePacker:SmartUpdate:1a7104c2a9b75c86dbc28016e11de1fa$</string>
             <key>textureFileName</key>
             <string>1004.png</string>
         </dict>

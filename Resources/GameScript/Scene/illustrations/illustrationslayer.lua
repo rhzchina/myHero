@@ -65,11 +65,11 @@ function Illustrlayer:createList(kind)
 	local temp_line = 1
 	local temp_count = 0
 	if kind == 1 then
-		data = requires(PATH.."HeroConfig")
+		data = HeroConfig
 		local book_data = DATA_Book:get()
 		temp = book_data["hero"]
 	elseif kind == 2 then
-		data = requires(PATH.."ArmConfig")
+		data = ArmConfig
 		local arm_data = {}
 		local index = 1
 		local book_data = DATA_Book:get()
@@ -81,7 +81,7 @@ function Illustrlayer:createList(kind)
 		end
 		temp = arm_data
 	elseif kind == 3 then
-		data = requires(PATH.."ArmourConfig")
+		data = ArmourConfig
 		local arm_data = {}
 		local index = 1
 		local book_data = DATA_Book:get()
@@ -93,7 +93,7 @@ function Illustrlayer:createList(kind)
 		end
 		temp = arm_data
 	elseif kind == 4 then
-		data = requires(PATH.."OrnamentConfig")
+		data = OrnamentConfig
 		local arm_data = {}
 		local index = 1
 		local book_data = DATA_Book:get()
@@ -105,7 +105,7 @@ function Illustrlayer:createList(kind)
 		end
 		temp = arm_data
 	elseif kind == 5 then
-		data = requires(PATH.."SkillConfig")
+		data = SkillConfig
 		local book_data = DATA_Book:get()
 		temp = book_data["skill"]
 	end

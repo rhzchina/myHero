@@ -2,12 +2,12 @@ local PATH = IMG_SCENE.."fighting/"
 local SINGLE, FAR, ALL, FULL = 1, 2, 3, 4   --特效类型，单体，远程， 全阵营， 全屏幕
 local timeChange = 1  --特效时间的控制
 local info = {
-          --num, {ox, oy, fx, fy}, type
+          --num, {ox, oy, fx, fy}, type, time, scale
 	[1001] = {5, {{-30, 90, true}, {30, -90, false, true}}, SINGLE, 0.05 },
 	[1002] = {6, {{0, 0,}, {0, -30,}}, SINGLE, 0.08 },
-	[1003] = {1, {{0, 0}, {0, 0, false, true}}, FAR, 0.1},
-	[1004] = {1, {{0, 0}, {0, 0, false, true}}, FAR, 0.1},
-	[1005] = {14, {{0, 0},{0, 0}}, FULL, 0.1},
+	[1003] = {4, {{0, 0}, {0, 0, false, true}}, FAR, 0.1, 0.6},
+	[1004] = {4, {{0, 0}, {0, 0, false, true}}, FAR, 0.1, 0.6},
+	[1005] = {14,{{0, 0},{0, 0}}, FULL, 0.1},
 	[2001] = {6, {{0, 0}, {0, 0}}, SINGLE, 0.08},
 	[2002] = {8, {{0, 0}, {0, 0}}, SINGLE, 0.1},
 	[2003] = {6, {{140, 0}, {140, 0}}, SINGLE, 0.1},
@@ -43,6 +43,7 @@ end
 	
 function Effect:showByType(type,x,y,params)
 	local params = params or {}
+	dump(params)
 	local frames = CCArray:create()
 	--test code	
 	if type == 0 then
@@ -50,7 +51,7 @@ function Effect:showByType(type,x,y,params)
 	end
    --add effect 
 	if not self.added[type] then
-		print(type.."add complete")
+		--print(type.."add complete")
 		self.added[type] = true
 		self.cache:addSpriteFramesWithFile(IMG_EFFECT..type..".plist",IMG_EFFECT..type..".png")
 	end
@@ -115,6 +116,7 @@ function Effect:showByType(type,x,y,params)
 	end
 	sprite:runAction(CCSequence:create(frames))
 	
+	sprite:setScale(info[type][5] or 1)
 	
 	
 	self.layer:addChild(sprite)	
