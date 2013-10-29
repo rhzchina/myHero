@@ -69,7 +69,7 @@ function FightLayer:showFight()
 	for i, v in pairs(data:getHero()) do
 --		this.group[1][i - 1] = FightRole:new(1, v["id"], i - 1,{hp = v["hp"],star = v["star"] ,effect = this.effect}) 
 --		this.roleLayer:addChild(this.group[1][i - 1]:getLayer())
-		self.group[1][i] = FightRole:new(1, v["id"], i , #data:getHero(),{hp = v["hp"],star = v["star"] ,lv = v["lv"], effect = self.effect, parent = self.roleLayer, base = self.layer}) 
+		self.group[1][i] = FightRole:new(1, v["id"], i , #data:getHero(),{hp = v["hp"],star = v["star"] ,lv = v["lv"], effect = self.effect, parent = self.roleLayer, base = self.layer, look = v.look}) 
 		self.roleLayer:addChild(self.group[1][i]:getLayer())
 	end
 	
@@ -77,7 +77,7 @@ function FightLayer:showFight()
 	for i,v in pairs(data:getMonster()) do
 --		this.group[2][i - 1] = FightRole:new(2, v["id"], i - 1,{hp = v["hp"],star = v["star"],effect = this.effect}) 
 --		this.roleLayer:addChild(this.group[2][i - 1]:getLayer())
-		self.group[2][i] = FightRole:new(2, v["id"], i , #data:getMonster(),{hp = v["hp"],star = v["star"], lv = v["lv"], effect = self.effect, parent = self.roleLayer, base = self.layer}) 
+		self.group[2][i] = FightRole:new(2, v["id"], i , #data:getMonster(),{hp = v["hp"],star = v["star"], lv = v["lv"], effect = self.effect, parent = self.roleLayer, base = self.layer, look = v.look}) 
 		self.roleLayer:addChild(self.group[2][i]:getLayer())
 	end
 --	print("战斗开始")
@@ -161,6 +161,7 @@ end
 										end
 									end,
 								res_id = data:getVictim(i, "res_id"),
+								target = targetList,
 								hpChange =  showHp
 							})
 					end

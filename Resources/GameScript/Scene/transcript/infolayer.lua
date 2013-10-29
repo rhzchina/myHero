@@ -48,18 +48,16 @@ function InfoLayer:new(Parent,data,_index)
 	this.layer:addChild(reset:getLayer())
 	
 	local rush = Btn:new(IMG_BTN, {"comnon_bnt.png", "comnon_bnt_press.png"}, 260, 10,{text = {"闯", 30, ccc3(205, 133, 63), ccp(0, 0)},callback = function()
-		if tonumber(params.num) <= 0 then
-			MsgBox.create():flashShow("免费次数为0，请使用"..params.money.."代币重置!")
-		else
+		--[[if tonumber(params.num) <= 0 then
+			Dialog.tip("免费次数为0，请使用"..params.money.."代币重置!")
+		else]]
+		
 			HTTPS:send("Duplicate" ,  
 					{m="duplicate",a="duplicate",duplicate = "emigrated",type_id = data.type_id} ,
 					{success_callback = function(temp_data)
 						this.Parent:create_small(temp_data)
 					end })
-		end
-		
-					
-
+		--end
 	end})
 	this.layer:addChild(rush:getLayer())
 	return this

@@ -53,10 +53,10 @@ function ActivityLayer:loginGift(data, offset)
 			parent = scroll,
 			callback = function()
 				if lock then
-					MsgBox.create():flashShow("不可领取")
+					Dialog.tip("不可领取")
 				else
 					HTTPS:send("Activity", {m = "activity", a = "activity", activity = "check", day = data[i].did }, {success_callback = function(gift, change)
-						MsgBox.create():flashShow("奖励已获得，请前往背包中查看")
+						Dialog.tip("奖励已获得，请前往背包中查看")
 						DATA_Bag:insert(gift)
 						data[i] = change
 						self:loginGift(data, scroll:getOffsetY())			
@@ -68,9 +68,9 @@ function ActivityLayer:loginGift(data, offset)
 --		
 		local text = newLabel("第"..data[i].did.."天", 20,{x = 180, y = 60, color = ccc3(0x2c, 0, 0)})
 		layer:addChild(text)
-		
+		dump(data)
 		local gift = Btn:new(IMG_COMMON,{"icon_bg".."1"..".png"}, 50, 20, {
-			front = IMG_ICON.."equip".."/S_".."5101"..".png",
+			front = IMG_ICON.."prop".."/S_"..data[i].res_id..".png",
 			other = {IMG_COMMON.."icon_border".."1"..".png",45,45},
 			parent = scroll,
 		})

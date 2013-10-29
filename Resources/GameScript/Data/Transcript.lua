@@ -11,8 +11,6 @@ function DATA_Transcript:set_index(data,index)
 	dump(data)
 	print(index)
 	for k,v in pairs(_data) do
-		print("~~~~~~~~~~~")
-		print(k)
 		if tonumber(k) == tonumber(index) then
 			reust[k] = data
 		else

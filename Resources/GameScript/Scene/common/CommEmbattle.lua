@@ -28,7 +28,7 @@ function CommEmbattle:new(x, y, width, params)
 --			dump(getBag("hero"))
 			str = "icon_bg"..getBag("hero",cid , "star")..".png"
 			front = IMG_ICON.."hero/S_"..getBag("hero", cid, "look")..".png"
-			other = {IMG_COMMON.."icon_border"..getBag("hero", cid, "star")..".png", 45, 45}
+--			other = {IMG_COMMON.."icon_border"..getBag("hero", cid, "star")..".png", 45, 45}
 		else
 			if i < num  then
 				str = "icon_empty.png"

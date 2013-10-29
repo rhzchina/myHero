@@ -55,7 +55,7 @@ function sendMailLayer:new(data)
 				print(open_id)
 				open_id = string.trim( open_id )
 				if open_id == "" then
-					MsgBox.create():flashShow("请输入内容")
+					Dialog.tip("请输入内容")
 					return
 				end
 				

@@ -68,7 +68,7 @@ local KNLoading = requires(SRC.."Common/KNLoading")
 --	function socket:call(mod , act , command , data , param)
 --		if opensocket_ret < 0 then
 --			SOCKET:delInstance(socket_type)
---			MsgBox.create():flashShow("网络出现异常，你可能已经断网了")
+--			Dialog.tip("网络出现异常，你可能已经断网了")
 --			return
 --		end
 --
@@ -97,7 +97,7 @@ local KNLoading = requires(SRC.."Common/KNLoading")
 --		--是否存在回调 错误 函数
 --		if type(param.error_callback)   ~= "function" then
 --			param.error_callback = function(err)
---				MsgBox.create():flashShow("[" .. err.code .. "]" .. err.msg)	-- 弹出错误文字提示
+--				Dialog.tip("[" .. err.code .. "]" .. err.msg)	-- 弹出错误文字提示
 --			end
 --		end
 --		if type(data) ~= "table" then data = {} end
@@ -227,7 +227,7 @@ local KNLoading = requires(SRC.."Common/KNLoading")
 --						end
 --					})
 --				else
---					MsgBox.create():flashShow("网络出现异常，你可能已经断网了")
+--					Dialog.tip("网络出现异常，你可能已经断网了")
 --				end
 --			elseif code == -99 then
 --				print("kick_off  ========")
@@ -318,16 +318,18 @@ end
 
 function SOCKET:callback(response)
 	local result = json.decode(response)
-	
 	if not result then
-		MsgBox.create():flashShow("数据格式错误")
+		Dialog.tip("数据格式错误 ")
 		return
 	end
-	--dump(result)
 	if result.mode == "open" then
 		DATA_Chat:set(result)
-		--audio.playMusic(SOUND.."home_bg.ogg")
-		switchScene("home")
+		if tonumber(DATA_User:get("role")) == 0 then
+			switchScene("createRole")
+		else
+			switchScene("home")
+		end
+		
 	elseif result.mode == "tall" then
 		DATA_Chat:addMsg("tall", result.add)
 		
@@ -336,7 +338,26 @@ function SOCKET:callback(response)
 			scene:removeChild(loading, true)
 			scene:refresh()
 		end
+	elseif result.mode == "system" then
+		DATA_Chat:addMsg("system", result.add)
+		local scene = display.getRunningScene()
+		if scene.name == "system" then
+			scene:removeChild(loading, true)
+			scene:refresh()
+		end
+	elseif result.mode == "pay" then
+		local gold = result.add
+		DATA_User:setkey("Gold", gold["Gold"])
+		IS_UPDATA = true
+		local scene = display.getRunningScene()
+		if scene.name == "system" then
+			scene:removeChild(loading, true)
+			scene:refresh()
+		end
+	else
+		
 	end
+	
 end
 
 function SOCKET:call(command, params)
@@ -344,8 +365,8 @@ function SOCKET:call(command, params)
 	SOCKET:init()
 	
 	local request_data = {
-		name = DATA_User:get("name"),
-		hostIp = DATA_Session:get("uid"),
+		name = DATA_CommonUser:get_user().user_name,
+		hostIp = DATA_CommonUser:get_user().uid,
 		type = command 
 	}
 	params = params or {}

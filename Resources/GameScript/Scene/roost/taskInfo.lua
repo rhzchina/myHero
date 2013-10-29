@@ -4,7 +4,7 @@ function roostLayer:new(ksv,data,p_x,p_y)
 	local this = {}
 	setmetatable(this,self)
 	self.__index  = self
-
+	
 	this.layer = CCLayer:create()
 	setAnchPos(this.layer,p_x,p_y+10)
 	local bg = newSprite(PATH.."infobox.png")
@@ -22,7 +22,7 @@ function roostLayer:new(ksv,data,p_x,p_y)
 	setAnchPos(leaf,140,105)
 	this.layer:addChild(leaf)
 
-	local text_leaf = newLabel(data["money"],  25)
+	local text_leaf = newLabel("0",  25)
 	setAnchPos(text_leaf,180,105)
 	this.layer:addChild(text_leaf)
 
@@ -49,7 +49,7 @@ function roostLayer:new(ksv,data,p_x,p_y)
 	setAnchPos(img_qi,240,70)
 	this.layer:addChild(img_qi)
 
-	local text_qi = newLabel("100", 25)
+	local text_qi = newLabel("0", 25)
 	setAnchPos(text_qi,280,75)
 	this.layer:addChild(text_qi)
 
@@ -65,30 +65,56 @@ function roostLayer:new(ksv,data,p_x,p_y)
 		local img_qi = newSprite(IMG_COMMON.."icon_empty.png")
 		setAnchPos(img_qi,20,70)
 		this.layer:addChild(img_qi)
+		local fight
+	    fight = Btn:new(PATH,{"fight_grey.png"},377,10,
+	    		{
+	    			scale = true,
+	    			callback=
+	    				function()
+	    					Dialog.tip("您好，该关卡尚未开启！")
+	    				 end
+	    		 })
+		this.layer:addChild(fight:getLayer())
 	else
-		local img_qi = newSprite(IMG_COMMON.."icon_bg1.png")
-		setAnchPos(img_qi,20,70)
-		this.layer:addChild(img_qi)
+		
+		if tonumber(SHurdleConfig[data.id].hero_icon) ~= 0 then
+			local img_qi = newSprite(IMG_COMMON.."icon_bg1.png")
+			setAnchPos(img_qi,20,70)
+			this.layer:addChild(img_qi)
+			
+			local img_qi = newSprite(IMG_COMMON.."icon_border1.png")
+			setAnchPos(img_qi,20,70)
+			this.layer:addChild(img_qi)
+			local img_qi = newSprite(IMG_ICON .. "hero/S_"..MonConfig[SHurdleConfig[data.id].hero_icon..""].look..".png")
+			setAnchPos(img_qi,20,70)
+			this.layer:addChild(img_qi)
+		end
+		
 	
-		local img_qi = newSprite(IMG_COMMON.."icon_border1.png")
-		setAnchPos(img_qi,20,70)
-		this.layer:addChild(img_qi)
 		
-		local img_qi = newSprite(IMG_ICON .. "hero/S_"..SHurdleConfig[data.id].hero_icon..".png")
-		setAnchPos(img_qi,20,70)
-		this.layer:addChild(img_qi)
+		if tonumber(SHurdleConfig[data.id].goods_icon) ~= 0 then
+			local img_qi = newSprite(IMG_COMMON.."icon_bg1.png")
+			setAnchPos(img_qi,370,70)
+			this.layer:addChild(img_qi)
+			if SHurdleConfig[data.id].goods_icon > 5999 and SHurdleConfig[data.id].goods_icon < 6999 then
+				local goods = newSprite(IMG_ICON .. "equip/S_"..ArmConfig[SHurdleConfig[data.id].goods_icon..""].look..".png")
+				setAnchPos(goods,375,70)
+				this.layer:addChild(goods)
+			elseif SHurdleConfig[data.id].goods_icon > 4999 and SHurdleConfig[data.id].goods_icon < 5999 then
+				local goods = newSprite(IMG_ICON .. "equip/S_"..ArmourConfig[SHurdleConfig[data.id].goods_icon..""].look..".png")
+				setAnchPos(goods,375,70)
+				this.layer:addChild(goods)
+			elseif SHurdleConfig[data.id].goods_icon > 6999 and SHurdleConfig[data.id].goods_icon < 7999 then
+				local goods = newSprite(IMG_ICON .. "equip/S_"..OrnamentConfig[SHurdleConfig[data.id].goods_icon..""].look..".png")
+				setAnchPos(goods,375,70)
+				this.layer:addChild(goods)
+			end
+					
+			local img_qi = newSprite(IMG_COMMON.."icon_border1.png")
+			setAnchPos(img_qi,370,70)
+			this.layer:addChild(img_qi)
 		
-		local img_qi = newSprite(IMG_COMMON.."icon_bg1.png")
-		setAnchPos(img_qi,370,70)
-		this.layer:addChild(img_qi)
-		
-		local img_qi = newSprite(IMG_ICON .. "equip/S_"..SHurdleConfig[data.id].goods_icon..".png")
-		setAnchPos(img_qi,375,70)
-		this.layer:addChild(img_qi)
-		
-		local img_qi = newSprite(IMG_COMMON.."icon_border1.png")
-		setAnchPos(img_qi,370,70)
-		this.layer:addChild(img_qi)
+		end		
 		
 		local fight
 	    fight = Btn:new(IMG_BTN,{"fight_normal.png","fight_press.png"},377,10,

@@ -12,7 +12,11 @@ function CardInfo:new(x,y,params)
 	this.layer = newLayer()
 	local bg
 	if this.params.type == "hero" then
-		bg = newSprite(PATH..params.type.."_card_bg.png")
+		if this.params.lock then
+			bg = newSprite(PATH.."hero_card_disable.png")
+		else
+			bg = newSprite(PATH.."hero_card_bg.png")
+		end
 	else
 		bg = newSprite(PATH.."other_card_bg.png")
 	end
@@ -43,7 +47,7 @@ function CardInfo:new(x,y,params)
 		end
 		
 		local exp = Progress:new(IMG_COMMON, {"progress_bg.png", "progress_blue.png"}, 50, 55, {
-			cur = getBag(this.params.type,this.params.cid,"cur"),
+			cur = math.floor(tonumber(getBag(this.params.type,this.params.cid,"exps"))%tonumber(getBag(this.params.type,this.params.cid,"lexps"))),
 			leftIcon = {"circle_box.png", 10, 12}
 		})
 		this.layer:addChild(exp:getLayer())
@@ -62,10 +66,17 @@ function CardInfo:new(x,y,params)
 		local proText = newLabel(getBag(this.params.type, this.params.cid, "lev"), 20, {x = 40, y = 55, ax = 0.5})	
 		this.layer:addChild(proText)
 		
-		local str = getBag(this.params.type, this.params.cid, "name")
-		local height = string.len(str) / 3 * 25 
-		proText = newLabel(str, 25, {x = 25, y = 190 + (proBg:getContentSize().height - height ) / 2, dimensions = CCSizeMake(30,height)})
+--		local str = HeroConfig[getBag(this.params.type, this.params.cid, "id")].name
+		local str = getConfig(this.params.type, getBag(this.params.type, this.params.cid, "id"), "name")
+		proText = newLabel(str, 25, { width = 30})
+		setAnchPos(proText, 20 + proBg:getContentSize().width / 2, 190 + proBg:getContentSize().height / 2, 0.5, 0.5)
 		this.layer:addChild(proText)
+	else
+		if not this.params.lock then
+			local unknow = newSprite(PATH.."unknow.png")
+			setAnchPos(unknow)
+			this.layer:addChild(unknow)
+		end
 	end
 	
 	this.layer:setScaleX(this.params.scaleX or 1)

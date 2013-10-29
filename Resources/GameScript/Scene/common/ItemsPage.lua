@@ -114,6 +114,24 @@ function ItemPage:createItems(by, ani, dir)
 		self.itemsLayer = newLayer()
 		
 		local list = getSortKey( getBag(self.params.type)) 
+		
+		--去掉满足条件的项
+		for k, v in pairs(list) do
+			if self.params.filter then
+				if tonumber(v) == tonumber(self.params.filter) then
+					table.remove(list, k)
+				end
+			end
+			
+			if self.params.exceptUse then
+				if self.params.type == "hero" then
+					if DATA_Embattle:isOn(v) then
+						table.remove(list, k)
+					end
+				end
+			end
+		end
+		
 		local max,total, spaceY = 12,#list, 1.4 
 		if self.params.showOpt then  --在翻页下方是不是有操作的按钮
 			max = 9
@@ -140,9 +158,9 @@ function ItemPage:createItems(by, ani, dir)
 				noHide = true,
 				front = IMG_ICON..self.params.type.."/".."S_"..getBag(self.params.type, list[i], "look")..".png",
 				other = {IMG_COMMON.."icon_border"..getBag(self.params.type, list[i], "star")..".png", 45, 45},
-				text = {getBag(self.params.type, list[i], "name"), 20, ccc3(255,255,255), ccp(0, -60)},
+				text = {getConfig(self.params.type, getBag(self.params.type, list[i], "id"), "name"), 20, ccc3(255,255,255), ccp(0, -60)},
 				callback = function()
-					if item:isSelect() then
+					if not item:isSelect() then
 						self.selectItems[list[i]] = list[i]
 						self.nums:setString("已选择:"..table.nums(self.selectItems))
 					else

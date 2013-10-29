@@ -28,12 +28,12 @@ function lineuinfoplayer:new(index,sv,data,x,y,params)
 	local data = data or {}
 	
 	local main_bt = {{"arm",5,540-this.point_y,1},
-								{"armour",5,415-this.point_y,2},
-								{"ornament",5,290-this.point_y,3},
-								{"skill",360,540-this.point_y, 0}, --天赋技能
-								{"skill",360,415-this.point_y,4},
-								{"skill",360,290-this.point_y,5}
-							   }
+				{"armour",5,415-this.point_y,2},
+				{"ornament",5,290-this.point_y,3},
+				{"skill",360,540-this.point_y, 0}, --天赋技能
+				{"skill",360,415-this.point_y,4},
+				{"skill",360,290-this.point_y,5}
+			   }
 
 	local temp,bg,other
 	for i ,v in pairs(main_bt) do
@@ -77,7 +77,7 @@ function lineuinfoplayer:new(index,sv,data,x,y,params)
 	    					if data["cid"] then
 	    						this.params.equipCallback(kind,v[1],v[4])
 	    					else
-	    						MsgBox.create():flashShow("请选 择要上阵列的武将")
+	    						Dialog.tip("请选 择要上阵列的武将")
 	    					end
 	    				else
 	    				end
@@ -90,6 +90,7 @@ function lineuinfoplayer:new(index,sv,data,x,y,params)
 	local card = CardInfo:new(95,190,{
 		type = "hero",
 		cid = data["cid"],
+		lock = this.params.lock,
 		callback= function()
 			this.params.cardCallback(index)
 --			HTTPS:send("AddHero", {a = "heros", m = "heros", heros = "add", star = 5})
@@ -145,12 +146,14 @@ if _G.next (data)  ~= nil then
 --		card_bar:setIsShowText(false)
 --		this.layer:addChild(card_bar)
 
-		local hero_data_arry = requires(CONFIG_PATH.."HeroConfig")
-		local hero_data = hero_data_arry[getBag("hero", this.gid, "id")]
 		
-		local text, line = createLabel({noFont = true, str = hero_data["desc"], size = 34, width = 410, color = ccc3(191,207,18)})
-	
-		setAnchPos(text,30,165 - (line * 34))
+		local hero_data = HeroConfig[getBag("hero", this.gid, "id")]
+		
+		local text, line = newLabel(hero_data["desc"],20,{
+			 width = 420,
+			  color = ccc3(255, 255, 255)})
+		setAnchPos(text, 20, 132- text:getContentSize().height)
+--		setAnchPos(text, 20,165 - (line * 34))
 	
 		this.layer:addChild(text)
 		

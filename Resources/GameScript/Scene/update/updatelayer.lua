@@ -26,7 +26,7 @@ function UpdateLayer:new(data)
 				this:createHeroUp(params.cid, params.data)
 			end},
 		{"card", function()
-				this:createCardUp(params.kind, params.cid)
+				this:createCardUp(params.kind, params.cid, params.value)
 			end},
 	}
 	
@@ -53,10 +53,11 @@ function UpdateLayer:new(data)
 	return this
 end
 
-function UpdateLayer:createCardUp(kind, cid)
+function UpdateLayer:createCardUp(kind, cid, value)
 	if self.contentLayer then
 		self.layer:removeChild(self.contentLayer, true)
 	end
+	
 	
 	self.contentLayer = newLayer()
 	
@@ -67,18 +68,45 @@ function UpdateLayer:createCardUp(kind, cid)
 	self.contentLayer:addChild(card:getLayer())
 	
 	local bg = newSprite(PATH.."gold_bg.png")
-	setAnchPos(bg, 280, 660)
+	setAnchPos(bg, 280, 620)
+	self.contentLayer:addChild(bg)
+	
+	bg = newSprite(IMG_COMMON.."silver.png")
+	setAnchPos(bg, 300, 640)
 	self.contentLayer:addChild(bg)
 	
 	bg = newSprite(PATH.."level_bg.png")
-	setAnchPos(bg, 280, 530)
+	setAnchPos(bg, 280, 470)
 	self.contentLayer:addChild(bg)
 	
-	bg = newSprite(PATH.."gold_bg.png")
-	setAnchPos(bg, 280, 430)
-	self.contentLayer:addChild(bg)
+	if kind and cid then
+		dump(DATA_Bag:get(kind, cid))
+		local label = newLabel(value, 24, {
+			x = 350, 
+			y = 635, 
+			color = ccc3(255, 255, 255) })
+		self.contentLayer:addChild(label)
+		
+		label = newLabel("Lv"..DATA_Bag:get(kind, cid, "lev"),24,{
+			x = 350, 
+			y = 530, 
+			color = ccc3(255, 255, 255) })
+		self.contentLayer:addChild(label)
+		
+		local exp = Progress:new(PATH, {"exp_bg.png", "exp.png"}, 285, 480, {
+			cur = tonumber(DATA_Bag:get(kind, cid, "exps")) / tonumber(DATA_Bag:get(kind, cid, "lexps")) * 100,
+		})
+		self.contentLayer:addChild(exp:getLayer())
+	end
 	
-	local items = {target = {type = kind, cid = cid}}
+--	bg = newSprite(PATH.."gold_bg.png")
+--	setAnchPos(bg, 280, 430)
+--	self.contentLayer:addChild(bg)
+	
+	local items = {}
+	if kind and cid then
+		items = {target = {type = kind, cid = cid}}
+	end
 	local scroll
 	
 	local function upItems(data)
@@ -88,7 +116,8 @@ function UpdateLayer:createCardUp(kind, cid)
 		scroll = ScrollView:new(0, 170, 480, 100, 10, true)
 		
 		local list = getSortKey(data)
-		
+		items.source = list
+
 		for i = 1, #list do
 			local item = Btn:new(IMG_COMMON, {"icon_bg"..getBag(kind, list[i], "star")..".png"}, 0, 0,{
 				other = {IMG_COMMON.."icon_border"..getBag(kind, list[i], "star")..".png", 45, 45},
@@ -109,9 +138,23 @@ function UpdateLayer:createCardUp(kind, cid)
 				checkBoxOpt = function()
 				end,
 				okCallback = function()
-					self.page = nil
-					print(list:getSelectKind())
-					self:createCardUp(list:getSelectKind(), list:getSelectId())
+					local callName 
+					if list:getSelectKind() == "hero" then
+						callName = "get_strengthen"
+					else
+						callName = "equip_get"
+					end
+					HTTPS:send("Strong", {
+						strong = callName,
+						m = "strong", 
+						a = list:getSelectKind(), 
+						cid = list:getSelectId(),
+						id = DATA_Bag:get(list:getSelectKind(), list:getSelectId(), "id")
+						},{success_callback = function(value)
+							self.page = nil
+							list:remove()
+							self:createCardUp(list:getSelectKind(), list:getSelectId(), value)		
+						end})
 				end
 				
 			})
@@ -123,7 +166,33 @@ function UpdateLayer:createCardUp(kind, cid)
 	--升级按钮
 	local update = Btn:new(PATH, {"update.png", "update_pre.png"}, 250, 310, {
 		callback = function()
-		
+			if items.target then
+				if items.source and table.nums(items.source) > 0 then
+					local data = {}
+					for k, v in pairs(items.source) do
+						data[k] = {cid = v, id = DATA_Bag:get(items.target.type, v, "id")}
+					end
+					
+					HTTPS:send("Strong", {
+						m = "strong",
+						a = items.target.type,
+						strong = "strengthen",
+						cid = items.target.cid,
+						id = DATA_Bag:get(items.target.type, items.target.cid, "id"),
+						data = data
+					},{
+						success_callback = function(data)
+							self.page = nil
+							self:createCardUp(kind, cid, data)
+							Dialog.tip("强化成功，卡牌属性提升")
+						end
+					})
+				else
+					Dialog.tip("请选择需要消耗的材料卡牌")
+				end
+			else
+				Dialog.tip("请先选择需要升级的卡牌")
+			end
 		end
 	})
 	self.contentLayer:addChild(update:getLayer())
@@ -131,7 +200,7 @@ function UpdateLayer:createCardUp(kind, cid)
 	--选择销毁卡牌
 	local chooseItems = Btn:new(PATH, {"choose_item.png", "choose_item_pre.png"}, 20, 100, {
 		callback = function()
---			if items.target then
+			if items.target then
 				local data
 				if self.page then
 					data = self.page:getItems()
@@ -139,10 +208,13 @@ function UpdateLayer:createCardUp(kind, cid)
 				self:createSplit(items.target.type, {"ok.png", "ok_press.png"}, function()
 					upItems(self.page:getItems())
 					self.contentLayer:removeChild(self.page:getLayer(), true)
-				end,data)
---			else
---				MsgBox.create():flashShow("请选择需要强化的卡牌！~")
---			end
+				end,{
+					data = data,
+					filter = items.target.cid
+				})
+			else
+				Dialog.tip("请选择需要强化的卡牌！~")
+			end
 		end
 	})
 	self.contentLayer:addChild(chooseItems:getLayer())
@@ -200,6 +272,7 @@ function UpdateLayer:createHeroUp(cid, data)
 							self:createHeroUp(list:getSelectId(), rec)
 						end}
 					)
+					list:remove()
 				end
 			})	
 			self.layer:addChild(list:getLayer(),2)
@@ -259,7 +332,7 @@ function UpdateLayer:createHeroUp(cid, data)
 				HTTPS:send("Strong", {a = "hero", m = "strong", strong = "upgrade", id = getBag("hero", cid, "id"), cid = cid}, {
 					success_callback = function(rec)
 						self:createHeroUp(cid, rec)
-						MsgBox.create():flashShow("英雄提升星级成功！！！！！！~")
+						Dialog.tip("英雄提升星级成功！！！！！！~")
 					end
 				})
 			end
@@ -274,17 +347,23 @@ function UpdateLayer:createHeroUp(cid, data)
 		for k, v in pairs(self.page:getItems()) do
 			table.insert(data,{cid = k, id = getBag("hero", k, "id")})
 		end
-		HTTPS:send("Strong", {a = "hero", m="strong", strong = "resolve", data = data}, {
-			success_callback = function()
-				self:createSplit("hero",{"split.png", "split_press.png"}, func)
-				MsgBox.create():flashShow("英雄分解成功，获得魂魄!!")
-			end
-		})
+		if table.nums(data) > 0 then
+			HTTPS:send("Strong", {a = "hero", m="strong", strong = "resolve", data = data}, {
+				success_callback = function()
+					self:createSplit("hero",{"split.png", "split_press.png"}, func)
+					Dialog.tip("英雄分解成功，获得魂魄!!")
+				end
+			})
+		else
+			Dialog.tip("请选择要分解的武将")
+		end
 	end
 	
 	local split = Btn:new(PATH, {"split.png", "split_pre.png"}, 250, 95, {
 		callback = function()
-				self:createSplit("hero",{"split.png", "split_press.png"}, func)
+				self:createSplit("hero",{"split.png", "split_press.png"}, func, {
+					exceptUse = true
+				})
 		end
 	})
 	self.contentLayer:addChild(split:getLayer())
@@ -296,12 +375,15 @@ function UpdateLayer:getLayer()
 	return self.layer
 end
 
-function UpdateLayer:createSplit(kind, btnImages, func, data)
+function UpdateLayer:createSplit(kind, btnImages, func, params)
+		params = params or {}
 		if self.page then
 			self.contentLayer:removeChild(self.page:getLayer(), true)
 		end
 		self.page = Pages:new(0,0, {
-			data = data,
+			data = params.data,
+			filter = params.filter,
+			exceptUse = params.exceptUse,
 			type = kind, 
 			showOpt = { btnImages, func}}) 			
 		self.contentLayer:addChild(self.page:getLayer())

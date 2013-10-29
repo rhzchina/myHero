@@ -17,7 +17,7 @@ local bagLayer = requires(SRC.."Scene/bag/baglayer")
 local M = {}
 
 function M:create(params)
-	local scene = display.newScene("login")
+	local scene = display.newScene("bag")
 
 	---------------插入layer---------------------
 	scene:addChild( bagLayer:create(params) )

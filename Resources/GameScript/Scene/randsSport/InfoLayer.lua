@@ -38,10 +38,10 @@ function InfoLayer:new(data)
 			setAnchPos(num_img, 25, (bg:getContentSize().height - num_img:getContentSize().height )/2)
 			this.layer:addChild(num_img)
 		else
-		
+			this:daw_font(this.layer,data.page,data.num,bg)
 		end
 	else
-	
+		this:daw_font(this.layer,data.page,data.num,bg)
 	end
 	
 	if data.type == "sport" then
@@ -74,6 +74,39 @@ function InfoLayer:new(data)
 	return this
 end
 
+function InfoLayer:daw_font(parent,page,num,bg)
+	local layer = parent
+	if page % 10 == 0 then
+		if tonumber(num) ~= 10 then
+			local num_img = newSprite(PATH..tonumber(num)..".png")
+			setAnchPos(num_img, 50, (bg:getContentSize().height - num_img:getContentSize().height )/2)
+			layer:addChild(num_img)
+		else
+			local num_img = newSprite(PATH..(page % 10 + 1)..".png")
+			setAnchPos(num_img, 25, (bg:getContentSize().height - num_img:getContentSize().height )/2)
+			layer:addChild(num_img)
+			local num_img = newSprite(PATH..(page % 10)..".png")
+			setAnchPos(num_img, 50, (bg:getContentSize().height - num_img:getContentSize().height )/2)
+			layer:addChild(num_img)
+		end
+	else
+		if tonumber(num) ~= 10 then
+			local num_img = newSprite(PATH..(page % 10)..".png")
+			setAnchPos(num_img, 25, (bg:getContentSize().height - num_img:getContentSize().height )/2)
+			layer:addChild(num_img)
+			local num_img = newSprite(PATH..tonumber(num)..".png")
+			setAnchPos(num_img, 50, (bg:getContentSize().height - num_img:getContentSize().height )/2)
+			layer:addChild(num_img)
+		else
+			local num_img = newSprite(PATH..(page % 10 + 1)..".png")
+			setAnchPos(num_img, 25, (bg:getContentSize().height - num_img:getContentSize().height )/2)
+			layer:addChild(num_img)
+			local num_img = newSprite(PATH.."0.png")
+			setAnchPos(num_img, 50, (bg:getContentSize().height - num_img:getContentSize().height )/2)
+			layer:addChild(num_img)
+		end
+	end
+end
 
 function InfoLayer:getLayer()
 	return self.layer

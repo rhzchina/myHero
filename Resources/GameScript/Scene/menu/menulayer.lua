@@ -45,12 +45,12 @@ function M:createMenu(state)
 					switchScene("illustrations") 
 				end})			
 			end},
-			{"achieve", 170, 610, true,function() MsgBox.create():flashShow("功能尚未开发") end},
+			{"achieve", 170, 610, true,function() Dialog.tip("功能尚未开发") end},
 			{"message", 330, 610, true,function() HTTPS:send("Mail", {mail = "open", a = "mail", m = "mail"}, {success_callback = function(data)
 					switchScene("mailbox")
 				end})
 				end},
-			{"record", 20, 400, true,function() MsgBox.create():flashShow("功能尚未开发") end},
+			{"record", 20, 400, true,function() Dialog.tip("功能尚未开发") end},
 			{"help", 170, 400, true,function() switchScene("help") end},
 			{"setting", 330, 400, true,function() 
 			HTTPS:send("Book", {book = "setting", a = "book", m = "book"}, {success_callback = function(data)

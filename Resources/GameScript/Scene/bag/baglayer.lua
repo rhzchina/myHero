@@ -74,7 +74,15 @@ function M:createList(kind, tab, offset)
 							switchScene("update", {kind = kind, cid = v["cid"], data = rec})	
 						end})
 				elseif kind == "equip" then
-					switchScene("update", {kind = kind, tab = 2, cid = v["cid"]})
+					HTTPS:send("Strong", {
+						strong = "equip_get",
+						m = "strong", 
+						a = "equip",
+						cid = v["cid"],
+						id = v["id"]
+						},{success_callback = function(value)
+							switchScene("update", {kind = "equip", tab = 2, cid = v["cid"], value = value})
+						end})
 				end
 			end
 			optBtn = "strength"
@@ -88,7 +96,7 @@ function M:createList(kind, tab, offset)
 					cid = item:getId()
 				},{success_callback = function()
 					switchScene("bag",{tab = tab,offset = scroll:getOffset()}, function()
-						MsgBox.create():flashShow("道具使用成功")
+						Dialog.tip("道具使用成功")
 					end)
 				end})
 				print(item:getId(),getBag("prop", item:getId(), "exps"))

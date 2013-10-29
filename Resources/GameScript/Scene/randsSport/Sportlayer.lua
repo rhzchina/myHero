@@ -9,7 +9,8 @@ local info_layer = requires(SRC.."Scene/randsSport/InfoLayer")
 local M = {
 	baseLayer,
 	layer,
-	create_layer
+	create_layer,
+	type_id
 }
 
 function M:create( params )
@@ -18,7 +19,6 @@ function M:create( params )
 	self.__index = self
 	local select_index = 1
 	this.baseLayer = newLayer()
-	
 	local bg = newSprite(IMG_COMMON.."main.png")
 	setAnchPos(bg, 0, 0)
 	this.baseLayer:addChild(bg)
@@ -34,14 +34,8 @@ function M:create( params )
 		end})
 		this.baseLayer:addChild(btn:getLayer())
 	else
+		this.type_id = 1001
 		local tra_data = DATA_Transcript:get()
-		--dump(tra_data)
-		--local tabs = {}
-		--for k,v in pairs(tra_data)do
-		--	dump(v)
-		--	tabs[#tabs].name = v.type_id
-		--end
-		
 		this.tabGroup = RadioGroup:new()
 		local tabs = {
 			{"1001", 1},
@@ -53,10 +47,11 @@ function M:create( params )
 					callback = function()
 						if select_index ~= k then
 							select_index = k
+							this.type_id = v[1]
 							HTTPS:send("Ranking" ,{m="ranking",a="ranking",ranking = "duplicate",type_id = v[1],page=0} ,{success_callback = 
 								function()
 									this:show(params)
-								end })
+							end })
 						end
 						
 					end
@@ -89,7 +84,6 @@ function M:show(params)
 	else
 		data = DATA_Rands:get_prestige()
 	end
-	
 	local scroll = ScrollView:new(0,95,480,554,10)
 		
 		for k,v in pairs(data) do
@@ -106,15 +100,79 @@ function M:show(params)
 				temp.name = v["name"]
 				temp.layer = v["layer"]
 			end
-			
-			
 			local block = info_layer:new(temp)
 			scroll:addChild(block:getLayer(),block)
 		end
+		
+		local end_layer = newLayer()
+		end_layer:setContentSize( CCSizeMake(480 , 100) )
+		
+		local left = Btn:new(PATH, {"next_big.png"}, 190, 20, { 
+					scale = true,
+					flipX = true, 
+					callback = function()
+						if params.page > 0 then
+							if params.type == "sport" then
+								HTTPS:send("Ranking" ,{m="ranking",a="ranking",ranking = "prestige",page=(params.page - 1)} ,{success_callback = 
+									function()
+											self:show({page=(params.page - 1),type=params.type})
+								end })
+							else
+								HTTPS:send("Ranking" ,{m="ranking",a="ranking",ranking = "duplicate",type_id = self.type_id,page=(params.page - 1)} ,{success_callback = 
+									function()
+										self:show({page=(params.page - 1),type=params.type})
+								end })
+							end
+							
+							
+						else
+							Dialog.tip("您现在已经在最前页")
+						end
+					end
+				})
+		end_layer:addChild(left:getLayer())
+		
+		local right = Btn:new(PATH, {"next_big.png"}, 250, 20, { 
+					scale = true,
+					callback = function()
+						if params.page < 3  and (#data) == 10 then
+							if params.type == "sport" then
+								HTTPS:send("Ranking" ,{m="ranking",a="ranking",ranking = "prestige",page=(params.page + 1)} ,{success_callback = 
+									function()
+											self:show({page=(params.page + 1),type=params.type})
+								end })
+							else
+								HTTPS:send("Ranking" ,{m="ranking",a="ranking",ranking = "duplicate",type_id = self.type_id,page=(params.page + 1)} ,{success_callback = 
+									function()
+										self:show({page=(params.page + 1),type=params.type})
+								end })
+							end
+							
+						else
+							Dialog.tip("您现在已经在最后页")
+						end
+					end
+				})
+		end_layer:addChild(right:getLayer())
+		
+		local page_num = display.strokeLabel(params.page + 1,235,30,30,ccc3(0,0,0))
+		end_layer:addChild(page_num)
+		
+		local my_rand = Btn:new(IMG_BTN, {"comnon_bnt.png"}, 320, 20, { 
+					text = {"我排在第"..DATA_Rands:get_top().."名", 20, ccc3(205, 133, 63), ccp(0, 0)},
+					callback = function()
+						
+					end
+				})
+		end_layer:addChild(my_rand:getLayer())
+		
+		scroll:addChild(end_layer,end_layer)
 		scroll:alignCenter()
 		scroll:setOffset(offset or 0)
 		self.create_layer:addChild(scroll:getLayer())
 		self.baseLayer:addChild(self.create_layer)
+		
+		
 end
 
 function M:getLayer()

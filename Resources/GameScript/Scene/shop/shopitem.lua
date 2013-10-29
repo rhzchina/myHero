@@ -22,9 +22,9 @@ function ShopItem:new(kind, key, params)
 	this.layer:addChild(bg)
 	this.layer:setContentSize(bg:getContentSize())
 	
---	
+	
 	local icon = Btn:new(IMG_COMMON,{"icon_bg1.png"}, 20, 50, {
-		front = IMG_ICON.."equip/S_7401.png",
+		front = IMG_ICON.."prop/S_"..DATA_Shop:get(key, "look")..".png",
 		other = {IMG_COMMON.."icon_border1.png",45,45},
 		scale = true,
 		priority = this.params.priority,
@@ -68,7 +68,15 @@ function ShopItem:createLayout(kind, key)
 		
 		text = newLabel("价格:"..DATA_Shop:get(key, "money"),20,{x = 130, y = 75, color = ccc3(255,255,255)})
 		self.layer:addChild(text)
-		
+		if tonumber(DATA_Shop:get(key, "money_type")) == 1 then
+			local icon = newSprite(IMG_COMMON.."gold_leaf.png")
+			setAnchPos(icon, 130 + text:getContentSize().width, 75)
+			self.layer:addChild(icon)	
+		else
+			local icon = newSprite(IMG_COMMON.."silver.png")
+			setAnchPos(icon, 130 + text:getContentSize().width, 75)
+			self.layer:addChild(icon)
+		end
 		text = Label:new(DATA_Shop:get(key,"exps"),20, 240, 5)
 		setAnchPos(text, 130,10)
 		self.layer:addChild(text)

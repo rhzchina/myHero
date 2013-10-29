@@ -273,10 +273,10 @@ function LuaBtn:new(path, file, x, y, params, group)
 						local result --callback执行的结果，默认返回nil 如果是反回false则不触发单选组的选中效果
 						if this.params["callback"] then
 							if not this.params["disableWhenChoose"] then
-								result = this.params["callback"]()
+								result = this.params["callback"](true)
 							else
 								if not this.chosen then
-									result = this.params["callback"]()
+									result = this.params["callback"](true)
 								end
 							end
 						end
@@ -298,7 +298,7 @@ function LuaBtn:new(path, file, x, y, params, group)
 					end
 				else
 				end
-				press = fals
+				press = false
 				moveOn = false
 				lastX = 0
 			end

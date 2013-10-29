@@ -36,16 +36,19 @@ function roostLayer:new(x,y)
 				end
 		end
 	})
+
 	for i = 1, #DATA_Mission:get("bHurdle")  do --DATA_MapNum:size()
 		local nameLayer = newLayer()
-		local name = newLabel(DATA_Mission:get("bHurdle",i,"name"), 30, {x = 100, y = -5})
-		
 		nameLayer:setContentSize(CCSizeMake(440,30))
+		
+		local name = newLabel(DATA_Mission:get("bHurdle",i,"name"), 30, {x = 100, y = -5, width = 400})
+		setAnchPos(name, 190, 3, 0.5, 0.5)	
 		nameLayer:addChild(name)
 		
 		bsv:addChild(nameLayer)
 	end
 
+	bsv:alignCenter()
 	this.layer:addChild(bsv:getLayer())
 
 

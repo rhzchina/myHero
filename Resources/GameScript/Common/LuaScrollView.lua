@@ -178,7 +178,7 @@ function LuaScrollView:new(x,y,width,height,divider,horizontal,mode,params)
 
 	this.contentLayer:setPosition(ccp(0,0));
 	this.contentLayer:setTouchEnabled(true)
-	this.contentLayer:registerScriptTouchHandler(function(event,x,y) return this.contentLayer:onTouch(event,x,y) end, false , -129)
+	this.contentLayer:registerScriptTouchHandler(function(event,x,y) return this.contentLayer:onTouch(event,x,y) end, false , this.params.priority or -129)
 	this.baseLayer:addChild(this.contentLayer)
 
 	this.layer:addChild(this.baseLayer)

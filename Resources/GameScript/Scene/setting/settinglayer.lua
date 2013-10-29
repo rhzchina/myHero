@@ -75,7 +75,6 @@ function SetLayer:main()
 				if isEffect then
 					
 				else
-					print(IMG_PATH .. "sounds/home_bg.ogg")
 					FileManager.updatafile("savefile.txt" , "sound" , "=" , 0)
 					audio.enable()
 					if audio.isMusicPlaying() == false then
@@ -182,7 +181,7 @@ function SetLayer:main()
 					if legal then
 						self:show()
 					else
-						MsgBox.create():flashShow("没有更多的头像可选择，请在商城购买英雄吧")
+						Dialog.tip("没有更多的头像可选择，请在商城购买英雄吧")
 					end
 				end}) end})
 	self.mainlayer:addChild(back:getLayer())
@@ -236,7 +235,7 @@ function SetLayer:show()
 			end
 			local stone 
 				stone = Btn:new(IMG_COMMON, {"icon_bg"..v["start"]..".png", "box_choose.png"},  20 + 116 * (temp_count - 1), 0,{
-					other = {{IMG_ICON .. "hero/S_"..v["id"]..".png",46,46},{IMG_COMMON .. "icon_border"..v["start"]..".png",46,46}},
+					other = {{IMG_ICON .. "hero/S_"..HeroConfig[v["id"]..""].look..".png",46,46},{IMG_COMMON .. "icon_border"..v["start"]..".png",46,46}},
 					noHide = true,
 					parent = sv,
 					selectZOrder = 20,

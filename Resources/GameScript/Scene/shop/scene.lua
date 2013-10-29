@@ -17,7 +17,7 @@ local shopLayer = requires(SRC.."Scene/shop/shoplayer")
 local M = {}
 
 function M:create()
-	local scene = display.newScene("login")
+	local scene = display.newScene("shop")
 
 	---------------插入layer---------------------
 	scene:addChild( shopLayer:create() )

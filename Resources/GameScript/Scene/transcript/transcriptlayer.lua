@@ -8,7 +8,8 @@ local TranscriptLayer = {
 	show_layer,
 	move_layer,
 	type_id,
-	mask
+	mask,
+	is_error
 }
 
 function TranscriptLayer:new(data)
@@ -45,7 +46,7 @@ function TranscriptLayer:create_big()
 	setAnchPos(title, 0, 670)
 	self.mainlayer:addChild(title)
 	
-	local rank = Btn:new(IMG_BTN, {"rank.png", "rank_press.png"},  300 , 655,{
+	local rank = Btn:new(IMG_BTN, {"all_rands.png", "all_rands_press.png"},  330 , 670,{
 				callback = function()  
 					HTTPS:send("Ranking" ,{m="ranking",a="ranking",ranking = "duplicate",type_id = self.type_id,page=0} ,{success_callback = 
 						function()
@@ -57,7 +58,7 @@ function TranscriptLayer:create_big()
 	
 	
 	
-	local scroll = ScrollView:new(0,90,480,584,10)
+	local scroll = ScrollView:new(0,90,480,581,10)
 	local tra_data = DATA_Transcript:get()
 	
 	local temp
@@ -82,7 +83,7 @@ function TranscriptLayer:create_small(temp_data)
 	
 	self.smalllayer = CCLayer:create()
 	self.old_layer = temp_data.cur_layer
-	
+	self.is_error = false
 	local bg = newSprite(PATH.."bg2.png")
 	self.smalllayer:addChild(bg)
 	
@@ -528,8 +529,23 @@ function TranscriptLayer:show_map(cur_layer,type_id,is_fight,max_layer,is_quick)
 				if cur_layer >= 100 then
 
 				else
-					if (self.old_layer + 1) == cur_layer then
-						self:show_map(cur_layer,type_id,true,0,false)
+					if self.is_error == true then
+						self.is_error = false
+						HTTPS:send("Fighting",
+									{a = "fighting",
+									 m = "fighting", 
+									 fighting = "start", 
+									 type = "copy",
+									 mode = "fast",
+									 type_id = type_id, 
+									 layer = cur_layer },{success_callback= function()
+										self.old_layer = cur_layer
+										switchScene("fighting","copy")
+									 end,
+									 error_callback = function()
+										self.is_error = true
+									 end
+									 })
 					else
 						self:draw_map(cur_layer + 1,type_id,0,false)
 					end
@@ -557,8 +573,24 @@ function TranscriptLayer:show_map(cur_layer,type_id,is_fight,max_layer,is_quick)
 					if cur_layer >= 100 then
 					
 					else
-						if (self.old_layer + 1 + 15 ) == cur_layer then
-							self:draw_map(cur_layer ,type_id, max_the_layer,true)
+						if self.is_error == true then
+							self.is_error = false
+							HTTPS:send("Fighting",
+									{a = "fighting",
+									 m = "fighting", 
+									 fighting = "start", 
+									 type = "copy",
+									 mode = "ordinary",
+									 type_id = type_id, 
+									 layer = cur_layer},{
+									 success_callback= function()
+										self.old_layer = cur_layer
+										switchScene("fighting","copy")
+									 end,
+									 error_callback = function()
+										self.is_error = true
+									 end
+									 })
 						else
 							self:draw_map(cur_layer + 1,type_id, max_the_layer,true)
 						end
@@ -712,8 +744,23 @@ function TranscriptLayer:show_map(cur_layer,type_id,is_fight,max_layer,is_quick)
 				if cur_layer >= 100 then
 				
 				else
-					if (self.old_layer + 1) == cur_layer then
-						self:show_map(cur_layer,type_id,true,0,false)
+					if self.is_error == true then
+						self.is_error = false
+						HTTPS:send("Fighting",
+									{a = "fighting",
+									 m = "fighting", 
+									 fighting = "start", 
+									 type = "copy",
+									 mode = "fast",
+									 type_id = type_id, 
+									 layer = cur_layer },{success_callback= function()
+										self.old_layer = cur_layer
+										switchScene("fighting","copy")
+									 end,
+									 error_callback = function()
+										self.is_error = true
+									 end
+									 })
 					else
 						self:draw_map(cur_layer + 1,type_id,0,false)
 					end
@@ -739,8 +786,24 @@ function TranscriptLayer:show_map(cur_layer,type_id,is_fight,max_layer,is_quick)
 					if cur_layer >= 100 then
 					
 					else
-						if (self.old_layer + 1 + 15 ) == cur_layer then
-							self:draw_map(cur_layer ,type_id, max_the_layer,true)
+						if self.is_error == true then
+							self.is_error = false
+							HTTPS:send("Fighting",
+									{a = "fighting",
+									 m = "fighting", 
+									 fighting = "start", 
+									 type = "copy",
+									 mode = "ordinary",
+									 type_id = type_id, 
+									 layer = cur_layer},{
+									 success_callback= function()
+										self.old_layer = cur_layer
+										switchScene("fighting","copy")
+									 end,
+									 error_callback = function()
+										self.is_error = true
+									 end
+									 })
 						else
 							self:draw_map(cur_layer +1 ,type_id, max_the_layer,true)
 						end
@@ -756,21 +819,6 @@ function TranscriptLayer:show_map(cur_layer,type_id,is_fight,max_layer,is_quick)
 			
 			local gold_num = display.strokeLabel("100",405,105,20,ccc3(255,255,255))
 			self.show_layer:addChild(gold_num)
-		--else
-		
-		--end
-		
-		--[[local other_layer = Btn:new(IMG_BTN, {"btn_bg_login.png", "btn_bg_login_press.png"}, 0, 200,{text = {"进入第15层", 30, ccc3(205, 133, 63), ccp(0, 0)},callback = function()
-					
-				self:draw_map(cur_layer + 1,type_id)
-			end})
-		self.show_layer:addChild(other_layer:getLayer())
-		
-		local t_layer = Btn:new(IMG_BTN, {"btn_bg_login.png", "btn_bg_login_press.png"}, 0, 240,{text = {"进入第15层", 30, ccc3(205, 133, 63), ccp(0, 0)},callback = function()
-					
-				self:draw_map(cur_layer + 1,type_id)
-			end})
-		self.show_layer:addChild(t_layer:getLayer())]]
 	end
 	
 	
@@ -789,13 +837,15 @@ function TranscriptLayer:show_map(cur_layer,type_id,is_fight,max_layer,is_quick)
 									 layer = cur_layer },{success_callback= function()
 										self.old_layer = cur_layer
 										switchScene("fighting","copy")
+									 end,
+									 error_callback = function()
+										self.is_error = true
 									 end
 									 })
 			end
 		end
 	else
 		if is_fight == true then
-			is_fight = false 
 				HTTPS:send("Fighting",
 									{a = "fighting",
 									 m = "fighting", 
@@ -803,9 +853,13 @@ function TranscriptLayer:show_map(cur_layer,type_id,is_fight,max_layer,is_quick)
 									 type = "copy",
 									 mode = "ordinary",
 									 type_id = type_id, 
-									 layer = cur_layer},{success_callback= function()
+									 layer = cur_layer},{
+									 success_callback= function()
 										self.old_layer = cur_layer
 										switchScene("fighting","copy")
+									 end,
+									 error_callback = function()
+										self.is_error = true
 									 end
 									 })
 		end

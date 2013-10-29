@@ -31,9 +31,12 @@ function sendMailLayer:new(data)
 	this.layer:addChild(title_font_text)
 	
 	
-	local text, line = createLabel({noFont = true, str = data["content"], size = 24, width = 480, color = ccc3(191,207,18)})
+	local text = newLabel( data["content"],24 {
+		noFont = true, 
+		width = 480,
+		 color = ccc3(191,207,18)})
 	
-	setAnchPos(text,0,710 - (line * 24))
+	setAnchPos(text,0,710 - text:getContentSize().height)
 	
 	this.layer:addChild(text)
 	

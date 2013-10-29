@@ -76,13 +76,30 @@ end
 function ItemInfo:createLayout(kind, cid)
 	
 	if self.params.type == "bag" then
-		local text = newLabel("名称:"..DATA_Bag:get(kind,cid,"name"),20,{x = 150, y = 80, color = ccc3(0,0,0)})
-		self.layer:addChild(text)
-		
 		if kind ~= "prop" then
 			text = newLabel("等级:"..DATA_Bag:get(kind,cid,"lev"),20,{x = 150, y = 50, color = ccc3(0,0,0)})
 			self.layer:addChild(text)
-		
+			if kind == "hero" then
+				local text = newLabel(HeroConfig[DATA_Bag:get(kind,cid,"id")].name,20,{x = 150, y = 75, color = ccc3(0,0,0)})
+				self.layer:addChild(text)
+			elseif kind == "equip" then
+				local id = DATA_Bag:get(kind,cid,"id")
+				if tonumber(id) >= 6000 and tonumber(id) < 7000 then
+					local text = newLabel(ArmConfig[DATA_Bag:get(kind,cid,"id")].name,20,{x = 150, y = 75, color = ccc3(0,0,0)})
+					self.layer:addChild(text)
+				elseif tonumber(id) >= 7000 and tonumber(id) < 8000 then
+					local text = newLabel(OrnamentConfig[DATA_Bag:get(kind,cid,"id")].name,20,{x = 150, y = 75, color = ccc3(0,0,0)})
+					self.layer:addChild(text)
+				elseif tonumber(id) >= 5000 and tonumber(id) < 6000 then
+					local text = newLabel(ArmourConfig[DATA_Bag:get(kind,cid,"id")].name,20,{x = 150, y = 75, color = ccc3(0,0,0)})
+					self.layer:addChild(text)
+				end
+			elseif kind == "skill" then
+				local id = DATA_Bag:get(kind,cid,"id")
+				local text = newLabel(SkillConfig[id].name,20,{x = 150, y = 75, color = ccc3(0,0,0)})
+				self.layer:addChild(text)
+			end
+			
 			local star
 			for i = 1, DATA_Bag:get(kind,cid,"star") do
 				star = newSprite(IMG_COMMON.."star.png")
@@ -90,34 +107,46 @@ function ItemInfo:createLayout(kind, cid)
 				self.layer:addChild(star)
 			end
 		else
+			local text = newLabel("名称:"..DATA_Bag:get(kind,cid,"name"),20,{x = 150, y = 80, color = ccc3(0,0,0)})
+			self.layer:addChild(text)
 			text = newLabel(DATA_Bag:get(kind, cid, "exps"), 20, {x = 140, y = 20, dimensions = CCSizeMake(180, 50)})
 			self.layer:addChild(text)
 		end
 	else
 		
-		local text = newLabel(DATA_Bag:get(kind,cid,"name"),20,{x = 130, y = 70,noFont = true, color = ccc3(0,0,0)})
-		self.layer:addChild(text)
-		
-		text = newLabel("Lv "..DATA_Bag:get(kind,cid,"lev"),20,{x = 250, y = 70, noFont = true, color = ccc3(0,0,0)})
+		local text = newLabel("Lv "..DATA_Bag:get(kind,cid,"lev"),20,{x = 250, y = 70,noFont = true,  color = ccc3(0,0,0)})
 		self.layer:addChild(text)
 		if kind == "hero" then
+			local text = newLabel(HeroConfig[DATA_Bag:get(kind,cid,"id")].name,20,{x = 130, y = 70,noFont = true, color = ccc3(0,0,0)})
+			self.layer:addChild(text)
+		
 			text = newLabel("血："..DATA_Bag:get(kind,cid,"hp").."  攻："..DATA_Bag:get(kind,cid,"att").."  防御："..DATA_Bag:get(kind,cid,"defe"),20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
 			self.layer:addChild(text)
 		elseif kind == "equip" then
 			local id = DATA_Bag:get(kind,cid,"id")
 			if tonumber(id) >= 6000 and tonumber(id) < 7000 then
+				local text = newLabel(ArmConfig[DATA_Bag:get(kind,cid,"id")].name,20,{x = 130, y = 70,noFont = true, color = ccc3(0,0,0)})
+				self.layer:addChild(text)
+				
 				text = newLabel("攻："..DATA_Bag:get(kind,cid,"att_i"),20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
 				self.layer:addChild(text)
 			elseif tonumber(id) >= 7000 and tonumber(id) < 8000 then
+				local text = newLabel(OrnamentConfig[DATA_Bag:get(kind,cid,"id")].name,20,{x = 130, y = 70,noFont = true, color = ccc3(0,0,0)})
+				self.layer:addChild(text)
+				
 				text = newLabel("血："..DATA_Bag:get(kind,cid,"hp_i"),20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
 				self.layer:addChild(text)
 			elseif tonumber(id) >= 5000 and tonumber(id) < 6000 then
+				local text = newLabel(ArmourConfig[DATA_Bag:get(kind,cid,"id")].name,20,{x = 130, y = 70,noFont = true, color = ccc3(0,0,0)})
+				self.layer:addChild(text)
 				text = newLabel("防："..DATA_Bag:get(kind,cid,"def_i"),20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
 				self.layer:addChild(text)
 			end
 		
 		elseif kind == "skill" then
 			local id = DATA_Bag:get(kind,cid,"id")
+			local text = newLabel(SkillConfig[id].name,20,{x = 130, y = 70,noFont = true, color = ccc3(0,0,0)})
+			self.layer:addChild(text)
 			if tonumber(id) >= 11000 and tonumber(id) < 12000 then
 				text = newLabel("攻："..DATA_Bag:get(kind,cid,"att"),20,{x = 130, y = 20, noFont = true, color = ccc3(0,0,0)})
 				self.layer:addChild(text)

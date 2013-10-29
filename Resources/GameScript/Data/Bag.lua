@@ -39,8 +39,6 @@ function DATA_Bag:get(...)
 		result = result[arg[i]..""]
 		
 		if not result then
---			dump(_data[arg[1]])
-			dump(arg)		
 			print(arg[i],"取到resut为空")
 			break
 		end
@@ -75,7 +73,6 @@ function DATA_Bag:getByFilter(kind,filter)
 end
 
 function DATA_Bag:updata_hero(types,data)
-	dump(data)
 	print(types)
 	if types == "hero" then
 		_data["hero"][data["cid"]] = data

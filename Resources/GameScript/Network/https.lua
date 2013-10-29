@@ -19,7 +19,8 @@ function HTTPS:send(mod  , data , param)
 	if type(param.success_callback) ~= "function" then param.success_callback = function() end end
 	if type(param.error_callback)   ~= "function" then
 		param.error_callback = function(err)
-			MsgBox.create():flashShow("[" .. err.code .. "]" .. err.msg)	-- 弹出错误文字提示
+--			Dialog.tip("[" .. err.code .. "]" .. err.msg)	-- 弹出错误文字提示
+			Dialog.tip("[" .. err.code .. "]" .. err.msg)	-- 弹出错误文字提示
 		end
 	end
 

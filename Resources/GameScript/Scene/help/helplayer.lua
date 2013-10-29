@@ -73,9 +73,12 @@ function HelpLayer: createOther(name)
 	
 	local text_context = self.help_data[name]
 	
-	local text, line = createLabel({noFont = true, str = text_context, size = 24, width = 440, color = ccc3(191,207,18)})
+	local text = newLabel(text_context, 24{
+		noFont = true, 
+		 width = 440,
+		  color = ccc3(191,207,18)})
 	
-	setAnchPos(text,30,660 - (line * 24))
+	setAnchPos(text,30,660 - text:getContentSize().height)
 	
 	self.otherlayer:addChild(text)
 	local back = Btn:new(IMG_BTN, {"back_m.png", "back_m_press.png"}, 140, 23,{callback = function() self:createMain() end})

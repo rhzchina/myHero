@@ -26,8 +26,7 @@ function DATA_Chat:get(...)
 	for i = 1, arg["n"] do
 		result = result[arg[i]..""]
 		
-		if not result then
-			dump(arg)		
+		if not result then	
 			print(arg[i],"取到resut为空")
 			break
 		end

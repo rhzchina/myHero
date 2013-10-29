@@ -20,15 +20,13 @@ function chatLayer:new(data)
 	this.group = RadioGroup:new()
 	
 	local tabs = {
-		"comprehensive", --综合
-		"fight", --战斗
 		"announcement", --"活动"
 		"system",--系统
 		"tall"  --喊话
 	}
 	
 	for i = 1, #tabs do
-		local tab = Btn:new(IMG_COMMON.."tabs/", {"tab_"..tabs[i]..".png", "tab_"..tabs[i].."_select.png"},5 + (i - 1) * 90, 670, {
+		local tab = Btn:new(IMG_COMMON.."tabs/", {"tab_"..tabs[i]..".png", "tab_"..tabs[i].."_select.png"},3 + (i - 1) * 90, 670, {
 			id = tabs[i],
 			disableWhenChoose = true,
 			callback = function()
@@ -37,49 +35,11 @@ function chatLayer:new(data)
 		},this.group)
 		this.layer:addChild(tab:getLayer())
 	end
-	this.group:chooseByIndex(5, true)
+	this.group:chooseByIndex(3, true)
 	
 	local separator = newSprite(IMG_COMMON.."tabs/tab_separator.png")
 	setAnchPos(separator, 0, 670)
 	this.layer:addChild(separator)
-	
-	separator = newSprite(IMG_COMMON.."tabs/tab_separator.png")
-	setAnchPos(separator, 0, 160)
-	this.layer:addChild(separator)
-	
---	local inputBg = newSprite(IMG_SCENE.."chat/input_bg.png")
---	setAnchPos(inputBg, 5, 97)
---	this.layer:addChild(inputBg)
-	
-	local inputBg = Btn:new(PATH, {"input_bg.png"}, 5, 97, {
-		text = {"点击输入消息", 26, ccc3(250, 207, 0), ccp(-80, 0)},
-		
-		callback = function()		
-			if device.platform == "android" then
-				specialCall(0)
-			else
-				SOCKET:call("tall", {
-					content = "这是一条测试消息，看到不"
-				})
-			end
-		end
-	})
-	this.layer:addChild(inputBg:getLayer())
-	
-	local send = Btn:new(IMG_BTN, {"send.png", "send_press.png"}, 342, 95, {
-		callback = function()
-			if device.platform == "android" then
-				specialCall(0)
-			else
-				SOCKET:call("tall", {
-					content = "这是一条测试消息，看到不"
-				})
-			end
-		end
-	})
-	this.layer:addChild(send:getLayer())
-	
-	
 	
 return this
 end
@@ -112,10 +72,19 @@ function chatLayer:createMsgLayer(kind)
 		["tall"] = {"",ccc3(250, 207, 0)}	
 	}
 	
-	local scroll = ScrollView:new(0, 165, 480, 500, 10)
-	
+	local scroll 
+	if kind == "tall" then
+		scroll = ScrollView:new(0, 165, 480, 500, 10)
+	else
+		scroll = ScrollView:new(0, 100, 480, 565, 10)
+	end
 	for i = 1, #msg do
-		local text, line = createLabel({noFont = true, str = preStr[kind][1]..msg[i].content, size = 24, width = 480, color = preStr[kind][2]})	
+		local text, line = newLabel(preStr[kind][1]..msg[i].content, 24, {
+			noFont = true, 
+			width = 480,
+			align = 0,
+			 color = preStr[kind][2]
+		})	
 		setAnchPos(text)
 		
 		local layer = newLayer()
@@ -131,6 +100,42 @@ function chatLayer:createMsgLayer(kind)
 		scroll:setIndex(#msg, true)
 	end
 	self.msgLayer:addChild(scroll:getLayer())
+	
+	
+	if kind == "tall" then
+		local separator = newSprite(IMG_COMMON.."tabs/tab_separator.png")
+		setAnchPos(separator, 0, 160)
+		self.msgLayer:addChild(separator)
+		
+		local inputBg = Btn:new(PATH, {"input_bg.png"}, 5, 97, {
+			text = {"点击输入消息", 26, ccc3(250, 207, 0), ccp(-80, 0)},
+			
+			callback = function()		
+				if device.platform == "android" then
+					specialCall(0)
+				else
+					SOCKET:call("tall", {
+						content = "这是一条测试消息，看到不"
+					})
+				end
+			end
+		})
+		self.msgLayer:addChild(inputBg:getLayer())
+		
+		local send = Btn:new(IMG_BTN, {"send.png", "send_press.png"}, 342, 95, {
+			callback = function()
+				if device.platform == "android" then
+					specialCall(0)
+				else
+					SOCKET:call("tall", {
+						content = "这是一条测试消息，看到不"
+					})
+				end
+			end
+		})
+		self.msgLayer:addChild(send:getLayer())
+	end
+	
 	self.layer:addChild(self.msgLayer)
 end
 

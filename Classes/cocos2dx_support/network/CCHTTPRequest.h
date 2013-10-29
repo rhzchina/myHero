@@ -154,7 +154,7 @@ private:
     bool initWithUrl(const char* url, int method);
 
     enum {
-        DEFAULT_TIMEOUT = 10, // 10 seconds
+        DEFAULT_TIMEOUT = 30, // 10 seconds
         BUFFER_CHUNK_SIZE = 32768, // 32 KB
     };
     

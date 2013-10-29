@@ -16,9 +16,9 @@ function InfoLayer:new(data)
 	local bg = newSprite(PATH.."shop_item_bg.png")
 	this.layer:addChild(bg)
 	this.layer:setContentSize(bg:getContentSize())
-	
+	dump(data)
 	local icon = Btn:new(IMG_COMMON,{"icon_bg1.png"}, 20, 55, {
-		front = IMG_ICON.."equip/S_7401.png",
+		front = IMG_ICON.."prop/S_"..data.look..".png",
 		other = {IMG_COMMON.."icon_border1.png",45,45},
 		scale = true,
 		priority = data.payid
@@ -39,7 +39,7 @@ function InfoLayer:new(data)
 			priority = data.payid,
 			callback = function() 
 				HTTPS:send("Exploreshop", {exlploreshop="pay", a="exlploreshop", m="exlploreshop",type=data.type,payid=data.payid}, {success_callback = function(data)
-					MsgBox.create():flashShow("购买 成功")
+					Dialog.tip("购买 成功")
 				end})
 			end
 		})

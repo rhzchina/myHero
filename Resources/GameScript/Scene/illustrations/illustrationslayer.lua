@@ -114,11 +114,14 @@ function Illustrlayer:createList(kind)
 		local is_true = false
 		local hero_start = 0
 		local hero_cid = 0
+		local look = 0
 		for k1,v1 in pairs(temp)do
 			if tonumber(v["id"]) == tonumber(v1["id"]) then
 				is_true = true
 				hero_start = v1["start"]
 				hero_cid = v1["id"]
+				look = v1["look"]
+				
 			end
 		end
 		local get_data = {}
@@ -127,7 +130,7 @@ function Illustrlayer:createList(kind)
 			get_data["is"] = 1
 			get_data["start"] = hero_start
 			get_data["cid"] = hero_cid
-			
+			get_data["look"] = look
 			if kind == 1 then
 				get_data["type"] = "hero"
 				get_data["path"] = "hero/S_"
@@ -166,6 +169,7 @@ function Illustrlayer:createList(kind)
 	local temp_line = 1
 	local layers = {}
 	for k,v in pairs(obj) do
+		
 		temp_count = temp_count + 1
 		if layers[ temp_line ] == nil then
 			layers[ temp_line ] = display.newLayer()
@@ -174,9 +178,9 @@ function Illustrlayer:createList(kind)
 		local stone 
 			if v["is"] == 1 then
 				stone = Btn:new(IMG_COMMON, {"icon_bg"..v["start"]..".png", "icon_bg"..v["start"]..".png"},  20 + 116 * (temp_count - 1), 0,{
-				other = {{IMG_ICON .. v["path"]..v["id"]..".png",46,46},{IMG_COMMON .. "icon_border"..v["start"]..".png",46,46}},
+				other = {{IMG_ICON .. v["path"]..v["look"]..".png",46,46},{IMG_COMMON .. "icon_border"..v["start"]..".png",46,46}},
 				callback = function()  
-					self.layer:addChild(Detail:new(v["info"],v["id"]):getLayer(),1)
+					self.layer:addChild(Detail:new(v["info"],v["look"]):getLayer(),1)
 				end}
 				)
 			else

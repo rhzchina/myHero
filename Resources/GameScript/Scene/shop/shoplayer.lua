@@ -1,12 +1,13 @@
 local ITEM = requires(SRC.."Scene/shop/shopitem")
 local Detail = requires(SRC.."Scene/common/CardDetail")
 local PATH = IMG_SCENE.."shop/"
-
+requires(SRC.."Scene/common/pay")
 local M = {
 	layer,
 	listLayer,
 	tabGroup,
-	infoLayre
+	infoLayre,
+	payfoLayer
 }
 
 function M:create( ... )
@@ -25,8 +26,7 @@ function M:create( ... )
 	local tabs = {
 		{"hot", 1},
 		{"card", 2},
-		{"prop", 3},
-		{"charge", 4},
+		{"prop", 3}
 	}
 	
 	local x = 12
@@ -47,7 +47,20 @@ function M:create( ... )
 	this.tabGroup:chooseByIndex(1,true)
 	
 	local gift = Btn:new(IMG_BTN, {"gift.png", "gift_pre.png"}, 385, 665, {
-	
+		callback = function()
+			HTTPS:send("Pay", {a = "pay", m = "pay", pay = "get"}, {
+				success_callback = function()
+					local scene = display.getRunningScene()
+					if self.payfoLayer then
+						scene:removeChild(self.payfoLayer,true)
+					end
+					self.payfoLayer = PayInfoLayer:create():getLayer()
+					
+					scene:addChild(self.payfoLayer)
+				end
+			})
+			
+		end
 	})
 	this.layer:addChild(gift:getLayer())
 
@@ -100,8 +113,8 @@ function M:buySingle(type, id)
 			HTTPS:send("Shop", {a = "shop", m = "shop", shop = "buy", type = type, pag_id = DATA_Shop:get(id,"id")}, {
 				success_callback = function()
 					self.layer:removeChild(mask, true)
-					self.infoLayer:createtop()
-					MsgBox.create():flashShow("购买 成功")
+					--self.infoLayer:createtop()
+					Dialog.tip("购买 成功")
 				end
 			})
 		end
@@ -117,7 +130,7 @@ function M:buySingle(type, id)
 	layer:addChild(cancelBtn:getLayer())
 	
 	local icon = Btn:new(IMG_COMMON,{"icon_bg1.png"}, 80, 420, {
-		front = IMG_ICON.."equip/S_7401.png",
+		front = IMG_ICON.."prop/S_"..DATA_Shop:get(id, "look")..".png",
 		other = {IMG_COMMON.."icon_border1.png",45,45},
 		text = {DATA_Shop:get(id, "name"),20,ccc3(255,255,255), ccp(0, -60), }
 	})
@@ -133,6 +146,7 @@ end
 function M:buy(type, id)
 	local numLabel, valueLabel
 	local totalNum, perValue = 1, DATA_Shop:get(id, "money") 
+
 	local layer = newLayer()
 	local bg = newSprite(IMG_COMMON.."tip_bg.png")
 	
@@ -147,8 +161,8 @@ function M:buy(type, id)
 			HTTPS:send("Shop", {a = "shop", m = "shop", shop = "buy", type = type, pag_id = DATA_Shop:get(id,"id")}, {
 				success_callback = function()
 					self.layer:removeChild(mask, true)
-					self.infoLayer:createtop()
-					MsgBox.create():flashShow("购买 成功")
+					--self.infoLayer:createtop()
+					Dialog.tip("购买 成功")
 				end
 			})
 		end

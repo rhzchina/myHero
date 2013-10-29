@@ -16,7 +16,7 @@ local embattle = require (SRC.."Scene/embattle/EmbattleLayer")
 local M = {}
 
 function M:create()
-	local scene = display.newScene()
+	local scene = display.newScene("embattle")
 
 
 	---------------插入layer---------------------

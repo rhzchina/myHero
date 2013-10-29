@@ -12,8 +12,7 @@ collectgarbage("setstepmul" , 5000)
 -- [[ 包含各种 Layer ]]
 requires(SRC.."Scene/home/homelayer")
 
-	requires(SRC.."Scene/common/infolayer")
-
+requires(SRC.."Scene/common/notice")
 
 
 local M = {}
@@ -47,6 +46,15 @@ function M:create()
 --	scene:addChild(LULayer:create(0,493))
 
 	scene:addChild(InfoLayer:create("home"):getLayer())
+	if DATA_User:get("on_off") ~= 1 then 
+		if GONGGAO == 0 then
+			scene:addChild(NoticeLayer:create():getLayer())
+			GONGGAO = 1
+		end	
+	else
+		if DATA_User:get("on_off") == 1 then Guide:show() end
+	end
+	
 --	scene:addChild(BTLuaLayer())
 	---------------------------------------------
 

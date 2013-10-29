@@ -26,7 +26,6 @@ function EmbattleLayer:new()
 					send_data[k] = v
 				end
 			end
-			dump(send_data)
 			HTTPS:send("Battle",{m = "battle", a = "battle", battle = "replace",data = send_data},{
 				success_callback=function()
 					switchScene("lineup")

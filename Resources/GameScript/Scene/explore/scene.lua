@@ -11,14 +11,14 @@ collectgarbage("setstepmul" , 5000)
 -- [[ 包含各种 Layer ]]
 local ExporeLayer = requires(SRC.."Scene/explore/explorelayer")
 
-requires(SRC.."Scene/common/infolayer")
+
 
 
 
 local M = {}
 
 function M:create(data)
-	local scene = display.newScene("home")
+	local scene = display.newScene("explore")
 
 	---------------插入layer---------------------
 	scene:addChild(ExporeLayer:create(data):getLayer())

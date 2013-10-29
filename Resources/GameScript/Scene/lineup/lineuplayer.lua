@@ -14,7 +14,6 @@ function lineuplayer:new(data)
 	self.__index  = self
 	this.params = params or {}
 	local size = DATA_Embattle:getLen() 
-	dump(data)
 	local num --阵容的个数
 	if size < 3 then
 		num = 3
@@ -72,19 +71,31 @@ function lineuplayer:new(data)
 									end
 								})
 							else
-								MsgBox.create():flashShow("请选 择装备的物口")
+								Dialog.tip("请选 择装备的物口")
 							end
 						end
 					})
 					this.layer:addChild(list:getLayer())
 				end,
+				lock = i > DATA_Embattle:getLen(),
 				cardCallback = function(pos)
 					if infos:get_gid() then
-						this.layer:addChild(Detail:new("hero",infos:get_gid()):getLayer(),1)
+						this.layer:addChild(Detail:new("hero",infos:get_gid(), {
+							allowChange = true,
+							pos = pos,
+						}):getLayer(),1)
 					else
 						if i > DATA_Embattle:getLen() then  --未解销的关
-							MsgBox.create():flashShow("此阵未还未解锁，请继续努力吧！~")
+							print("@@@@@@@@@@@@@@@@@@@@")
+							Dialog.tip("此阵未还未解锁，请继续努力吧！~")
 							return 
+						end
+						--过滤已上阵列的武将
+						local except = {}
+						for k, v in pairs(DATA_Embattle:get()) do
+							if v.cid then
+								except[v.cid] = v.cid
+							end
 						end
 						local list
 						list = ItemList:new({
@@ -92,6 +103,7 @@ function lineuplayer:new(data)
 							checkBoxOpt = function()	 --列表复选框回调
 								print(filter)
 							end,
+							except = except,
 							okCallback = function()
 								if list:getSelectItem() then
 									HTTPS:send("Battle", {a = "battle", m = "battle",battle = "up", index = pos,
@@ -101,7 +113,7 @@ function lineuplayer:new(data)
 										end
 									})
 								else
-									MsgBox.create():flashShow("请选择要上阵列的武将")
+									Dialog.tip("请选择要上阵列的武将")
 								end
 							end
 						})
@@ -124,8 +136,6 @@ function lineuplayer:new(data)
 	
 	
 	this.layer:addChild(ksv:getLayer())
-
-
 
 
 	local embattle = CommEmbattle:new(60, 655, 290)

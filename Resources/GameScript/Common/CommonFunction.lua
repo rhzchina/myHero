@@ -129,7 +129,12 @@ function newLabel(str, size, params)
 		label:setDimensions(p.dimensions)
 	end
 	
-	--对齐设置
+	if p.width then
+		label:setDimensions(CCSizeMake(p.width, 0))
+	end
+	
+	
+	--对齐设置, 默认居中
 	if p.align then
 		label:setHorizontalAlignment(p.align)
 	end
@@ -153,7 +158,9 @@ end
 function getSequence(...)
 	local array = CCArray:create()	
 	for i = 1, arg["n"] do
-		array:addObject(arg[i])
+		if arg[i] then
+			array:addObject(arg[i])
+		end
 	end
 	return CCSequence:create(array)
 end
@@ -181,45 +188,7 @@ function getSortKey(t, rule)
 	return list	
 end
 
-
-
---文字换行处理
-function createLabel( params )
-	params = params or {}
-	local str = params.str or ""
-	local total_width = params.width or 100		-- 文字总宽度
-	local color = params.color or ccc3( 0x2c , 0x00 , 0x00 )
-	local size = params.size or 20
-	local x = params.x or 0
-	local y = params.y or 0
-	local line = 1														-- 行数
-	-- 估算一行的字符数量
-	local enter_num = string.len(str) - string.len(string.gsub(str , "\n" , ""))
-	local label = CCLabelTTF:create(str ,params.noFont and "default" or  FONT , size )
-	local label_size = label:getContentSize()
-	local line_height = label_size.height
-
-	if enter_num > 0 then
-		line_height = CCLabelTTF:create("测" ,params.noFont and "default" or FONT , size ):getContentSize().height
-	end
-
-	if label_size.width > total_width then			-- 大于一行
-		line = math.ceil( label_size.width / total_width )
-	end
-
-	line = line + enter_num
-
-	if line > 1 then
-		label:setDimensions( CCSize:new( total_width , line * line_height ) )
-	end
-
-	label:setColor( color )
-	label:setHorizontalAlignment( 0 )			-- 文字左对齐
-	setAnchPos(label , x , y )
-	
-	return label, line
-end
-function sendChatMsg(msg)
+function sendChatMsg(msg)
 	SOCKET:call("tall", {
 		content = msg
 	})
@@ -237,11 +206,39 @@ function getAnimation(name, num, params)
 	local animation = CCAnimation:createWithSpriteFrames(array, params.delay or 1)
 	local animate = CCAnimate:create(animation)
 	
-	return getSequence(animate, CCCallFunc:create(function()
-		if params.callback then
-			params.callback()
+	if params.repeatForever then
+		return CCRepeatForever:create(animate)
+	else
+		return getSequence(animate, CCCallFunc:create(function()
+			if params.callback then
+				params.callback()
+			else
+				print("动画播放完成")
+			end
+		end)) 
+	end
+end
+
+function getConfig(...)
+	local config
+	for i = 1, arg['n'] do
+		if i == 1 then
+			if arg[i] == "hero" then
+				config = HeroConfig
+			elseif arg[i] == "skill" then
+				config = SkillConfig
+			elseif arg[i] == "equip" then
+				config = ArmConfig
+				table.merge(config,ArmourConfig)
+				 table.merge(config,OrnamentConfig)
+			end
 		else
-			print("动画播放完成")
-		end
-	end)) 
+			config = config[arg[i]]
+			if config == nil then
+				print(arg[i].."字段未在配置表中找到")
+				break
+			end
+		end 
+	end
+	return config
 end

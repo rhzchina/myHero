@@ -17,7 +17,7 @@ local Menu = requires(SRC.."Scene/menu/menulayer")
 local M = {}
 
 function M:create()
-	local scene = display.newScene("login")
+	local scene = display.newScene("menu")
 
 	---------------插入layer---------------------
 	scene:addChild( Menu:create():getLayer())

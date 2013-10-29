@@ -47,10 +47,11 @@ function FightRole:new(group,id,pos,total,params)
 	this.layer = CCLayer:create()
 	
 	this.params = params or {}
-	--dump(params)
-	
+	dump(params)
+	this.params.star = this.params.star > 5 and 5 or this.params.star
 	--战斗卡片背景
-	this.bg = newSprite(PATH.."test_bg.png")
+--	this.bg = newSprite(PATH.."test_bg.png")
+	this.bg = newSprite(PATH.."fight_back"..this.params.star..".png")
 	setAnchPos(this.bg)
 	this.layer:setContentSize(this.bg:getContentSize())
 	this.layer:addChild(this.bg)
@@ -96,19 +97,19 @@ function FightRole:new(group,id,pos,total,params)
 
 	
 	--英雄图标
-	this.icon = newSprite(IMG_ICON.."hero/M_"..id..".png")
+	this.icon = newSprite(IMG_ICON.."hero/M_"..params.look..".png")
 	setAnchPos(this.icon,this.width / 2, this.height / 2, 0.5, 0.5)
 	this.layer:addChild(this.icon)
 	
 	this.lvLayer = newLayer()	
-	local levelBg = newSprite(PATH.."level_bg.png")
+	local levelBg = newSprite(PATH.."fight_border"..this.params.star..".png")
+--	local levelBg = newSprite(PATH.."level_bg.png")
 	
 	this.lvLayer:setContentSize(levelBg:getContentSize())
 	setAnchPos(this.lvLayer, 15, 5)
-	local levelBg = newSprite(PATH.."level_bg.png")
 	this.lvLayer:addChild(levelBg)
 	
-	levelBg = createLabel({str = params.lv, color = ccc3(255, 0, 0), size = 18})
+	levelBg = newLabel(params.lv, 18,{color = ccc3(255, 0, 0) })
 	setAnchPos(levelBg, 20, 15, 0.5)
 	levelBg:setTag(102)
 	this.lvLayer:addChild(levelBg)
@@ -161,13 +162,19 @@ end
 --function FightRole:doAction(type,role,callback,id, hpChange, sId)
 function FightRole:doAction(type, role, params)
 	params = params or {}
-	
 	if type == "atk" or type == "skill" then   --普通攻击
-		if role == "adt" then   --攻击者特效
-			local target = {}
-			for i = 1, #params.target do
-				target[i] = position[params.target[i][1]][self.group == 1 and #DATA_Fighting:getMonster() or #DATA_Fighting:getHero()][params.target[i][2]]
+		local target = {}
+		for i = 1, #params.target do
+			--攻击目标列表，攻击方目标相反，被击者相同
+			local des
+			if role == "adt" then
+				des = self.group == 1 and #DATA_Fighting:getMonster() or #DATA_Fighting:getHero()	
+			else
+				des = self.group == 1 and #DATA_Fighting:getHero() or #DATA_Fighting:getMonster()	
 			end
+			target[i] = position[params.target[i][1]][des][params.target[i][2]]
+		end
+		if role == "adt" then   --攻击者特效
 			self:cardAct("adt",
 				function() 
 					if self.params["effect"] then
@@ -197,6 +204,7 @@ function FightRole:doAction(type, role, params)
 					if self.params["effect"] then
 						self.params["effect"]:showByType(params.res_id,self.x + self.width / 2,self.y + self.height / 2,{
 							callback = params.callback,
+							target =  target,
 							group = self.group
 						})
 					end
@@ -245,6 +253,7 @@ function FightRole:act(id,callback, finish, hpChange)
 		[1005] = {"full"},
 		[2001] = {"other",0},
 		[2002] = {"other",0.2},
+		[2004] = {"other",0.55},
 		[2005] = {"other",0.55},
 		[2006] = {"other",0.4},
 		[2007] = {"other",0.2},
@@ -305,7 +314,7 @@ function FightRole:act(id,callback, finish, hpChange)
 --			self.icon:setTexture(newSprite(IMG_ICON.."hero/L_"..self.id..".png"):getTexture())
 --			self.bg:setVisible(false)
 			return prepare, getSpawn(CCCallFunc:create(function()
-					self.temp = newSprite(IMG_ICON.."hero/L_"..self.id..".png")
+					self.temp = newSprite(IMG_ICON.."hero/L_"..self.params.look..".png")
 					self.temp:setScaleX(self.width / self.temp:getContentSize().width)
 					self.temp:setScaleY(self.height/ self.temp:getContentSize().height)
 					setAnchPos(self.temp, self.x, self.y)

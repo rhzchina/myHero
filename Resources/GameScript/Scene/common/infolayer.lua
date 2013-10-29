@@ -1,10 +1,12 @@
+GLOBAL_INFOLAYER = nil
 InfoLayer= {
 	layer,     --功能层
 	topLayer,
+	userinfoLayer
 }
 
 local PATH = IMG_SCENE.."navigation/"
-
+requires(SRC.."Scene/common/userinfo")
 function InfoLayer:create(hideTop)
 	local this={}
 	setmetatable(this,self)
@@ -62,9 +64,14 @@ function InfoLayer:create(hideTop)
 		},
 		{"fb",
 			function()
-				HTTPS:send("Duplicate", {m = "duplicate", a = "duplicate", duplicate = "open"}, {success_callback = function(data)
+				if tonumber(DATA_User:get("lv")) >= 30 then
+					HTTPS:send("Duplicate", {m = "duplicate", a = "duplicate", duplicate = "open"}, {success_callback = function(data)
 						switchScene("transcript",{type = 1})
-				end})
+					end})
+				else
+					Dialog.tip("您需要30级才可开启！")
+				end
+				
 			end
 		},
 	
@@ -94,6 +101,7 @@ function InfoLayer:create(hideTop)
 		this.layer:addChild(temp:getLayer())
 		x = x + 78
 	end
+	GLOBAL_INFOLAYER = this
     return this
 end
 
@@ -114,11 +122,20 @@ function InfoLayer:createtop()
 	setAnchPos(self.topLayer, 0, 854 - 44 - bg:getContentSize().height)
 	self.layer:addChild(self.topLayer)
 
+	local btn_rect = CCRectMake(0 , 854 - 44 - bg:getContentSize().height , bg:getContentSize().width , bg:getContentSize().height)
 	--等级
 --	local leve  = newSprite(PATH.."level_bg.png", 12, 20)
 --	self.topLayer:addChild(leve)
+	local cur = math.floor(tonumber(DATA_User:get("Exp"))/tonumber(DATA_User:get("Next_Exp")))
+	local show_cur = 0
+	if cur > 0 then
+		show_cur = cur
+	else
+	
+	end
+	
 	local level = Progress:new(PATH,{"exp_bg.png", "exp.png"}, 60, 20, {
-		cur = 50,
+		cur = show_cur,
 		leftIcon = {"level_bg.png",18,28}
 	})
 	self.topLayer:addChild(level:getLayer())
@@ -131,24 +148,74 @@ function InfoLayer:createtop()
 	
 	local gas  = newSprite(PATH.."gas_bg.png", 345, 15)
 	self.topLayer:addChild(gas)
-	gas = newLabel(DATA_User:get("energy"), 20, {x = 415, y = 20, ax = 0.5})--体力值
-	self.topLayer:addChild(gas)
+	
 	
 	
 	local silver  = newSprite(PATH.."silver_bg.png", 220, 55)--银两
 	self.topLayer:addChild(silver)
-	silver = newLabel(DATA_User:get("Money"), 20, {x = 290, y = 60, ax = 0.5})--体银两
+	local money = math.floor(tonumber(DATA_User:get("Money"))/10000)
+	if money > 0 then
+		silver = newLabel(money .."万", 20, {x = 290, y = 60, ax = 0.5})--体银两
+	else
+		silver = newLabel(DATA_User:get("Money"), 20, {x = 290, y = 60, ax = 0.5})--体银两
+	end
+	
 	self.topLayer:addChild(silver)
 	
 	local goldLeaf  = newSprite(PATH.."gold_bg.png", 345, 55)--金叶子
 	self.topLayer:addChild(goldLeaf)
-	goldLeaf = newLabel(DATA_User:get("Gold"),  20, {x = 415, y = 60, ax = 0.5})--金叶子
+	
+	local Gold = math.floor(tonumber(DATA_User:get("Gold"))/10000)
+	if Gold > 0 then
+		goldLeaf = newLabel(Gold.."万",  20, {x = 415, y = 60, ax = 0.5})--金叶子
+	else
+		goldLeaf = newLabel(DATA_User:get("Gold"),  20, {x = 415, y = 60, ax = 0.5})--金叶子
+	end
+	
+	
 	self.topLayer:addChild(goldLeaf)
 	
 	local power  = newSprite(PATH.."power_bg.png", 220, 15)
 	self.topLayer:addChild(power)
-	power = newLabel(DATA_User:get("PhysicalValue"), 20, {x = 290, y = 20, ax = 0.5})--气
+	local prestige = math.floor(tonumber(DATA_User:get("prestige"))/10000)
+	if prestige > 0 then
+		power = newLabel(prestige.."万", 20, {x = 415, y = 20, ax = 0.5})--气
+	else
+		power = newLabel(DATA_User:get("prestige"), 20, {x = 415, y = 20, ax = 0.5})--气
+	end
 	self.topLayer:addChild(power)
+	
+	
+	local energy = math.floor(tonumber(DATA_User:get("energy"))/10000)
+	if energy > 0 then
+		gas = newLabel(energy.."万", 20, {x = 280, y = 20, ax = 0.5})--体力值
+	else
+		gas = newLabel(DATA_User:get("energy"), 20, {x = 280, y = 20, ax = 0.5})--体力值
+	end
+	
+	
+	self.topLayer:addChild(gas)
+	
+	local btn_progress = false
+	local function onTouch(eventType , x , y)
+		if eventType == CCTOUCHBEGAN then
+			if btn_rect:containsPoint( ccp(x , y) ) then
+				
+				local scene = display.getRunningScene()
+				if self.userinfoLayer then
+					scene:removeChild(self.userinfoLayer,true)
+				end
+				self.userinfoLayer = UserInfoLayer:create():getLayer()
+				
+				scene:addChild(self.userinfoLayer)
+			end
+			return true
+		end
+		return true
+	end
+	self.topLayer:registerScriptTouchHandler(onTouch)
+    self.topLayer:setTouchEnabled(true)
+	
 end
 
 return InfoLayer

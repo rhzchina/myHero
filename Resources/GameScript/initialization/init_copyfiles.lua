@@ -330,7 +330,7 @@ function initCopyLayer:newVersion(new_version , rows)
 	self.viewLayer = CCLayer:create()
 
 	local label = CCLabelTTF:create("发现新版本 " .. "V" .. new_version , "Thonburi" , 36)
-	label:setColor(ccc3( 0x2c , 0x00 , 0x00 ))
+	label:setColor(ccc3(255, 255,255))
 	INIT_FUNCTION.setAnchPos(label , INIT_FUNCTION.cx , 180 , 0.5)
 	self.viewLayer:addChild(label)
 	
@@ -405,9 +405,6 @@ function initCopyLayer:newVersion(new_version , rows)
 		local width = math.floor( cur * (346 / (filesize_max)) )
 		if width > 346 then width = 346 end
 		if width <= 0 then width = 1 end
-		CCLuaLog("^^^^^^^^更新进度条^^^^^^^")
-		CCLuaLog(width)
-		CCLuaLog("^^^^^^^^更新进度条^^^^^^^")
 		bg1:setTextureRect( CCRectMake(0 , 0 , width , 39) )
 
 		
@@ -425,15 +422,12 @@ function initCopyLayer:newVersion(new_version , rows)
         local show_name = string.gsub(name , "%.lua" , "")
         update_filename:setString( show_name )
 		interface_java:loadDown(url,path,name,function(response) 
-			CCLuaLog("^^^^^^^^^^^^^^^^^^^^^^^^")
-			CCLuaLog(response["data"])
-			CCLuaLog("^^^^^^^^^^^^^^^^^^^^^^^")
 			if response["data"] == "0" then
 				updata_font_max:setString(filesize_cur .. "/" .. filesize_max .. "K")
 				filesize_cur = filesize_cur + filesize / 1024
 				updateBar(filesize_cur )
 			else
-				self:showTips("下载文件超时\n请点击按钮重试")
+				self:showTips("下载文件超时,请点击按钮重试")
 			end
 		end)
 		

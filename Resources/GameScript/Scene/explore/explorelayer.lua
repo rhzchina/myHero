@@ -29,7 +29,7 @@ function ExploreLayer:create(data)
 						DATA_Bag:setByKey(v.type, k, v)
 					end
 					this:createContent()
-					MsgBox.create():flashShow("探索成功，奖励物品已放入背包")
+					Dialog.tip("探索成功，奖励物品已放入背包")
 				end
 			})
 		end
@@ -61,7 +61,7 @@ function ExploreLayer:createContent()
 	local pos = {
 		{100, 200},	
 		{240, 360},	
-		{50, 450},	
+		{50, 400},	
 		{280, 620},	
 		{100, 650},	
 	}
@@ -81,7 +81,7 @@ function ExploreLayer:createContent()
 					HTTPS:send("Explore", {m = "explore", a = "explore", explore = "execute", position = i}, {
 						success_callback = function(data)
 							if data.msg then
-								MsgBox.create():flashShow(data.msg)
+								Dialog.tip(data.msg)
 								return 
 							end
 							
@@ -91,7 +91,7 @@ function ExploreLayer:createContent()
 							
 							for k, v in pairs(data.gift) do
 								DATA_Bag:setByKey(v.type, k, v)
-								MsgBox.create():flashShow("获得物品"..v.name)
+								Dialog.tip("获得物品")
 							end
 							self:createContent()
 						end

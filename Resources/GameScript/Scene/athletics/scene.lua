@@ -11,14 +11,14 @@ collectgarbage("setstepmul" , 5000)
 -- [[ 包含各种 Layer ]]
 	local ActivityLayer = requires(SRC.."Scene/athletics/athleticslayer")
 
-requires(SRC.."Scene/common/infolayer")
+
 
 
 
 local M = {}
 
 function M:create(data)
-	local scene = display.newScene("home")
+	local scene = display.newScene("athletics")
 
 	---------------插入layer---------------------
 	scene:addChild(ActivityLayer:create(data))
