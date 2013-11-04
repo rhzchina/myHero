@@ -22,12 +22,59 @@ function ItemList:new(params)
 		priority = this.params.priority
 	})
 	local temp = DATA_Bag:getByFilter(this.params.type, this.params.filter)
-	--除去部分元素
-	if this.params.except then
-		for k, v in pairs(this.params.except) do
-			temp[k..""] = nil			
+	if this.params.type == "hero" then
+		local temp_data = DATA_Embattle:get()
+		for k,v in pairs(temp_data)do
+			if _G.next(v) ~= nil then
+				temp[v.cid..""] = nil
+			end
+		end
+	elseif this.params.type == "equip" then
+		local temp_data = DATA_Dress:get()
+		for k,v in pairs(temp_data)do
+			for k1,v1 in pairs(v)do
+				if _G.next(v1) ~= nil then
+					temp[v1.cid..""] = nil
+				end
+			end
+		end
+		for k,v in pairs(temp)do
+			if this.params.pos == 2 then
+				if tonumber(v.id) > 4999 and tonumber(v.id) < 5999 then
+
+				else
+					temp[v.cid..""] = nil	
+				end
+			elseif this.params.pos == 1 then
+				if tonumber(v.id) > 5999 and tonumber(v.id) < 6999 then
+
+				else
+					temp[v.cid..""] = nil	
+				end
+			elseif this.params.pos == 3 then
+				if tonumber(v.id) > 6999 and tonumber(v.id) < 7999 then
+
+				else
+					temp[v.cid..""] = nil	
+				end
+			end
+		end
+	elseif this.params.type == "skill" then
+		local temp_data = DATA_Dress:get()
+		for k,v in pairs(temp_data)do
+			for k1,v1 in pairs(v)do
+				if _G.next(v1) ~= nil then
+					temp[v1.cid..""] = nil
+				end
+			end
 		end
 	end
+	--除去部分元素
+	--if this.params.except then
+	--	for k, v in pairs(this.params.except) do
+	--		temp[k..""] = nil			
+	--	end
+	--end
 	
 	for k, v in pairs(temp) do
 		local item 

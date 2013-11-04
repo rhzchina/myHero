@@ -17,7 +17,7 @@ local LuaScrollView={
 	horizontal,  --滑动方向,默认为横向
 	validRect,    --有效的显示区域
 	layer,        --背景层
-	baselayer,    --窗口层
+	baseLayer,    --窗口层
 	contentLayer, --内容层，在此层中加入精灵等对象
 	itemsWidth,   --添加入元素的宽度，用来计算滑动切换的坐标
 	moving,       --翻页模式正在移动的状态，此状态下禁止操作
@@ -102,7 +102,7 @@ function LuaScrollView:new(x,y,width,height,divider,horizontal,mode,params)
 	end
 
 	function this.contentLayer:onTouch(event,x,y)
-		if this.validRect:containsPoint(ccp(x,y)) then  --判断点击事件是否在点击区域内
+		if this:getRange():containsPoint(ccp(x,y)) then  --判断点击事件是否在点击区域内
 			if event == CCTOUCHBEGAN then
 				if this.moving then   --正在移动状态，则屏蔽点击
 					return false
@@ -481,6 +481,33 @@ function LuaScrollView:scrollTo(id)
 	if index then
 		self:setIndex(index)
 	end
+end
+
+
+--获取所有父组件，取得按钮的绝对位置
+function LuaScrollView:getRange()
+	local x = self.baseLayer:getPositionX()
+	local y = self.baseLayer:getPositionY()
+
+	local parent = self.baseLayer:getParent()
+	if parent then
+		--锚点是否影响区域判断
+		local ignore =  parent:isIgnoreAnchorPointForPosition() 
+		
+		x = x + parent:getPositionX() - (ignore and 0 or (parent:getContentSize().width * (parent:getAnchorPoint().x )))
+		y = y + parent:getPositionY() - (ignore and 0 or (parent:getContentSize().height * (parent:getAnchorPoint().y )))
+		while parent:getParent() do
+			parent = parent:getParent()
+			
+			ignore =  parent:isIgnoreAnchorPointForPosition() 
+			x = x + parent:getPositionX() - (ignore and 0 or (parent:getContentSize().width * (parent:getAnchorPoint().x )))
+			y = y + parent:getPositionY() - (ignore and 0 or (parent:getContentSize().height * (parent:getAnchorPoint().y)))
+		
+--			x = x + parent:getPositionX()
+--			y = y + parent:getPositionY()
+		end
+	end
+	return CCRectMake(x,y,self.baseLayer:getContentSize().width,self.baseLayer:getContentSize().height)
 end
 
 function LuaScrollView:setOffset(offset)

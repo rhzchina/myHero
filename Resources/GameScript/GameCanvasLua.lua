@@ -46,6 +46,7 @@ xpcall(function()
 	requires(SRC.."SwitchScene")
 
 	-- 常用组件
+	Lead = requires(SRC.."Common/LuaLead")
 	Btn = requires(SRC.."Common/LuaBtn")
 	ScrollView = requires(SRC.."Common/LuaScrollView")
 	RadioGroup = requires(SRC.."Common/LuaRadioGroup")

@@ -25,6 +25,7 @@ function HomeLayer:create()
 		parent = this.layer
 	})
 	this.layer:addChild(embattle:getLayer())
+	
 
 	--底部按钮
 	local main_small = {
@@ -113,6 +114,7 @@ function HomeLayer:create()
 			else
 				Dialog.tip("您需要30级才可开启！")
 			end
+	
 				
 		end},
 		    {"explore",185,190, function()
@@ -135,6 +137,20 @@ function HomeLayer:create()
 		if v[1] ==  "king" then
 			temp= temps
 		end
+	end
+	
+	if Lead:getStep() == 1 then
+		Lead:show(nil,{
+			mask_clickable = true,
+			x = -100,
+			y = -100,
+			width = 1,
+			height = 1,
+			offsetY = 300,
+			callback = function()
+				Lead:show(temp:getLayer(), {})
+			end
+		})
 	end
 	
     return this.layer

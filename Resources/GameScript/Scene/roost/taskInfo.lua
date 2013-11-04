@@ -1,5 +1,8 @@
 local PATH = IMG_SCENE.."mission/"
-local roostLayer = {layer}
+local roostLayer = {
+	layer,
+	fightBtn
+}
 function roostLayer:new(ksv,data,p_x,p_y)
 	local this = {}
 	setmetatable(this,self)
@@ -65,8 +68,8 @@ function roostLayer:new(ksv,data,p_x,p_y)
 		local img_qi = newSprite(IMG_COMMON.."icon_empty.png")
 		setAnchPos(img_qi,20,70)
 		this.layer:addChild(img_qi)
-		local fight
-	    fight = Btn:new(PATH,{"fight_grey.png"},377,10,
+		
+	   this.fightBtn = Btn:new(PATH,{"fight_grey.png"},377,10,
 	    		{
 	    			scale = true,
 	    			callback=
@@ -74,7 +77,7 @@ function roostLayer:new(ksv,data,p_x,p_y)
 	    					Dialog.tip("您好，该关卡尚未开启！")
 	    				 end
 	    		 })
-		this.layer:addChild(fight:getLayer())
+		this.layer:addChild(this.fightBtn:getLayer())
 	else
 		
 		if tonumber(SHurdleConfig[data.id].hero_icon) ~= 0 then
@@ -116,8 +119,7 @@ function roostLayer:new(ksv,data,p_x,p_y)
 		
 		end		
 		
-		local fight
-	    fight = Btn:new(IMG_BTN,{"fight_normal.png","fight_press.png"},377,10,
+	    this.fightBtn = Btn:new(IMG_BTN,{"fight_normal.png","fight_press.png"},377,10,
 	    		{
 					--parent = ksv,
 	    			--front = v[1],
@@ -138,7 +140,7 @@ function roostLayer:new(ksv,data,p_x,p_y)
 	    						 })
 	    				 end
 	    		 })
-		this.layer:addChild(fight:getLayer())
+		this.layer:addChild(this.fightBtn:getLayer())
 	end
 	
 	
@@ -167,6 +169,10 @@ end
 
 function roostLayer:getLayer()
 	return self.layer
+end
+
+function roostLayer:getBtn()
+	return self.fightBtn
 end
 
 return roostLayer

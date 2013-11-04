@@ -52,13 +52,13 @@ function roostLayer:new(x,y)
 	this.layer:addChild(bsv:getLayer())
 
 
-	local left_bt = Btn:new(IMG_BTN,{"left_normal.png","left_press.png"},5,625,
+	local left_bt = Btn:new(IMG_BTN,{"left_normal.png"},5,625,
     		{
     			callback=
     				function()
-    					if bsv:getCurIndex() > 1 then
-    						bsv:setIndex(bsv:getCurIndex() - 1, true)
-    					end
+--    					if bsv:getCurIndex() > 1 then
+--    						bsv:setIndex(bsv:getCurIndex() - 1, true)
+--    					end
     				
     				 end
     		 })
@@ -66,13 +66,13 @@ function roostLayer:new(x,y)
 	this.layer:addChild(left_bt:getLayer())
 
 
-	local right_bt = Btn:new(IMG_BTN,{"right_normal.png","right_press.png"},430,625,
+	local right_bt = Btn:new(IMG_BTN,{"right_normal.png"},430,625,
     		{
     			callback=
     				function()
-    						if bsv:getCurIndex() < #DATA_Mission:get("bHurdle") then
-								bsv:setIndex(bsv:getCurIndex() + 1, true) 
-    					end
+--    						if bsv:getCurIndex() < #DATA_Mission:get("bHurdle") then
+--								bsv:setIndex(bsv:getCurIndex() + 1, true) 
+--    					end
     				 end
     		 })
 
@@ -88,23 +88,38 @@ function roostLayer:createMission(level)
 	end
 	self.contentLayer = newLayer()
 	
+	local lead
+	
 	local des = Label:new(DATA_Mission:get("bHurdle",level, "exps"), 22, 420,18)
 	setAnchPos(des, 18, 562)
 	self.contentLayer:addChild(des)
 
-	local task
 	local task_x = 0
 	local task_y = 100
 	local ksv = ScrollView:new(0,90,480,420,10,false)
 	for i = 1, #DATA_Mission:get("sHurdle", level)  do
-			task = taskinfo:new(ksv,DATA_Mission:get("sHurdle",level, i),task_x,task_y)
+			local task = taskinfo:new(ksv,DATA_Mission:get("sHurdle",level, i),task_x,task_y)
 			ksv:addChild(task:getLayer(),task)
 			task_y = task_y -180
+			
+			if i == 1 then
+				lead = task
+			end
 	end
 
 	self.contentLayer:addChild(ksv:getLayer())
 	
 	self.layer:addChild(self.contentLayer)
+	
+	if Lead:getStep() == 3 then
+		Lead:show(lead:getLayer(), {
+			x = lead:getBtn():getRange():getMinX(),
+			y = lead:getBtn():getRange():getMinY(),
+			width = lead:getBtn():getRange():getMaxX() - lead:getBtn():getRange():getMinX(),
+			height = lead:getBtn():getRange():getMaxY() - lead:getBtn():getRange():getMinY(),
+		})
+	end
+	
 end
 
 function roostLayer:getLayer()

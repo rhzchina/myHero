@@ -80,7 +80,6 @@ function UpdateLayer:createCardUp(kind, cid, value)
 	self.contentLayer:addChild(bg)
 	
 	if kind and cid then
-		dump(DATA_Bag:get(kind, cid))
 		local label = newLabel(value, 24, {
 			x = 350, 
 			y = 635, 
@@ -210,6 +209,7 @@ function UpdateLayer:createCardUp(kind, cid, value)
 					self.contentLayer:removeChild(self.page:getLayer(), true)
 				end,{
 					data = data,
+					exceptUse = true,
 					filter = items.target.cid
 				})
 			else
@@ -380,6 +380,7 @@ function UpdateLayer:createSplit(kind, btnImages, func, params)
 		if self.page then
 			self.contentLayer:removeChild(self.page:getLayer(), true)
 		end
+		--dump(kind)
 		self.page = Pages:new(0,0, {
 			data = params.data,
 			filter = params.filter,

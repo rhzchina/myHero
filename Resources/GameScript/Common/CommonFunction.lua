@@ -231,6 +231,8 @@ function getConfig(...)
 				config = ArmConfig
 				table.merge(config,ArmourConfig)
 				 table.merge(config,OrnamentConfig)
+			elseif arg[i] == "guide" then 
+				config = GuideNpc 
 			end
 		else
 			config = config[arg[i]]

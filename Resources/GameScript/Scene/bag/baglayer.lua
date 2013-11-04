@@ -62,7 +62,9 @@ function M:createList(kind, tab, offset)
 		local callback, optCallback
 		if kind ~= "prop" then
 			callback = function()
-				self.layer:addChild(Detail:new(kind,v["cid"]):getLayer(),1)
+				self.layer:addChild(Detail:new(kind,v["cid"], {
+					allowChange = true,
+				}):getLayer(),1)
 			end
 			optCallback = function()
 				if kind == "hero" then

@@ -451,17 +451,31 @@ end
 function LuaBtn:getRange()
 	local x = self.layer:getPositionX()
 	local y = self.layer:getPositionY()
+	if self.params.anchMid then
+		x = x - self:getWidth() / 2 
+		y = y - self:getHeight() / 2
+	end
 --	if self.params["parent"] then
 --		x = x + self.params["parent"]:getX() + self.params["parent"]:getOffsetX()
 --		y = y + self.params["parent"]:getY() + self.params["parent"]:getOffsetY()
 --	end
 	local parent = self.layer:getParent()
-	x = x + parent:getPositionX()
-	y = y + parent:getPositionY()
-	while parent:getParent() do
-		parent = parent:getParent()
-		x = x + parent:getPositionX()
-		y = y + parent:getPositionY()
+	if parent then
+		--锚点是否影响区域判断
+		local ignore =  parent:isIgnoreAnchorPointForPosition() 
+		
+		x = x + parent:getPositionX() - (ignore and 0 or (parent:getContentSize().width * (parent:getAnchorPoint().x )))
+		y = y + parent:getPositionY() - (ignore and 0 or (parent:getContentSize().height * (parent:getAnchorPoint().y )))
+		while parent:getParent() do
+			parent = parent:getParent()
+			
+			ignore =  parent:isIgnoreAnchorPointForPosition() 
+			x = x + parent:getPositionX() - (ignore and 0 or (parent:getContentSize().width * (parent:getAnchorPoint().x )))
+			y = y + parent:getPositionY() - (ignore and 0 or (parent:getContentSize().height * (parent:getAnchorPoint().y)))
+		
+--			x = x + parent:getPositionX()
+--			y = y + parent:getPositionY()
+		end
 	end
 	return CCRectMake(x,y,self.layer:getContentSize().width,self.layer:getContentSize().height)
 end

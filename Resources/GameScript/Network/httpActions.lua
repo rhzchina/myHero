@@ -71,6 +71,7 @@ function M.Landed( type , data , callback )
 	elseif type == 2 then
 		-- 回调处理
 		local result = data
+		dump(data)
 		-- 存储数据
 		DATA_Bag:set(result["bag"])
 		DATA_Session:set({ uid = result["userinfo"]["uid"] , sid = result["userinfo"]["sid"] , server_id = result["userinfo"]["server_id"] })
@@ -78,6 +79,7 @@ function M.Landed( type , data , callback )
 		DATA_Embattle:set(result["battle"])
 		DATA_Role:set(result["role"])
 		DATA_Role:set_name(result["role_name"])
+		DATA_Dress:set(result["equipage"])
 --		SOCKET:getInstance("msg"):call("log" , "in" , "open" , {} , {
 --				success_callback = function()
 --					switchScene("home")
@@ -134,7 +136,14 @@ function M.Battle_replace_hero( type , data , callback )
 	else
 		DATA_Embattle:set(data["battle"])
 		DATA_Dress:set(data["equipage"])
-		DATA_Bag:setByKey("skill",data["skill"]["cid"],data["skill"])
+		dump(data)
+		for k, v in pairs(data["skill"]) do
+			if v.change == "delect" then
+				DATA_Bag:delItem("skill",k)
+			elseif v.change == "add" then
+				DATA_Bag:setByKey("skill",k, v)
+			end
+		end
 		callback()
 	end
 	return true,data
@@ -234,6 +243,27 @@ function M.Skill_selectline(type, data, callback)
 	return true, data
 end
 
+function M.Skill_replace(type, data, callback)
+	if type == 1 then
+	else
+		local result = data
+		DATA_Dress:set(result["equipage"])
+		callback()
+	end
+	return true, data
+end
+
+
+function M.Skill_selectline(type, data, callback)
+	if type == 1 then
+	else
+		local result = data
+		DATA_Dress:set(result["equipage"])
+		callback()
+	end
+	return true, data
+end
+
 function M.Skill_inserSkill(type, data, callback)
 	if type == 1 then
 	else
@@ -272,6 +302,18 @@ function M.Fighting_start(type,data,callback)
 				
 				if temp["user"].back_num then
 					DATA_User:setkey("back_num", temp["user"].back_num)
+				end 
+				
+				if temp["user"].back_num then
+					DATA_User:setkey("Exp", temp["user"].Exp)
+				end 
+				
+				if temp["user"].back_num then
+					DATA_User:setkey("Next_Exp", temp["user"].Next_Exp)
+				end 
+				
+				if temp["user"].back_num then
+					DATA_User:setkey("steps", temp["user"].steps)
 				end 
 				
 				IS_UPDATA = true
@@ -441,6 +483,7 @@ end
 function M.Strong_get_strengthen(kind, data, callback)
 	if kind == 1 then
 	else
+		
 		callback(data.pay)
 	end
 	return true, data
@@ -616,7 +659,13 @@ function M.Exploreshop(kind, data, callback)
 			DATA_PreShop:set(data["exlploreshop"])
 		elseif data["type"] == "pay" then
 			DATA_User:setkey("prestige", data["exlploreshop"]["prestige"])
-			DATA_Bag:updata_hero(data["exlploreshop"]["type"],data["exlploreshop"]["add"])
+			for k, v in pairs(data["exlploreshop"]["data"]) do
+				if v["change"] == "delect" then
+					DATA_Bag:delItem(v["type"], k)
+				elseif v["change"] == "add" or v["change"] == "updata" then
+					DATA_Bag:setByKey(v["type"], k, v)
+				end
+			end
 		end
 		callback(data["data"])
 	end
@@ -640,6 +689,15 @@ function M.Duplicate_reset(kind, data, callback)
 	return true, data
 end
 
+function M.Duplicate_quick(kind, data, callback)
+	if kind == 1 then
+	else	
+		dump(data)
+		--callback(data["duplicate"])
+	end
+	return true, data
+end
+
 function M.Duplicate_emigrated(kind, data, callback)
 	if kind == 1 then
 	else		
@@ -647,7 +705,6 @@ function M.Duplicate_emigrated(kind, data, callback)
 	end
 	return true, data
 end
-
 function M.Duplicate_reset(kind, data, callback)
 	if kind == 1 then
 	else

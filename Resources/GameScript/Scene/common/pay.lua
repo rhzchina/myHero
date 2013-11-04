@@ -33,7 +33,7 @@ function PayInfoLayer:create()
 	local temp
 	for k, v in pairs(DATA_Pay:get()) do
 		local item 
-		item = this:module_small(v)
+		item = this:module_small(v,scroll)
 		scroll:addChild(item,item)
 	end
 	scroll:alignCenter()
@@ -44,13 +44,14 @@ function PayInfoLayer:create()
 	return this
 end
 
-function PayInfoLayer:module_small(v)
+function PayInfoLayer:module_small(v,scroll)
 	local layer = newLayer()
 	local bg = newSprite(PATH.."buttom.png")
 	layer:addChild(bg)
 	layer:setContentSize(bg:getContentSize())
 	local btn = Btn:new(PATH,{"buttom.png"}, 0, 0, {
 		priority = -131,
+		parent = scroll,
 		callback = function()
 			HTTPS:send("Pay", {a = "pay", m = "pay", pay = "buy",id = v.id}, {
 				success_callback = function()

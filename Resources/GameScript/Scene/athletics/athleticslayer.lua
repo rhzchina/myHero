@@ -92,8 +92,12 @@ function AthleticsLayer:createRecord()
 	local other_layer = nil
 	local record_data = DATA_Sports:get_record()
 	self.time_data = DATA_Sports:get_time()
-	dump(record_data)
 	local function time_back_function()
+			local cur_scene = display.getRunningScene().name
+			if cur_scene ~= "athletics" then
+				scheduler:unscheduleScriptEntry(time_back)
+			end
+			
 			self.time_data.time = self.time_data.time  - 1
 			if tonumber(self.time_data.time) <= -1 then
 				self.time_data.time = 0			

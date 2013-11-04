@@ -8,7 +8,6 @@ end
 
 function DATA_Transcript:set_index(data,index)
 	local reust = {}
-	dump(data)
 	print(index)
 	for k,v in pairs(_data) do
 		if tonumber(k) == tonumber(index) then
@@ -17,7 +16,6 @@ function DATA_Transcript:set_index(data,index)
 			reust[k] = v
 		end
 	end
-	dump(reust)
 	_data = reust
 end
 

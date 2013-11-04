@@ -77,26 +77,36 @@ function ItemInfo:createLayout(kind, cid)
 	
 	if self.params.type == "bag" then
 		if kind ~= "prop" then
-			text = newLabel("等级:"..DATA_Bag:get(kind,cid,"lev"),20,{x = 150, y = 50, color = ccc3(0,0,0)})
+			local isOn  --是否已使用,或已上阵
+			local state = "in_use.png"
+			
+			local text = newLabel("等级:"..DATA_Bag:get(kind,cid,"lev"),20,{x = 150, y = 50, color = ccc3(0,0,0)})
 			self.layer:addChild(text)
 			if kind == "hero" then
-				local text = newLabel(HeroConfig[DATA_Bag:get(kind,cid,"id")].name,20,{x = 150, y = 75, color = ccc3(0,0,0)})
+				isOn = DATA_Embattle:isOn(cid)
+				state = "hero_on.png"
+				
+				text = newLabel(HeroConfig[DATA_Bag:get(kind,cid,"id")].name,20,{x = 150, y = 75, color = ccc3(0,0,0)})
 				self.layer:addChild(text)
 			elseif kind == "equip" then
+				isOn = DATA_Dress:isUse(cid)
+				
 				local id = DATA_Bag:get(kind,cid,"id")
 				if tonumber(id) >= 6000 and tonumber(id) < 7000 then
-					local text = newLabel(ArmConfig[DATA_Bag:get(kind,cid,"id")].name,20,{x = 150, y = 75, color = ccc3(0,0,0)})
+					text = newLabel(ArmConfig[DATA_Bag:get(kind,cid,"id")].name,20,{x = 150, y = 75, color = ccc3(0,0,0)})
 					self.layer:addChild(text)
 				elseif tonumber(id) >= 7000 and tonumber(id) < 8000 then
-					local text = newLabel(OrnamentConfig[DATA_Bag:get(kind,cid,"id")].name,20,{x = 150, y = 75, color = ccc3(0,0,0)})
+					text = newLabel(OrnamentConfig[DATA_Bag:get(kind,cid,"id")].name,20,{x = 150, y = 75, color = ccc3(0,0,0)})
 					self.layer:addChild(text)
 				elseif tonumber(id) >= 5000 and tonumber(id) < 6000 then
-					local text = newLabel(ArmourConfig[DATA_Bag:get(kind,cid,"id")].name,20,{x = 150, y = 75, color = ccc3(0,0,0)})
+					text = newLabel(ArmourConfig[DATA_Bag:get(kind,cid,"id")].name,20,{x = 150, y = 75, color = ccc3(0,0,0)})
 					self.layer:addChild(text)
 				end
 			elseif kind == "skill" then
+				isOn = DATA_Dress:isUse(cid)
+				
 				local id = DATA_Bag:get(kind,cid,"id")
-				local text = newLabel(SkillConfig[id].name,20,{x = 150, y = 75, color = ccc3(0,0,0)})
+				text = newLabel(SkillConfig[id].name,20,{x = 150, y = 75, color = ccc3(0,0,0)})
 				self.layer:addChild(text)
 			end
 			
@@ -105,6 +115,12 @@ function ItemInfo:createLayout(kind, cid)
 				star = newSprite(IMG_COMMON.."star.png")
 				setAnchPos(star, 150 + (i - 1) * 25, 20)
 				self.layer:addChild(star)
+			end
+			
+			if isOn then
+				local stateImg = newSprite(IMG_COMMON..state)
+				setAnchPos(stateImg, 240, 30)
+				self.layer:addChild(stateImg)
 			end
 		else
 			local text = newLabel("名称:"..DATA_Bag:get(kind,cid,"name"),20,{x = 150, y = 80, color = ccc3(0,0,0)})

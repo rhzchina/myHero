@@ -17,7 +17,6 @@ local update = requires(SRC.."Scene/delemail/delemaillayer")
 local M = {}
 
 function M:create(data)
-	dump(get_data)
 	local scene = display.newScene("delemail")
 	
 	---------------插入layer---------------------

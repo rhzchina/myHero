@@ -4,10 +4,12 @@ local _data
 
 function DATA_Bag:set(data)
 	_data = data
+		dump(data)
 end
 
 
 function DATA_Bag:setByKey(...)
+dump(arg)
 	local result = _data
 	for i = 1, arg["n"] do 
 		if i == arg["n"] - 1 then
@@ -23,7 +25,7 @@ function DATA_Bag:setByKey(...)
 end
 
 function DATA_Bag:delItem(first, second)
-	_data[first][second]  = nils
+	_data[first][second]  = nil
 end
 
 function DATA_Bag:insert(data)
@@ -34,6 +36,7 @@ end
 
 
 function DATA_Bag:get(...)
+dump(arg)
 	local result = _data
 	for i = 1, arg["n"] do
 		result = result[arg[i]..""]

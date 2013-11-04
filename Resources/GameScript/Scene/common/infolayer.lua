@@ -12,11 +12,14 @@ function InfoLayer:create(hideTop)
 	setmetatable(this,self)
 	self.__index = self
 	
+	local lead 
 	--首页的元素拆分开
 	this.layer = newLayer()
 	
 	local msgBg = newSprite(PATH.."msg_bg.png", 0, 854, 0, 1)
 	this.layer:addChild(msgBg)
+	
+	
 	
 	if hideTop ~= true then
 		this:createtop()
@@ -100,8 +103,21 @@ function InfoLayer:create(hideTop)
 			})
 		this.layer:addChild(temp:getLayer())
 		x = x + 78
+		
+		if v[1] == "home" then
+			lead = temp
+		end
 	end
 	GLOBAL_INFOLAYER = this
+--	
+--	if Lead:getStep() == 4 then
+--		Lead:show(nil, {
+--			x = -100,
+--			y = 0,
+--			width = 0,
+--			height = 0,
+--		})
+--	end
     return this
 end
 

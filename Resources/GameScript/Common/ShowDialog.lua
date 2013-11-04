@@ -23,12 +23,12 @@ function ShowDialog:create(msg,param)
 	local desc = newLabel("提示", 40, {x = 120, y = (854 - 259)/2 + 170, dimensions=CCSizeMake(200, 60),color = ccc3(255, 255, 255)})
 	layer:addChild(desc)
 	
-	local content, line = newLabel(msg, 20, {
+	local content = newLabel(msg, 20, {
 		noFont = true, 
 		 width = 355, 
 		 color = ccc3(255, 255, 255)
 		})
-	setAnchPos(content,66,(854 - 259)/2 + 170 - (line * 18))
+	setAnchPos(content,66,(854 - 259)/2 + 170 - content:getContentSize().height )
 	
 	layer:addChild(content)
 		

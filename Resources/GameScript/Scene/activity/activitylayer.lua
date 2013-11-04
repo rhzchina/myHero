@@ -68,8 +68,7 @@ function ActivityLayer:loginGift(data, offset)
 --		
 		local text = newLabel("第"..data[i].did.."天", 20,{x = 180, y = 60, color = ccc3(0x2c, 0, 0)})
 		layer:addChild(text)
-		dump(data)
-		local gift = Btn:new(IMG_COMMON,{"icon_bg".."1"..".png"}, 50, 20, {
+	local gift = Btn:new(IMG_COMMON,{"icon_bg".."1"..".png"}, 50, 20, {
 			front = IMG_ICON.."prop".."/S_"..data[i].res_id..".png",
 			other = {IMG_COMMON.."icon_border".."1"..".png",45,45},
 			parent = scroll,

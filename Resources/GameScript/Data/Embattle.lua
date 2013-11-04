@@ -4,7 +4,6 @@ local _data
 
 function DATA_Embattle:set(data)
 	_data = data
-	dump(data)
 end
 
 --检查英雄是否上阵列

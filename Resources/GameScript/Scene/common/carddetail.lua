@@ -63,86 +63,120 @@ function CardDetail:new(kind,cid,params)
 		this.contentLayer:addChild(intro)
 	end
 	
-
+	dump(this.params)
 	local x = 130 
-	if DATA_Embattle:isOn(cid) and this.params.allowChange then
-		x = 250
-		local change = Btn:new(IMG_BTN,{"change.png", "change_press.png"}, 20, 190, {
+	if this.params.doNothing then  --详细信息，当是天赋技能时只有确定按钮，即什么都不做
+		local ok = Btn:new(IMG_BTN, {"btn_bg.png", "btn_bg_press.png"}, x, 190, {
 			priority = -132,
+			front = IMG_TEXT.."ok_text.png",
 			callback = function()
-				this.cancel = false
-				local list, mask
-				list = ItemList:new({
-					type = "hero",
-					filter = filter,
-					priority = -133,
-					checkBoxOpt = function()	 --列表复选框回调
-						print(filter)
-					end,
-					cancelCallback = function()
-						list:remove()
-						this.layer:removeChild(mask, true)
-					end,
-					okCallback = function()
-						if list:getSelectItem() then
-								HTTPS:send("Battle", {
-								a = "battle",
-								m = "battle",
-								index = this.params.pos,
-								battle = "replace_hero", 
-								old_id= getBag("hero", cid,"id"),
-								old_cid = cid,
-								id = getBag("hero",list:getSelectId(),"id") , 
-								cid = list:getSelectId()
-							}, 
-							{
-								success_callback=
-								function()
-									switchScene("lineup", this.params.pos)
-								end
-							})
-							list:remove()
-							this.layer:removeChild(mask, true)
-						else
-							Dialog.tip("请选 择装备的物品")
-						end
-					end
-				})
-				mask = 	Mask:new({item = list:getLayer(), priority = -132})
-				this.layer:addChild(mask)
+				
 			end
 		})
-		this.contentLayer:addChild(change:getLayer())
-	end
-	
-	local btn = Btn:new(IMG_BTN,{"btn_bg.png", "btn_bg_press.png"}, x, 190, {
-		front = IMG_TEXT.."strengthen.png",
-		priority = -132,
-		callback = function()
-			this.cancel = false
-			if kind == "hero" then
-				HTTPS:send("Strong", {a = "hero", m = "strong", 
-					strong = "hero_get", 
-					id = id,
-					cid = cid},{
-					success_callback = function(rec)
-						switchScene("update", {kind = kind, cid = cid, data = rec})	
-					end})
-			elseif kind == "equip" then
-				HTTPS:send("Strong", {
-					strong = "equip_get",
-					m = "strong", 
-					a = "equip",
-					cid = cid,
-					id = id 
-					},{success_callback = function(value)
-						switchScene("update", {kind = "equip", tab = 2, cid = cid, value = value})
-					end})
-			end
+		this.contentLayer:addChild(ok:getLayer())
+	else
+		if (DATA_Embattle:isOn(cid) or DATA_Dress:isUse(cid)) and this.params.allowChange then
+			x = 250
+			local change = Btn:new(IMG_BTN,{"change.png", "change_press.png"}, this.params.noUp and 130 or 20, 190, {
+				priority = -132,
+				callback = function()
+					this.cancel = false
+					local list, mask
+					list = ItemList:new({
+						type = kind,
+						pos = this.params.index,
+						filter = filter,
+						priority = -133,
+						checkBoxOpt = function()	 --列表复选框回调
+							print(filter)
+						end,
+						cancelCallback = function()
+							list:remove()
+							this.layer:removeChild(mask, true)
+						end,
+						okCallback = function()
+							if list:getSelectItem() then
+								local pass, url
+								if kind == "hero" then
+									url = "Battle"
+									pass = {
+										m = "battle",
+										a = "battle",
+										battle = "replace_hero",
+										index = this.params.pos,
+										old_id= getBag("hero", cid,"id"),
+										old_cid = cid,
+										id = getBag("hero",list:getSelectId(),"id") , 
+										cid = list:getSelectId()
+									}
+								else
+									url = "Skill"
+									pass = {
+										m = "skill",
+										a = "skill",
+										skill = "replace",
+										index = this.params.index,
+										old_id= getBag(kind, cid,"id"),
+										old_cid = cid,
+										new_id = getBag(kind,list:getSelectId(),"id") , 
+										new_cid = list:getSelectId(),
+										card_id = this.params.hero_id,
+										card_cid = this.params.hero_cid,
+									}
+								end
+
+								HTTPS:send(url, pass, 
+								{
+									success_callback=
+										function()
+											switchScene("lineup", this.params.pos)
+										end
+								})
+								list:remove()
+								this.layer:removeChild(mask, true)
+							else
+								Dialog.tip("请选 择装备的物品")
+							end
+						end
+					})
+					mask = 	Mask:new({item = list:getLayer(), priority = -132})
+					this.layer:addChild(mask)
+				end
+			})
+			this.contentLayer:addChild(change:getLayer())
 		end
-	})
-	this.contentLayer:addChild(btn:getLayer())
-	
+		
+		if not this.params.noUp then
+			local btn = Btn:new(IMG_BTN,{"btn_bg.png", "btn_bg_press.png"}, x, 190, {
+				front = IMG_TEXT.."strengthen.png",
+				priority = -132,
+				callback = function()
+					this.cancel = false
+					if kind == "hero" then
+						HTTPS:send("Strong", {a = "hero", m = "strong", 
+							strong = "hero_get", 
+							id = id,
+							cid = cid},{
+							success_callback = function(rec)
+								switchScene("update", {kind = kind, cid = cid, data = rec})	
+							end})
+					elseif kind == "equip" then
+						HTTPS:send("Strong", {
+							strong = "equip_get",
+							m = "strong", 
+							a = "equip",
+							cid = cid,
+							id = id 
+							},{success_callback = function(value)
+								switchScene("update", {kind = "equip", tab = 2, cid = cid, value = value})
+							end})
+					end
+				end
+			})
+			this.contentLayer:addChild(btn:getLayer())
+		end
+	end
+		
 	
 	
 	--

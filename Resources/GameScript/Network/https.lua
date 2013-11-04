@@ -60,7 +60,6 @@ function HTTPS:send(mod  , data , param)
 		--[[解包数据]]
 		response = json.decode( response )
 
-		dump(response)
 
 		if response == nil then
 			if loading ~= nil then loading:remove() end 		-- 去掉 loading

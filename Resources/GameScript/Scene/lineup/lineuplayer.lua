@@ -55,27 +55,41 @@ function lineuplayer:new(data)
 			{
 				parent = ksv,
 				equipCallback = function(type,filter,pos)
-					local list
-					list = ItemList:new({
-						type = type,
-						filter = filter,
-						checkBoxOpt = function()	 --列表复选框回调
-							print(filter)
-						end,
-						okCallback = function()
-							if list:getSelectItem() then
-								HTTPS:send("Skill", {a = "skill", m = "skill",skill = "inserSkill", index = pos,
-									card_id = getBag("hero", infos:get_gid(),"id") , card_cid = infos:get_gid() , skill_id = getBag(type,list:getSelectId(),"id") , skill_cid = list:getSelectId(),}, {success_callback=
-									function()
-										switchScene("lineup",ksv:getCurIndex())
-									end
-								})
-							else
-								Dialog.tip("请选 择装备的物口")
+					local dress = DATA_Dress:get(DATA_Embattle:get(i, "cid"), pos)
+					if dress then
+--						Dialog.tip("当前装备的是"..getConfig(type, DATA_Bag:get(type, dress.cid, "id"), "name"))
+						this.layer:addChild(Detail:new(type,dress.cid, {
+							allowChange = true,
+							noUp = type == "skill" and true or false,
+							doNothing = pos == 0,   --天赋技能不可强化不可更换
+							hero_cid = DATA_Embattle:get(i, "cid"),
+							hero_id = DATA_Bag:get("hero", DATA_Embattle:get(i, "cid"), "id") ,
+							pos = i,
+							index = pos,
+						}):getLayer(),1)
+					else
+						local list
+						list = ItemList:new({
+							type = type,
+							filter = filter,
+							checkBoxOpt = function()	 --列表复选框回调
+								print(filter)
+							end,
+							okCallback = function()
+								if list:getSelectItem() then
+									HTTPS:send("Skill", {a = "skill", m = "skill",skill = "inserSkill", index = pos,
+										card_id = getBag("hero", infos:get_gid(),"id") , card_cid = infos:get_gid() , skill_id = getBag(type,list:getSelectId(),"id") , skill_cid = list:getSelectId(),}, {success_callback=
+										function()
+											switchScene("lineup",ksv:getCurIndex())
+										end
+									})
+								else
+									Dialog.tip("请选 择装备的物品")
+								end
 							end
-						end
-					})
-					this.layer:addChild(list:getLayer())
+						})
+						this.layer:addChild(list:getLayer())
+					end
 				end,
 				lock = i > DATA_Embattle:getLen(),
 				cardCallback = function(pos)
@@ -153,7 +167,7 @@ function lineuplayer:new(data)
 	this.layer:addChild(temps:getLayer())
 	
 	if data then
-		ksv:setIndex(data)
+		ksv:setIndex(data, true)
 	end
 return this
 end

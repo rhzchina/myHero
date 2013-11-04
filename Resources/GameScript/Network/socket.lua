@@ -322,6 +322,7 @@ function SOCKET:callback(response)
 		Dialog.tip("数据格式错误 ")
 		return
 	end
+	dump(result)
 	if result.mode == "open" then
 		DATA_Chat:set(result)
 		if tonumber(DATA_User:get("role")) == 0 then
@@ -354,8 +355,16 @@ function SOCKET:callback(response)
 			scene:removeChild(loading, true)
 			scene:refresh()
 		end
-	else
-		
+	elseif result.mode == "error" then
+		Dialog.tip(result["add"]["content"])
+		local scene = display.getRunningScene()
+		if scene.name == "chat" then
+			scene:removeChild(loading, true)
+			scene:refresh()
+		end
+	elseif result.mode == "prop" then
+		Dialog.tip("获得一个礼包")
+		DATA_Bag:setByKey("prop", result["add"]["prop"]["cid"], result["add"]["prop"])
 	end
 	
 end

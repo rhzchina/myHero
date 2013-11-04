@@ -6,9 +6,11 @@ class  WindowLayer :	public CCLayerColor
 {
 public:
 	void visit();
+	void showRect();
 	static WindowLayer* createWindow();
 private:
 	float scaleX;
 	float scaleY;
+	CCRect rect;
 };
 #endif

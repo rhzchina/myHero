@@ -22,7 +22,7 @@ function M.new(args)
 	local action = CCRepeatForever:create( CCRotateBy:create(0.5 , 180) )
 	sprite:runAction(action)
 
-	local view = Mask:new({item = sprite , click = click, priority = -131})
+	local view = Mask:new({item = sprite , click = click, priority = -200})
 
 	return view
 end

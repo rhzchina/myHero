@@ -60,27 +60,18 @@ function lineuinfoplayer:new(index,sv,data,x,y,params)
 			end
 		end
 		
-		local scale
-		if v[4] == 0 then --天赋技能不可更换
-			scale = false
-		else
-			scale = 1.05 
-		end
 	    temp = Btn:new(IMG_COMMON,{bg},v[2],v[3],
 	    		{
 					parent = sv,
-	    			scale = scale,
+	    			scale = 1.05,
 	    			front = front,
 	    			other = other,
 	    			callback= function()
-	    				if scale then
-	    					if data["cid"] then
-	    						this.params.equipCallback(kind,v[1],v[4])
-	    					else
-	    						Dialog.tip("请选 择要上阵列的武将")
-	    					end
-	    				else
-	    				end
+    					if data["cid"] then
+    						this.params.equipCallback(kind,v[1],v[4])
+    					else
+    						Dialog.tip("请选 择要上阵列的武将")
+    					end
 	    			end
 	    		 })
 		this.layer:addChild(temp:getLayer())
@@ -99,10 +90,10 @@ function lineuinfoplayer:new(index,sv,data,x,y,params)
 		end
 	})
 	this.layer:addChild(card:getLayer())
-	
-	--------[[英雄描述]]
+		
+		--------[[英雄描述]]
 	local desc_cald = newSprite(PATH.."line.png")----英雄
-	setAnchPos(desc_cald,10,160-this.point_y)
+	setAnchPos(desc_cald,10,170-this.point_y)
 	this.layer:addChild(desc_cald)
 
 if _G.next (data)  ~= nil then
@@ -149,10 +140,11 @@ if _G.next (data)  ~= nil then
 		
 		local hero_data = HeroConfig[getBag("hero", this.gid, "id")]
 		
-		local text, line = newLabel(hero_data["desc"],20,{
+		local text = newLabel(hero_data["desc"],25,{
 			 width = 420,
+				 align = 0,
 			  color = ccc3(255, 255, 255)})
-		setAnchPos(text, 20, 132- text:getContentSize().height)
+		setAnchPos(text, 20, 158- text:getContentSize().height)
 --		setAnchPos(text, 20,165 - (line * 34))
 	
 		this.layer:addChild(text)

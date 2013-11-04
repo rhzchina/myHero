@@ -8,6 +8,7 @@ function InfoLayer:new(Parent,data,_index)
 	setmetatable(this,self)
 	self.__index  = self
 	this.Parent = Parent
+	
 	local params = data or {}
 	this.layer = newLayer()
 	setAnchPos(this.layer, 3, 0)
@@ -15,6 +16,7 @@ function InfoLayer:new(Parent,data,_index)
 	this.layer:addChild(bg)
 	this.layer:setContentSize(bg:getContentSize())
 	this.Parent.old_layer = params.new_layer
+
 	local icon_bg = newSprite(PATH..params.resource_id..".png")
 	setAnchPos(icon_bg, 23, 18)
 	this.layer:addChild(icon_bg)
@@ -55,6 +57,7 @@ function InfoLayer:new(Parent,data,_index)
 			HTTPS:send("Duplicate" ,  
 					{m="duplicate",a="duplicate",duplicate = "emigrated",type_id = data.type_id} ,
 					{success_callback = function(temp_data)
+						this.Parent.all_max_layer = tonumber(params.max_layer) + 1
 						this.Parent:create_small(temp_data)
 					end })
 		--end

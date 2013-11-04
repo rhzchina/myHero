@@ -13,7 +13,6 @@ function ItemPage:new(x, y, params)
 	local this = {}
 	setmetatable(this,self)
 	self.__index = self
-	
 	this.layer = newLayer()
 	this.params = params or {}
 	this.cur = 1
@@ -114,7 +113,32 @@ function ItemPage:createItems(by, ani, dir)
 		self.itemsLayer = newLayer()
 		
 		local list = getSortKey( getBag(self.params.type)) 
+		dump(self.params.type)
+
+		if self.params.type == "hero" then
+			local temp_data = DATA_Embattle:get()
+			dump(temp_data)
+			for k,v in pairs(temp_data)do
+				for k2,v2 in pairs(list) do
+					if _G.next(v) ~= nil and tonumber(v.cid) == tonumber(v2) then
+						table.remove(list, k2)
+					end
+				end
+			end
+		elseif self.params.type == "equip" then
+			local temp_data = DATA_Dress:get()
+			for k,v in pairs(temp_data)do
+				for k1,v1 in pairs(v)do
+					for k2,v2 in pairs(list) do
+						if _G.next(v1) ~= nil and tonumber(v1.cid) == tonumber(v2) then
+							table.remove(list, k2)
+						end
+					end
+				end
+			end
+		end
 		
+
 		--去掉满足条件的项
 		for k, v in pairs(list) do
 			if self.params.filter then
@@ -126,6 +150,10 @@ function ItemPage:createItems(by, ani, dir)
 			if self.params.exceptUse then
 				if self.params.type == "hero" then
 					if DATA_Embattle:isOn(v) then
+						table.remove(list, k)
+					end
+				else
+					if DATA_Dress:isUse(v) then
 						table.remove(list, k)
 					end
 				end

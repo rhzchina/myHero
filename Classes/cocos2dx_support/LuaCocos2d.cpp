@@ -23,6 +23,8 @@ TOLUA_API int  tolua_Cocos2d_open (lua_State* tolua_S);
 #include "network/CCNetwork.h"
 
 #include "UpdataRes/UpdataRes.h"
+
+#include "GameLead.h"
 // using namespace std;
 // using namespace cocos2d;
 // using namespace cocos2d::extra;
@@ -498,10 +500,82 @@ static void tolua_reg_types (lua_State* tolua_S)
 
  tolua_usertype(tolua_S,"CCNetwork");
  tolua_usertype(tolua_S,"CCHTTPRequest");
- tolua_usertype(tolua_S,"PlayerGuide");
+ tolua_usertype(tolua_S,"GameLead");
 
 
 }
+
+/* method: createSprite of class  GameLead */
+#ifndef TOLUA_DISABLE_tolua_cocos2dx_extra_luabinding_GameLead_createSprite00
+	static int tolua_cocos2dx_extra_luabinding_GameLead_createSprite00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+	tolua_Error tolua_err;
+	if (
+		!tolua_isusertable(tolua_S,1,"GameLead",0,&tolua_err) ||
+		!tolua_isnoobj(tolua_S,2,&tolua_err)
+		)
+		goto tolua_lerror;
+	else
+#endif
+	{
+		GameLead* tolua_ret = (GameLead*)  GameLead::createSprite();
+		int nID = (tolua_ret) ? (int)tolua_ret->m_uID : -1;
+		int* pLuaID = (tolua_ret) ? &tolua_ret->m_nLuaID : NULL;
+		toluafix_pushusertype_ccobject(tolua_S, nID, pLuaID, (void*)tolua_ret,"GameLead");
+	}
+	return 1;
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+	tolua_error(tolua_S,"#ferror in function 'createSprite'.",&tolua_err);
+	return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: show of class  GameLead */
+#ifndef TOLUA_DISABLE_tolua_cocos2dx_extra_luabinding_GameLead_show00
+static int tolua_cocos2dx_extra_luabinding_GameLead_show00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+	tolua_Error tolua_err;
+	if (
+		!tolua_isusertype(tolua_S,1,"GameLead",0,&tolua_err) ||
+		!tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+		!tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+		!tolua_isusertype(tolua_S,4,"CCPoint",0,&tolua_err) ||
+		!tolua_isnumber(tolua_S,5,0,&tolua_err) ||
+		(tolua_isvaluenil(tolua_S,6,&tolua_err) || !toluafix_isfunction(tolua_S,6,"LUA_FUNCTION",0,&tolua_err)) ||
+		(tolua_isvaluenil(tolua_S,7,&tolua_err) || !toluafix_isfunction(tolua_S,7,"LUA_FUNCTION",0,&tolua_err)) ||
+		!tolua_isnoobj(tolua_S,8,&tolua_err)
+		)
+		goto tolua_lerror;
+	else
+#endif
+	{
+		GameLead* self = (GameLead*)  tolua_tousertype(tolua_S,1,0);
+		float width = ((float)  tolua_tonumber(tolua_S,2,0));
+		float height = ((float)  tolua_tonumber(tolua_S,3,0));
+		CCPoint* point = ((CCPoint*)  tolua_tousertype(tolua_S,4,0));
+		float opacity = ((float)  tolua_tonumber(tolua_S,5,0));
+		LUA_FUNCTION listener = (toluafix_ref_function(tolua_S,6,0));
+		LUA_FUNCTION listener2 = (toluafix_ref_function(tolua_S,7,0));
+
+#ifndef TOLUA_RELEASE
+		if (!self) tolua_error(tolua_S,"invalid 'self' in function 'show'", NULL);
+#endif
+		{
+			self->show(width , height , point , opacity , listener , listener2);
+		}
+	}
+	return 0;
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+	tolua_error(tolua_S,"#ferror in function 'show'.",&tolua_err);
+	return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
 //self class
 #ifndef TOLUA_DISABLE_tolua_Kuniu_WindowLayer_createWindow00
 static int tolua_Kuniu_WindowLayer_createWindow00(lua_State* tolua_S)
@@ -59143,6 +59217,12 @@ TOLUA_API int tolua_Cocos2d_open (lua_State* tolua_S)
 	tolua_function(tolua_S,"openUrl",tolua_Cocos2d_UpdataRes_openUrl00);
 	tolua_function(tolua_S,"DeviceId",tolua_Cocos2d_UpdataRes_DeviceId00);
 	 tolua_function(tolua_S,"play",tolua_Cocos2d_UpdataRes_play00);
+	tolua_endmodule(tolua_S);
+
+	tolua_cclass(tolua_S,"GameLead","GameLead","CCSprite",NULL);
+	tolua_beginmodule(tolua_S,"GameLead");
+		tolua_function(tolua_S,"createSprite",tolua_cocos2dx_extra_luabinding_GameLead_createSprite00);
+		tolua_function(tolua_S,"show",tolua_cocos2dx_extra_luabinding_GameLead_show00);
 	tolua_endmodule(tolua_S);
 	//自定义调用的功能函数
 	tolua_function(tolua_S,"specialCall",tolua_cocos2dx_specialCall00);

@@ -33,6 +33,7 @@ function CardInfo:new(x,y,params)
 			setAnchPos(icon, bg:getContentSize().width / 2, bg:getContentSize().height/ 2, 0.5, 0.5)
 		else
 			setAnchPos(icon, bg:getContentSize().width / 2, bg:getContentSize().height/ 2, 0.3, 0.2 )
+			
 		end
 		this.layer:addChild(icon)
 		
@@ -118,7 +119,20 @@ function CardInfo:createProperties()
 		
 		proText = newLabel("防"..getBag(self.params.type, self.params.cid, "defe"), 17, {x = 170, y = 22})
 		self.layer:addChild(proText)
-	else
+	elseif self.params.type == "equip" then
+		if tonumber(getBag(self.params.type, self.params.cid, "id")) > 5999 and tonumber(getBag(self.params.type, self.params.cid, "id")) <= 6999 then
+			--武器
+			proText = newLabel("攻"..getBag(self.params.type ,self.params.cid, "att_i"), 17, {x = 20, y = 24})
+			self.layer:addChild(proText)
+		elseif tonumber(getBag(self.params.type, self.params.cid, "id")) > 6999 and tonumber(getBag(self.params.type, self.params.cid, "id")) <= 7999 then
+			--饰品
+			proText = newLabel("血"..getBag(self.params.type, self.params.cid, "hp_i"), 17, {x = 20, y = 24})
+			self.layer:addChild(proText)
+		elseif tonumber(getBag(self.params.type, self.params.cid, "id")) > 4999 and tonumber(getBag(self.params.type, self.params.cid, "id")) <= 5999 then
+			--防具
+			proText = newLabel("防"..getBag(self.params.type, self.params.cid, "def_i"), 17, {x = 20, y = 24})
+			self.layer:addChild(proText)
+		end
 	end
 end
 

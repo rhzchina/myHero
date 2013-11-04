@@ -9,9 +9,10 @@ local TranscriptLayer = {
 	move_layer,
 	type_id,
 	mask,
-	is_error
+	is_error,
+	quick_layer,
+	all_max_layer
 }
-
 function TranscriptLayer:new(data)
 	local this = {}
 	setmetatable(this,self)
@@ -567,45 +568,49 @@ function TranscriptLayer:show_map(cur_layer,type_id,is_fight,max_layer,is_quick)
 				max_the_layer = cur_layer + 16
 			end			
 		end
+		if max_the_layer > tonumber(self.all_max_layer) then
+			max_the_layer = tonumber(self.all_max_layer)
+		else
 		
-		local other_layer = Btn:new(IMG_BTN, {"comnon_bnt.png", "comnon_bnt_press.png"}, 240, 90,{text = {"进入第"..(max_the_layer -  1).."层", 24, ccc3(205, 133, 63), ccp(0, 0)},callback = function()
+		end
+
+		if cur_layer ~= (max_the_layer - 1) and cur_layer <= max_the_layer then
+			local other_layer = Btn:new(IMG_BTN, {"comnon_bnt.png", "comnon_bnt_press.png"}, 240, 90,{text = {"进入第"..(max_the_layer -  1).."层", 24, ccc3(205, 133, 63), ccp(0, 0)},callback = function()
 					
 					if cur_layer >= 100 then
 					
 					else
 						if self.is_error == true then
 							self.is_error = false
-							HTTPS:send("Fighting",
-									{a = "fighting",
-									 m = "fighting", 
-									 fighting = "start", 
-									 type = "copy",
-									 mode = "ordinary",
-									 type_id = type_id, 
-									 layer = cur_layer},{
-									 success_callback= function()
-										self.old_layer = cur_layer
-										switchScene("fighting","copy")
-									 end,
-									 error_callback = function()
-										self.is_error = true
-									 end
-									 })
+							HTTPS:send("Duplicate" ,  
+							{m="duplicate",a="duplicate",duplicate = "quick",type_id = type_id,layer=self.quick_layer} ,
+								{success_callback = function(data)
+									Dialog.tip("获取物品")
+								end,
+								 error_callback = function()
+									self.is_error = true
+								 end 
+								
+							})
 						else
+							self.quick_layer = cur_layer
 							self:draw_map(cur_layer + 1,type_id, max_the_layer,true)
 						end
 						
 					end
 			end})
-		self.show_layer:addChild(other_layer:getLayer())
-	
-		local gold_leaf = newSprite(IMG_COMMON.."gold_leaf.png")
-		gold_leaf:setScaleX(0.7)
-		setAnchPos(gold_leaf, 380, 100 )
-		self.show_layer:addChild(gold_leaf)
+			self.show_layer:addChild(other_layer:getLayer())
+			local gold_leaf = newSprite(IMG_COMMON.."gold_leaf.png")
+			gold_leaf:setScaleX(0.7)
+			setAnchPos(gold_leaf, 380, 100 )
+			self.show_layer:addChild(gold_leaf)
+			
+			local gold_num = display.strokeLabel("100",405,105,20,ccc3(255,255,255))
+			self.show_layer:addChild(gold_num)
+		end
 		
-		local gold_num = display.strokeLabel("100",405,105,20,ccc3(255,255,255))
-		self.show_layer:addChild(gold_num)
+	
+		
 		
 	elseif cur_layer >= 99 then
 		local bg = newSprite(PATH..type_id.."/tow.png")
@@ -781,37 +786,37 @@ function TranscriptLayer:show_map(cur_layer,type_id,is_fight,max_layer,is_quick)
 				max_the_layer = cur_layer + 16
 			end			
 		end
+		if max_the_layer > tonumber(self.all_max_layer) then
+			max_the_layer = tonumber(self.all_max_layer)
+		else
 		
+		end
+		
+		if cur_layer ~= (max_the_layer - 1) and cur_layer <= max_the_layer then
 			local other_layer = Btn:new(IMG_BTN, {"comnon_bnt.png", "comnon_bnt_press.png"}, 240, 90,{text = {"进入第"..(max_the_layer - 1).."层", 24, ccc3(205, 133, 63), ccp(0, 0)},callback = function()					
-					if cur_layer >= 100 then
-					
-					else
-						if self.is_error == true then
-							self.is_error = false
-							HTTPS:send("Fighting",
-									{a = "fighting",
-									 m = "fighting", 
-									 fighting = "start", 
-									 type = "copy",
-									 mode = "ordinary",
-									 type_id = type_id, 
-									 layer = cur_layer},{
-									 success_callback= function()
-										self.old_layer = cur_layer
-										switchScene("fighting","copy")
-									 end,
-									 error_callback = function()
-										self.is_error = true
-									 end
-									 })
-						else
-							self:draw_map(cur_layer +1 ,type_id, max_the_layer,true)
-						end
-					end
+				if cur_layer >= 100 then
 				
+				else
+					if self.is_error == true then
+						self.is_error = false
+						HTTPS:send("Duplicate" ,  
+						{m="duplicate",a="duplicate",duplicate = "quick",type_id = type_id,layer=self.quick_layer} ,
+							{success_callback = function(data)
+								Dialog.tip("获取物品")
+							end,
+							 error_callback = function()
+								self.is_error = true
+							 end 
+							
+						})
+					else
+						self.quick_layer = cur_layer
+						self:draw_map(cur_layer +1 ,type_id, max_the_layer,true)
+					end
+				end
+			
 			end})
 			self.show_layer:addChild(other_layer:getLayer())
-		
 			local gold_leaf = newSprite(IMG_COMMON.."gold_leaf.png")
 			gold_leaf:setScaleX(0.7)
 			setAnchPos(gold_leaf, 380, 100 )
@@ -819,6 +824,10 @@ function TranscriptLayer:show_map(cur_layer,type_id,is_fight,max_layer,is_quick)
 			
 			local gold_num = display.strokeLabel("100",405,105,20,ccc3(255,255,255))
 			self.show_layer:addChild(gold_num)
+		end
+		
+	
+			
 	end
 	
 	
@@ -827,21 +836,18 @@ function TranscriptLayer:show_map(cur_layer,type_id,is_fight,max_layer,is_quick)
 	if is_quick == true then
 		if tonumber(cur_layer) == tonumber(max_layer) - 1 then
 			if is_fight == true then
-				HTTPS:send("Fighting",
-									{a = "fighting",
-									 m = "fighting", 
-									 fighting = "start", 
-									 type = "copy",
-									 mode = "fast",
-									 type_id = type_id, 
-									 layer = cur_layer },{success_callback= function()
-										self.old_layer = cur_layer
-										switchScene("fighting","copy")
-									 end,
-									 error_callback = function()
-										self.is_error = true
-									 end
-									 })
+				if is_fight == true then
+					HTTPS:send("Duplicate" ,  
+					{m="duplicate",a="duplicate",duplicate = "quick",type_id = type_id,layer=self.quick_layer} ,
+						{success_callback = function(data)
+							Dialog.tip("获取物品")
+						end,
+						 error_callback = function()
+							self.is_error = true
+						 end 
+						
+					})
+				end
 			end
 		end
 	else

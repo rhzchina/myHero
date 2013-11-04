@@ -1,5 +1,4 @@
 local PATH = IMG_SCENE.."fighting/"
-local KNBar = requires(SRC.."Common/KNBar")
 local timeChange = 1
 local HEROSTART, MONSTERSTART, SPACE = ccp(43,200), ccp(43,530), 40
 
@@ -47,7 +46,6 @@ function FightRole:new(group,id,pos,total,params)
 	this.layer = CCLayer:create()
 	
 	this.params = params or {}
-	dump(params)
 	this.params.star = this.params.star > 5 and 5 or this.params.star
 	--战斗卡片背景
 --	this.bg = newSprite(PATH.."test_bg.png")

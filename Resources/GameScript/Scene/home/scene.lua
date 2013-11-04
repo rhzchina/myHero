@@ -39,21 +39,29 @@ function M:create()
 		SimpleAudioEngine:sharedEngine():setBackgroundMusicVolume(1)
 		audio.playMusic( SOUND.."home_bg.ogg" , true )
 	end
-	
+	if DATA_User:get("steps") == 1 then  --新手引导
+		print("新手开始引导")
+		Lead:setStep(1)
+	else
+		if GONGGAO == 0 then
+			scene:addChild(NoticeLayer:create():getLayer(), 1)
+			GONGGAO = 1
+		end
+	end
 	---------------插入layer---------------------
 	scene:addChild(HomeLayer:create(0,0))
 
---	scene:addChild(LULayer:create(0,493))
-
 	scene:addChild(InfoLayer:create("home"):getLayer())
-	if DATA_User:get("on_off") ~= 1 then 
-		if GONGGAO == 0 then
-			scene:addChild(NoticeLayer:create():getLayer())
-			GONGGAO = 1
-		end	
-	else
-		if DATA_User:get("on_off") == 1 then Guide:show() end
-	end
+	
+	
+--	if DATA_User:get("on_off") ~= 1 then 
+--		if GONGGAO == 0 then
+--			scene:addChild(NoticeLayer:create():getLayer())
+--			GONGGAO = 1
+--		end	
+--	else
+--		if DATA_User:get("on_off") == 1 then Guide:show() end
+--	end
 	
 --	scene:addChild(BTLuaLayer())
 	---------------------------------------------
